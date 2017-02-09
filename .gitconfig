@@ -1,0 +1,23 @@
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[user]
+	name = Daniel Yim
+	email = danielyim@gmail.com
+[core]
+	editor = vim
+	excludesfile = /Users/danyim/.gitignore_global
+[merge]
+	tool = vimdiff
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[color]
+	ui = true
+[push]
+    default = simple
+[alias]
+    wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard

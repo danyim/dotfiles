@@ -1,0 +1,68 @@
+{
+	"auto_find_in_selection": false,
+	"binary_file_patterns":
+	[
+		"node_modules/"
+	],
+	"bold_folder_labels": true,
+	"caret_extra_bottom": 1,
+	"caret_extra_top": 1,
+	"caret_extra_width": 1,
+	"caret_style": "solid",
+	"color_scheme": "Packages/User/SublimeLinter/zenburn (SL).tmTheme",
+	"default_encoding": "UTF-8",
+	"default_line_ending": "unix",
+	"draw_white_space": "all",
+	"ensure_newline_at_eof_on_save": true,
+	"file_exclude_patterns":
+	[
+		".DS_Store",
+		"Desktop.ini",
+		"*.pyc",
+		"._*",
+		"Thumbs.db",
+		".Spotlight-V100",
+		".Trashes"
+	],
+	"find_selected_text": true,
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		"node_modules",
+		"dist"
+	],
+	"font_face": "Inconsolata",
+	"font_size": 15,
+	"highlight_line": true,
+	"highlight_modified_tabs": true,
+	"hot_exit": false,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"indent_guide_options":
+	[
+		"draw_normal",
+		"draw_active"
+	],
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
+	"match_brackets": true,
+	"match_brackets_angle": true,
+	"match_brackets_braces": true,
+	"match_brackets_content": true,
+	"match_brackets_square": true,
+	"rulers":
+	[
+		80
+	],
+	"show_encoding": true,
+	"tab_size": 2,
+	"theme": "zenburn.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true,
+	"wide_caret": true
+}
