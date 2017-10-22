@@ -15,6 +15,7 @@ The theme I'm using for my editor and terminal is the [Zenburn color scheme](htt
   - Shell: [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
   - Shell Navigation: [z](https://github.com/rupa/z)
   - Fuzzy File Search: [fzf](https://github.com/junegunn/fzf)
+  - `ls` Replacement: [Exa](https://github.com/ogham/exa)
 
 ### Loading dotfiles into system
 - Run `./load.sh`
