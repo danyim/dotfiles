@@ -16,31 +16,22 @@
 	"ensure_newline_at_eof_on_save": true,
 	"file_exclude_patterns":
 	[
-		".DS_Store",
-		"Desktop.ini",
-		"*.pyc",
-		"._*",
-		"Thumbs.db",
-		".Spotlight-V100",
-		".Trashes"
+		".DS_Store"
 	],
 	"find_selected_text": true,
 	"folder_exclude_patterns":
 	[
-		".svn",
 		".git",
-		".hg",
-		"CVS",
-		"node_modules",
-		"dist"
+		"node_modules"
 	],
 	"font_face": "Inconsolata",
-	"font_size": 15,
+	"font_size": 16,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"hot_exit": false,
 	"ignored_packages":
 	[
+		"SublimeLinter-contrib-standard",
 		"Vintage"
 	],
 	"indent_guide_options":
@@ -55,13 +46,14 @@
 	"match_brackets_braces": true,
 	"match_brackets_content": true,
 	"match_brackets_square": true,
+	"origami_auto_close_empty_panes": true,
 	"rulers":
 	[
 		80
 	],
 	"show_encoding": true,
 	"tab_size": 2,
-	"theme": "zenburn.sublime-theme",
+	"theme": "Adaptive.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true,
 	"wide_caret": true

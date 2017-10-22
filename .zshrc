@@ -7,7 +7,6 @@ export ZSH=/Users/danyim/.oh-my-zsh
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
 ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # Uncomment the following line to use case-sensitive completion.
@@ -21,16 +20,26 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+export UPDATE_ZSH_DAYS=7
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
 DISABLE_AUTO_TITLE="true"
+
+# "tt [title]" will title the iTerm2 tab if outside of tmux. If inside of tmux,
+# it will rename the tmux window
 tt () {
+  if [ -z $TMUX ] ; then
     echo -e "\033];$@\007"
+  else
+   tmux rename-window $@
+  fi
 }
+
+# Autocompletion for tmuxinator
+# source ~/.bin/tmuxinator.zsh
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -55,13 +64,31 @@ COMPLETION_WAITING_DOTS="true"
 prompt_context () { }
 DEFAULT_USER=danyim
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-# Disabled plugins
-#   osx github autojump gnu-utils
-plugins=(git git-extras git-flow command-not-found colored-man colorize brew zsh-syntax-highlighting node npm ssh-agent sublime sudo supervisor zsh-autosuggestions history history-substring-search)
+source /usr/local/share/antigen/antigen.zsh
+antigen use oh-my-zsh
+antigen theme bhilburn/powerlevel9k
+antigen bundle git
+# antigen bundle git-extras
+# antigen bundle git-flow
+antigen bundle tmuxinator
+# antigen bundle command-not-found
+antigen bundle colorize
+antigen bundle brew
+antigen bundle node
+antigen bundle npm
+antigen bundle ssh-agent
+antigen bundle sublime
+# antigen bundle sudo
+antigen bundle supervisor
+antigen bundle history
+antigen bundle history-substring-search
+antigen bundle lukechilds/zsh-better-npm-completion
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+#antigen bundle zsh-users/zsh-autosuggestions
+#antigen bundle zsh-users/zsh-completions
+
+antigen apply
 
 source $ZSH/oh-my-zsh.sh
 
@@ -70,12 +97,16 @@ source $ZSH/oh-my-zsh.sh
 ###############################################################################
 # Environment variables                                                       #
 ###############################################################################
+# Change the prompt styles
+PS1='%(5~|…/%3~|%~)'
+# PS1='\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[0;34m\]\w\[\e[0m\]\$ '
 
 # Use a 256-color terminal setting
+[[ $TMUX = "" ]] && export TERM="xterm-256color" # Enables 265 colors in tmux
 #export TERM=screen-256color
 # export LSCOLORS=GxFxCxDxBxegedabagaced
 # export TERM="xterm-color"
-# PS1='\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[0;34m\]\w\[\e[0m\]\$ '
+
 export GREP_OPTIONS='--color=auto'
 export EDITOR='sublime --wait' # Sets the default editor
 
@@ -83,24 +114,21 @@ export EDITOR='sublime --wait' # Sets the default editor
 export CLICOLOR=1
 
 # Set PATH vars
+export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/git/bin:/usr/local/sbin:$PATH"
 export PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
-#export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
 #$HOME/.rbenv/bin
-export PATH="$PATH:`yarn global bin`" # Yarn
 
 # Moved to .zshenv
 # # For NVM (Node Version Manager)
 # export NVM_DIR="/Users/danyim/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 # source ~/.nvm/nvm.sh
+# export PATH="$PATH:`yarn global bin`" # Yarn
 
 # For RBENV
 export PATH="$HOME/.rbenv/bin:$PATH"
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-## For RVM (Ruby Version Manager)
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
 # Sets pgp key generated on 1/15/2015 as the default key
 export GPGKEY=1988FBC9
@@ -126,6 +154,11 @@ export SSH_KEY_PATH="~/.ssh/id_rsa"
 # For Python tab completions
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
+# For Python virtual env
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Developer
+source /usr/local/bin/virtualenvwrapper.sh
+
 # Autojump (from Homebrew)
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
@@ -145,9 +178,16 @@ export PYTHONSTARTUP=$HOME/.pythonrc.py
 alias t='tree -L 2 -C --dirsfirst --filelimit 20 -F'
 
 # Set helpful ls shortcuts
+alias ls='exa'
 alias l='ls -al'
 alias ll='ls -l'
 alias lll='ls -a'
+
+# Helpful commands
+mkcd() {
+  mkdir $1
+  cd $1
+}
 
 # Alias more to less--I always say more when I mean less ;)
 alias more='less'
@@ -158,37 +198,35 @@ alias less='less -R'
 alias tmux='tmux -2'
 
 # git/git-flow aliases
-alias gita="git add ."
-alias clone="git clone"
-alias gitc="git clone"
-alias gitl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-alias gitlg="git log --graph --decorate --oneline"
-alias gits="git status"
-alias gs="git stash"
-alias gsa="git stash apply"
-alias gsl="git stash list"
-alias gsc="git stash clear"
-alias gft="git fetch --tags"
-alias gpt="git push --tags"
-alias gcm="git checkout master"
-alias gmm="git merge master --no-ff"
-alias gcd="git checkout develop"
-alias gmd="git merge develop --no-ff"
+alias gita='git add .'
+alias clone='git clone'
+alias gitc='git clone'
+alias gitl='git lg'
+alias gitlg='git log --graph --decorate --oneline'
+alias gits='git status'
+alias gitr='git recent'
+alias gitch='git ch'
+alias gs='git stash'
+alias gitsl='git sl'
+alias gsa='git stash apply'
+alias gsl='git stash list'
+alias gsc='git stash clear'
+alias gft='git fetch --tags'
+alias gpt='git push --tags'
+alias gcm='git checkout master'
+alias gmm='git merge master --no-ff'
+alias gcd='git checkout develop'
+alias gmd='git merge develop --no-ff'
 
 # Sublime
-alias subl="sublime"
+alias subl='sublime'
 
 # cd into ~/Developer
-alias cdd="cd ~/Developer"
+alias cdd='cd ~/Developer'
 alias -- -='cd ~-' # Typing '-' navigates to the previous directory
 
-# Tab renaming via "title"
-function title {
-    echo -ne "\033]0;"$*"\007"
-}
-
 # NPM
-alias npmls="npm ls -g --depth=0" # Prints all root packages installed globally
+alias npmls='npm ls -g --depth=0' # Prints all root packages installed globally
 
 ###############################################################################
 # Misc                                                                        #
@@ -196,8 +234,8 @@ alias npmls="npm ls -g --depth=0" # Prints all root packages installed globally
 
 # Allow for reverse tab of completion lists
 bindkey -M menuselect '^[[Z' reverse-menu-complete
+bindkey "^X\x7f" backward-kill-line
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # For Z -- https://github.com/rupa/z
 . `brew --prefix`/etc/profile.d/z.sh
 
@@ -206,60 +244,12 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # Don't share command history with other tabs
 unsetopt share_history
 
-###-begin-npm-completion-###
-#
-# npm command completion script
-#
-# Installation: npm completion >> ~/.bashrc  (or ~/.zshrc)
-# Or, maybe: npm completion > /usr/local/etc/bash_completion.d/npm
-#
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-if type complete &>/dev/null; then
-  _npm_completion () {
-    local words cword
-    if type _get_comp_words_by_ref &>/dev/null; then
-      _get_comp_words_by_ref -n = -n @ -w words -i cword
-    else
-      cword="$COMP_CWORD"
-      words=("${COMP_WORDS[@]}")
-    fi
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/danyim/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/danyim/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
-    local si="$IFS"
-    IFS=$'\n' COMPREPLY=($(COMP_CWORD="$cword" \
-                           COMP_LINE="$COMP_LINE" \
-                           COMP_POINT="$COMP_POINT" \
-                           npm completion -- "${words[@]}" \
-                           2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  complete -o default -F _npm_completion npm
-elif type compdef &>/dev/null; then
-  _npm_completion() {
-    local si=$IFS
-    compadd -- $(COMP_CWORD=$((CURRENT-1)) \
-                 COMP_LINE=$BUFFER \
-                 COMP_POINT=0 \
-                 npm completion -- "${words[@]}" \
-                 2>/dev/null)
-    IFS=$si
-  }
-  compdef _npm_completion npm
-elif type compctl &>/dev/null; then
-  _npm_completion () {
-    local cword line point words si
-    read -Ac words
-    read -cn cword
-    let cword-=1
-    read -l line
-    read -ln point
-    si="$IFS"
-    IFS=$'\n' reply=($(COMP_CWORD="$cword" \
-                       COMP_LINE="$line" \
-                       COMP_POINT="$point" \
-                       npm completion -- "${words[@]}" \
-                       2>/dev/null)) || return $?
-    IFS="$si"
-  }
-  compctl -K _npm_completion npm
-fi
-###-end-npm-completion-###
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# For Zippy
+alias gobuild="go generate teleopui/teleopui.go && go build ./cmd/teleop-server && ./teleop-server"

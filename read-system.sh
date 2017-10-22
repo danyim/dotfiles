@@ -13,6 +13,9 @@ cp ~/.zshenv .
 cp ~/.gitconfig .
 cp ~/.gitignore_global .
 
+# Alacritty
+cp ~/.config/alacritty/alacritty.yml .
+
 # Sublime
 cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings sublime/
 # cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/zenburn sublime/zenburn

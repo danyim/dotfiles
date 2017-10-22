@@ -2,13 +2,13 @@
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
 [user]
-	name = Daniel Yim
-	email = danielyim@gmail.com
+    name = Daniel Yim
+    email = danielyim@gmail.com
 [core]
-	editor = vim
-	excludesfile = /Users/danyim/.gitignore_global
+    editor = vim
+    excludesfile = /Users/danyim/.gitignore_global
 [merge]
-	tool = vimdiff
+    tool = vimdiff
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
@@ -16,8 +16,31 @@
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 [color]
-	ui = true
+    ui = true
 [push]
-    default = simple
+  default = simple
 [alias]
-    wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+  wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+  commend = !git commit --amend --no-edit
+  co = checkout
+  lg = log --graph --pretty=format:\"%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit
+  rl = reflog --pretty=format:\"%Cred%h%Creset %C(auto)%gd%Creset %C(auto)%gs%C(reset) %C(green)(%cr)%C(reset) %C(bold blue)<%an>%Creset\" --abbrev-commit
+  sl = stash list --pretty=format:\"%C(red)%h%C(reset) - %C(dim yellow)(%C(bold magenta)%gd%C(dim yellow))%C(reset) %<(70,trunc)%s %C(green)(%cr) %C(bold blue)<%an>%C(reset)\"
+  d = diff -w
+  dc = diff -w --cached
+  # From https://csswizardry.com/2017/05/little-things-i-like-to-do-with-git/
+  # ===============================================
+  # Leaderboards (how many commits by person sorted descending)
+  stats = shortlog -sn --since='10 weeks' --until='2 weeks'
+  # See Which Branches You Recently Worked On
+  recent = for-each-ref --count=10 --sort=-committerdate refs/heads/ --format="%(refname:short)"
+  # Remind Yourself What You’ve Been Up To
+  recap = log --all --oneline --no-merges --author=danielyim@gmail.com
+[url "git@github.com:"] # Forces SSH
+  pushInsteadOf = "git://github.com/"
+  pushInsteadOf = "https://github.com/"
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
