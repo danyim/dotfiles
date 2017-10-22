@@ -1,4 +1,6 @@
 #!/bin/bash
+# Reads the current system's configuration and places the updated files into the
+# repository
 
 # Get all homebrew recipes
 brew list > brews.txt
@@ -27,3 +29,9 @@ cp ~/Library/Fonts/Inconsolata\ for\ Powerline.otf fonts
 cp ~/Library/Fonts/Inconsolata-dz\ for\ Powerline.otf fonts
 cp ~/Library/Fonts/Inconsolata-g\ for\ Powerline.otf fonts
 cp ~/Library/Fonts/Inconsolata.otf fonts
+
+# tmux
+cp ~/.tmux.conf .
+
+# vim
+cp ~/.vimrc .
