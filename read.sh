@@ -20,6 +20,7 @@ cp ~/.config/alacritty/alacritty.yml .
 
 # Sublime
 cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings sublime/
+cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Default\ \(OSX\).sublime-keymap sublime/
 # cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/zenburn sublime/zenburn
 
 # Copy key fonts

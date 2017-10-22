@@ -30,6 +30,7 @@ ffmpeg
 fontconfig
 freetype
 fribidi
+fzf
 gdbm
 geckodriver
 gettext
@@ -99,6 +100,7 @@ openssl@1.1
 openvpn
 p11-kit
 p7zip
+parallel
 parity
 pass
 pcre

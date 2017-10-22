@@ -35,7 +35,9 @@ cp alacritty.yml ~/.config/alacritty/alacritty.yml
 mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
 mkdir -p $BACKUP_DIR/sublime
 cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings $BACKUP_DIR/sublime
+cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Default\ \(OSX\).sublime-keymap $BACKUP_DIR/sublime
 cp sublime/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
+cp sublime/Default\ (OSX).sublime-keymap ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
 
 # Copy key fonts (-n option prevents overwrites)
 cp -n fonts/Inconsolata-Regular.ttf /Library/Fonts/
