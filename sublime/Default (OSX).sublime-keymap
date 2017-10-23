@@ -86,7 +86,7 @@
         "key": "selector"
       }
     ]
-  },
+  }
 
   // // All other scopes, default comment toggle shortcut
   // { “keys”: [“ctrl+shift+7”], “command”: “toggle_comment”, “args”: { “block”: false } },

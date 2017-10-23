@@ -1,3 +1,6 @@
+# Use a 256-color terminal setting
+export TERM="xterm-256color" # Enables 265 colors in tmux
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -101,8 +104,6 @@ source $ZSH/oh-my-zsh.sh
 PS1='%(5~|…/%3~|%~)'
 # PS1='\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[0;34m\]\w\[\e[0m\]\$ '
 
-# Use a 256-color terminal setting
-[[ $TMUX = "" ]] && export TERM="xterm-256color" # Enables 265 colors in tmux
 #export TERM=screen-256color
 # export LSCOLORS=GxFxCxDxBxegedabagaced
 # export TERM="xterm-color"
@@ -114,7 +115,6 @@ export EDITOR='sublime --wait' # Sets the default editor
 export CLICOLOR=1
 
 # Set PATH vars
-export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/git/bin:/usr/local/sbin:$PATH"
 export PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
 #$HOME/.rbenv/bin
@@ -178,10 +178,10 @@ source /usr/local/bin/virtualenvwrapper.sh
 alias t='tree -L 2 -C --dirsfirst --filelimit 20 -F'
 
 # Set helpful ls shortcuts
-alias ls='exa'
 alias l='ls -al'
 alias ll='ls -l'
 alias lll='ls -a'
+alias ls='exa'
 
 # Helpful commands
 mkcd() {
@@ -199,15 +199,16 @@ alias tmux='tmux -2'
 
 # git/git-flow aliases
 alias gita='git add .'
-alias clone='git clone'
 alias gitc='git clone'
 alias gitl='git lg'
 alias gitlg='git log --graph --decorate --oneline'
 alias gits='git status'
 alias gitr='git recent'
 alias gitch='git ch'
+alias gch='git ch'
 alias gs='git stash'
 alias gitsl='git sl'
+alias gaa='git add -A'
 alias gsa='git stash apply'
 alias gsl='git stash list'
 alias gsc='git stash clear'
@@ -250,6 +251,7 @@ unsetopt share_history
 if [ -f '/Users/danyim/Downloads/google-cloud-sdk/path.zsh.inc' ]; then source '/Users/danyim/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 
 # For Zippy
 alias gobuild="go generate teleopui/teleopui.go && go build ./cmd/teleop-server && ./teleop-server"
