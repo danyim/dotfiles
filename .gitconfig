@@ -21,7 +21,7 @@
   default = simple
 [alias]
   # Diff previous commit to its parent
-  dhh = diff HEAD HEAD^
+  dhh = diff HEAD^ HEAD
   wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
   commend = !git commit --amend --no-edit
 	ch = !sh -c \"git for-each-ref refs/heads | cut -d/ -f3- | grep -i $1 | xargs git checkout\"
