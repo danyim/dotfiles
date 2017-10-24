@@ -81,3 +81,4 @@ whatsapp
 wireshark
 xquartz
 zcash4mac
+zeronet
