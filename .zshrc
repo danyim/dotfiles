@@ -1,3 +1,7 @@
+# Config order:
+# .zshenv → [.zprofile if login] → [.zshrc if interactive] →
+# [.zlogin if login] → [.zlogout sometimes]
+
 # Use a 256-color terminal setting
 export TERM="xterm-256color" # Enables 265 colors in tmux
 
@@ -82,16 +86,10 @@ export EDITOR='sublime --wait' # Sets the default editor
 # Tell ls to be colorful
 export CLICOLOR=1
 
-# Set PATH variables
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Set PATH variables are set in .zshenv
 export PATH="/usr/local/git/bin:/usr/local/sbin:$PATH"
 export PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
-#$HOME/.rbenv/bin
 # More PATH variables set in .zshenv
-
-# For RBENV
-export PATH="$HOME/.rbenv/bin:$PATH"
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 # Sets pgp key generated on 1/15/2015 as the default key
 export GPGKEY=1988FBC9
@@ -140,9 +138,9 @@ alias t='tree -L 2 -C --dirsfirst --filelimit 20 -F'
 
 # Set helpful ls shortcuts
 alias ls='exa'
-alias l='ls -lr'
-alias ll='ls -lra'
-alias lll='ls -a'
+alias lsl='exa -l'
+alias l='exa -lr'
+alias ll='exa -lra'
 
 # Helpful commands
 mkcd() {
