@@ -12,7 +12,8 @@ The theme I'm using for my editor and terminal is the [Zenburn color scheme](htt
   - macOS Package Manager: [Homebrew](https://brew.sh/)
   - Editor: [Sublime Text 3](https://www.sublimetext.com/3) (with Package Control)
   - Terminal: [Alacritty](https://github.com/jwilm/alacritty)
-  - Shell: [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
+  - Shell: zsh `chsh -s $(which zsh)`
+  - Shell Plugin Manager: [oh-my-zsh](https://github.com/robbyrussell/oh-my-zsh)
   - Shell Navigation: [z](https://github.com/rupa/z)
   - Fuzzy File Search: [fzf](https://github.com/junegunn/fzf)
   - `ls` Replacement: [Exa](https://github.com/ogham/exa)

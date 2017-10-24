@@ -8,7 +8,8 @@ BACKUP_DIR=$HOME/.dotfiles.backup/$UTCTIME
 mkdir -p $BACKUP_DIR
 
 # Homebrew
-brew doctor && brew update
+brew update
+brew upgrade
 brew bundle
 
 # Copy zsh configs
