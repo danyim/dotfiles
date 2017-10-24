@@ -8,11 +8,10 @@ BACKUP_DIR=$HOME/.dotfiles.backup/$UTCTIME
 mkdir -p $BACKUP_DIR
 
 # Homebrew
-# brew doctor
-# brew update
-while read in; do brew install "$in"; done < brews.txt
+brew doctor && brew update
+brew install $(cat brews.txt)
 # Homebrew casks
-while read in; do brew cask install "$in"; done < cask.txt
+brew cask install $(cat casks.txt)
 
 # Copy zsh configs
 cp ~/.zshrc $BACKUP_DIR
