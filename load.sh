@@ -9,9 +9,7 @@ mkdir -p $BACKUP_DIR
 
 # Homebrew
 brew doctor && brew update
-brew install $(cat brews.txt)
-# Homebrew casks
-brew cask install $(cat casks.txt)
+brew bundle
 
 # Copy zsh configs
 cp ~/.zshrc $BACKUP_DIR

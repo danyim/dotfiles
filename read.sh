@@ -2,10 +2,8 @@
 # Reads the current system's configuration and places the updated files into the
 # repository
 
-# Get all homebrew recipes
-brew list > brews.txt
-# Homebrew casks
-brew cask list > casks.txt
+# Homebrew config via bundling
+brew bundle dump --force
 
 # Copy zsh configs
 cp ~/.zshrc .
