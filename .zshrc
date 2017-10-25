@@ -159,6 +159,8 @@ alias tmuxa='tmux attach -t base'
 # git/git-flow aliases
 alias gita='git add .'
 alias gitc='git clone'
+alias gitd='git d'
+alias gitdc='git dc'
 alias gitl='git lg'
 alias gitlg='git log --graph --decorate --oneline'
 alias gits='git status'
