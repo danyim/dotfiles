@@ -4,6 +4,7 @@
 [user]
     name = Daniel Yim
     email = danielyim@gmail.com
+	signingkey = 718CF85AD27AB3CC1171B08485AE6B361988FBC9
 [core]
     editor = vim
     excludesfile = /Users/danyim/.gitignore_global
@@ -46,3 +47,5 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[commit]
+	gpgsign = true

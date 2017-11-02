@@ -190,6 +190,9 @@ alias -- -='cd ~-' # Typing '-' navigates to the previous directory
 # NPM
 alias npmls='npm ls -g --depth=0' # Prints all root packages installed globally
 
+alias ip="ifconfig en0 | grep 'inet ' | cut -d ' ' -f 2" # Get my local IP
+alias ipcopy='ip | pbcopy'
+
 # For Zippy
 alias gen="go generate teleopui/teleopui.go"
 alias gobuild="gen && go build ./cmd/teleop-server && ./teleop-server"
