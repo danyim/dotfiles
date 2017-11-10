@@ -10,6 +10,7 @@
     excludesfile = /Users/danyim/.gitignore_global
 [merge]
     tool = vimdiff
+	ff = false
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
@@ -42,10 +43,10 @@
 [url "git@github.com:"] # Forces SSH
   pushInsteadOf = "git://github.com/"
   pushInsteadOf = "https://github.com/"
+[commit]
+	gpgsign = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[commit]
-	gpgsign = true
