@@ -1,26 +1,30 @@
 [filter "media"]
-	clean = git-media-clean %f
-	smudge = git-media-smudge %f
+  clean = git-media-clean %f
+  smudge = git-media-smudge %f
 [user]
-    name = Daniel Yim
-    email = danielyim@gmail.com
-	signingkey = 718CF85AD27AB3CC1171B08485AE6B361988FBC9
+  name = Daniel Yim
+  email = danielyim@gmail.com
+  signingkey = 718CF85AD27AB3CC1171B08485AE6B361988FBC9
 [core]
-    editor = vim
-    excludesfile = /Users/danyim/.gitignore_global
-[merge]
-    tool = vimdiff
-	ff = false
+  editor = vim
+  excludesfile = /Users/danyim/.gitignore_global
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path = 
 [mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+  cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
 [color]
-    ui = true
+  ui = true
+[merge]
+  tool = vimdiff
+  ff = false
 [push]
   default = simple
+[pull]
+  ff = true
+[commit]
+	gpgsign = true
 [alias]
   # Diff previous commit to its parent
   dhh = diff HEAD^ HEAD
@@ -43,8 +47,6 @@
 [url "git@github.com:"] # Forces SSH
   pushInsteadOf = "git://github.com/"
   pushInsteadOf = "https://github.com/"
-[commit]
-	gpgsign = true
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
