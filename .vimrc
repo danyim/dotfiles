@@ -1,14 +1,16 @@
 " Install plugins
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug '/usr/local/bin/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'elzr/vim-json'
-Plug 'fatih/vim-go'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'mbbill/undotree'
+Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
@@ -16,6 +18,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " Syntax checker
 Plug 'terryma/vim-multiple-cursors'
 Plug 'plasticboy/vim-markdown'
+Plug 'thinca/vim-ambicmd'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'thaerkh/vim-workspace'
 Plug 'leafgarland/typescript-vim'
@@ -26,8 +29,6 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown'] }
 " Initialize plugin system
 call plug#end()
-
-filetype plugin indent on     " required
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -41,9 +42,10 @@ filetype indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
+" Automatically write the contents of the file when calling :make or :GoBuild
+set autowrite
 
 " With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
 " Fast saving
@@ -79,21 +81,18 @@ set modelines=4
 " Enable per-directory .vimrc files and disable unsafe commands in them
 set exrc
 set secure
-" Enable line numbers
-set number
 " Enable syntax highlighting
 syntax on
 " Highlight current line
 set cursorline
 " Make tabs as wide as two spaces
 set tabstop=2
+set showbreak=↪\
 " Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,eol:¬,nbsp:_
+set lcs=tab:▸\ ,trail:·,precedes:←,extends:→,eol:↲,nbsp:␣ 
 set list
 " Highlight searches
 set hlsearch
-" Ignore case of searches
-set ignorecase
 " Highlight dynamically as pattern is typed
 set incsearch
 " Always show status line
@@ -114,11 +113,11 @@ set showmode
 set title
 " Show the (partial) command as it’s being typed
 set showcmd
-" Use relative line numbers
-if exists("&relativenumber")
-  set relativenumber
-  au BufReadPost * set relativenumber
-endif
+" " Use relative line numbers
+" if exists("&relativenumber")
+"   set relativenumber
+"   au BufReadPost * set relativenumber
+" endif
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
 
@@ -134,7 +133,7 @@ set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 
-"Always show current position
+" Always show current position
 set ruler
 
 " Height of the command bar
@@ -221,7 +220,7 @@ set number
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
+" Turn backup off, since most stuff is controlled by source control anyway
 set nobackup
 set nowb
 set noswapfile
@@ -291,6 +290,13 @@ map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
+" Tab navigation like Firefox
+nnoremap <C-S-tab> :tabprevious<CR>
+nnoremap <C-tab>   :tabnext<CR>
+nnoremap <D-t>     :tabnew<CR>
+inoremap <C-S-tab> <Esc>:tabprevious<CR>
+inoremap <C-tab>   <Esc>:tabnext<CR>
+inoremap <D-t>     <Esc>:tabnew<CR>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
@@ -314,6 +320,10 @@ autocmd BufReadPost *
 " Remember info about open buffers on close
 set viminfo^=%
 
+" See next and previous errors in the quickfix pane
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
 """"""""""""""""""""""""""""""
 " => Status line
@@ -413,9 +423,7 @@ map <leader>pp :setlocal paste!<cr>
 
 " Quickly edit/reload this configuration file
 nnoremap <leader>ev :e $MYVIMRC<CR>
-
-" Prevent NERDTree opening when invoked by git
-:autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | endif
+nnoremap <leader>rv :source $MYVIMRC<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
@@ -428,6 +436,8 @@ let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Open NERDTree automatically when vim starts up
 autocmd vimenter * NERDTree
+" Prevent NERDTree opening when invoked by git
+:autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | endif
 " Show hidden files in NERDTree by default
 let NERDTreeShowHidden=1
 let g:NERDTreeWinPos = "right"
@@ -438,6 +448,26 @@ let NERDTreeQuitOnOpen = 1 " Automatically close NERDTree when opening a file
 nnoremap <leader>f :NERDTreeToggle<CR>
 nnoremap <silent> <leader>v :NERDTreeFind<CR>
 
+" vim-go Settings
+" Build and run a Go program
+" Run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>r  <Plug>(go-run)
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
+let g:go_list_type = "quickfix" " Make all lists be of type quickfix
+let g:go_fmt_command = "goimports"
+
+cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
