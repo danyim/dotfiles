@@ -1,5 +1,19 @@
 #!/bin/bash
 # Loads the configuration from the repository
+read -p "Are you sure you want to overwrite your settings the repository's? " -n 1 -r
+echo 
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
+fi
+
+PARSE_BREWS=1
+while getopts "i" opt; do
+  case "$opt" in
+    i)  PARSE_BREWS=0
+    ;;
+  esac
+done
 
 UTCTIME=`date -u +%s`
 BACKUP_DIR=$HOME/.dotfiles.backup/$UTCTIME
@@ -7,10 +21,13 @@ BACKUP_DIR=$HOME/.dotfiles.backup/$UTCTIME
 # Create a backup directory
 mkdir -p $BACKUP_DIR
 
-# Homebrew
-brew update
-brew upgrade
-brew bundle
+if [ $PARSE_BREWS -eq 1 ]
+then
+  # Read the Brewfile and invoke Homebrew to install
+  brew update
+  brew upgrade
+  brew bundle
+fi
 
 # Copy zsh configs
 cp ~/.zshrc $BACKUP_DIR

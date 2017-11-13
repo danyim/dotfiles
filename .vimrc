@@ -89,7 +89,7 @@ set cursorline
 set tabstop=2
 set showbreak=↪\
 " Show “invisible” characters
-set lcs=tab:▸\ ,trail:·,precedes:←,extends:→,eol:↲,nbsp:␣ 
+set lcs=tab:\│\ ,trail:·,precedes:←,extends:→,eol:↲,nbsp:␣ 
 set list
 " Highlight searches
 set hlsearch
@@ -187,6 +187,10 @@ if has("autocmd")
   autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
 endif
 
+" Line numbers on
+set number
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -214,8 +218,9 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-" Line numbers on
-set number
+" Set highlight groups for whitespace
+:highlight SpecialKey ctermfg=DarkGray
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -235,7 +240,7 @@ set expandtab
 " Be smart when using tabs ;)
 set smarttab
 
-" 1 tab == 4 spaces
+" 1 tab == 2 spaces
 set shiftwidth=2
 set tabstop=2
 
