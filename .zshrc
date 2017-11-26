@@ -154,7 +154,7 @@ alias less='less -R'
 # Always use 256-color tmux sessions
 alias tmux='tmux -2'
 alias tmuxi='tmux new -n 0'
-alias tmuxa='tmux attach -t base'
+alias tmuxa='tmux attach -t _base'
 
 # git/git-flow aliases
 alias gita='git add .'
