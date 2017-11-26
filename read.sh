@@ -4,6 +4,7 @@
 
 # Homebrew config via bundling
 brew bundle dump --force
+cat Brewfile | sort | uniq > Brewfile # Sort & dedupe the file
 
 # Copy zsh configs
 cp ~/.zshrc .
