@@ -179,6 +179,7 @@ alias gcm='git checkout master'
 alias gmm='git merge master --no-ff'
 alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
+alias gpom='git pull origin master'
 
 # Sublime
 alias subl='sublime'

@@ -440,9 +440,9 @@ let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 " NERDTree settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Open NERDTree automatically when vim starts up
-autocmd vimenter * NERDTree
+" autocmd vimenter * NERDTree
 " Prevent NERDTree opening when invoked by git
-:autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | endif
+" autocmd VimEnter * if &filetype !=# 'gitcommit' | NERDTree | endif
 " Show hidden files in NERDTree by default
 let NERDTreeShowHidden=1
 let g:NERDTreeWinPos = "right"
