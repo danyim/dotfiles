@@ -3,8 +3,11 @@
 # repository
 
 # Homebrew config via bundling
+rm BrewFile
 brew bundle dump --force
-cat Brewfile | sort | uniq > Brewfile # Sort & dedupe the file
+mv Brewfile Brewfile.tmp
+cat Brewfile.tmp | sort | uniq > Brewfile # Sort & dedupe the file
+rm Brewfile.tmp
 
 # Copy zsh configs
 cp ~/.zshrc .
