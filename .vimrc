@@ -121,6 +121,8 @@ set showcmd
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
 
+set rtp+=/usr/local/opt/fzf
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -437,6 +439,8 @@ let g:ale_sign_error = '●' " Less aggressive than the default '>>'
 let g:ale_sign_warning = '.'
 let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERDTree settings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Open NERDTree automatically when vim starts up

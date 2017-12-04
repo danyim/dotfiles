@@ -8,16 +8,17 @@ export TERM="xterm-256color" # Enables 265 colors in tmux
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# Set name of the theme to load
 ZSH_THEME="powerlevel9k/powerlevel9k"
+
+# Autostart tmux
+ZSH_TMUX_AUTOSTART='true'
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to change how often to auto-update (in days).
+# How often to auto-update (in days).
 export UPDATE_ZSH_DAYS=7
 
 # Uncomment the following line to disable auto-setting terminal title.
@@ -44,8 +45,12 @@ tt () {
 COMPLETION_WAITING_DOTS="true"
 
 # Set the username for prompts
-prompt_context () { }
-DEFAULT_USER=danyim
+# prompt_context () { }
+export DEFAULT_USER=danyim
+
+# The offical Powerline repo suggests running this, but we're seeing script errors
+# when loading
+#. $HOME/Library/Python/3.6/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
 
 source /usr/local/share/antigen/antigen.zsh
 antigen use oh-my-zsh
@@ -58,20 +63,31 @@ antigen bundle npm
 antigen bundle ssh-agent
 antigen bundle sublime
 antigen bundle supervisor
+antigen bundle lukechilds/zsh-better-npm-completion
+# antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zdharma/fast-syntax-highlighting
+if ! (( ${+functions[_zsh_highlight]} )); then
+    . $HOME/.antigen/bundles/zdharma/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+fi
 antigen bundle history
 antigen bundle history-substring-search
-antigen bundle lukechilds/zsh-better-npm-completion
-antigen bundle zsh-users/zsh-syntax-highlighting
 # antigen bundle command-not-found
 # antigen bundle sudo
-# antigen bundle zsh-users/zsh-autosuggestions
 # antigen bundle zsh-users/zsh-completions
+#POWERLEVEL9K_MODE='awesome-patched'
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(node_version time)
+POWERLEVEL9K_NODE_VERSION_BACKGROUND='022'
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_package_name"
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+POWERLEVEL9K_TIME_FORMAT="%D{%L:%M:%S %p}"
+
 antigen theme bhilburn/powerlevel9k
 antigen apply
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
 
 ###############################################################################
 # Environment variables                                                       #
@@ -105,7 +121,7 @@ export LANG=en_US.UTF-8
 # fi
 
 # For SSH
-export SSH_KEY_PATH="$HOME/.ssh/id_rsa"
+export SSH_KEY_PATH=$HOME/.ssh/id_rsa
 
 # For Python tab completions
 export PYTHONSTARTUP=$HOME/.pythonrc.py
@@ -118,6 +134,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 # Autojump (from Homebrew)
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
 
 ###############################################################################
 # Aliases                                                                     #
@@ -159,9 +176,9 @@ alias tmuxa='tmux attach -t _base'
 # git/git-flow aliases
 alias gita='git add .'
 alias gitc='git clone'
-alias gitd='git d'
-alias gitdc='git dc'
-alias gitl='git lg'
+alias gitd='git d'    # git diff
+alias gitdc='git dc'  # git diff --cached
+alias gitl='git lg'   # git log
 alias gitlg='git log --graph --decorate --oneline'
 alias gits='git status'
 alias gitr='git recent'
@@ -191,7 +208,8 @@ alias -- -='cd ~-' # Typing '-' navigates to the previous directory
 # NPM
 alias npmls='npm ls -g --depth=0' # Prints all root packages installed globally
 
-alias ip="ifconfig en0 | grep 'inet ' | cut -d ' ' -f 2" # Get my local IP
+# IP
+alias ip="ifconfig en0 | grep 'inet ' | cut -d ' ' -f 2" # Grabs local IP
 alias ipcopy='ip | pbcopy'
 
 # For Zippy
@@ -218,4 +236,4 @@ unsetopt share_history
 # For fuzzy search
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
