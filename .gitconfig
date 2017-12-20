@@ -47,10 +47,10 @@
 [url "git@github.com:"] # Forces SSH
   pushInsteadOf = "git://github.com/"
   pushInsteadOf = "https://github.com/"
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
 [gpg]
 	program = gpg
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
