@@ -432,6 +432,9 @@ map <leader>pp :setlocal paste!<cr>
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>rv :source $MYVIMRC<CR>
 
+" This unsets the "last search pattern" register by hitting return after searching
+nnoremap <CR> :noh<CR><CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
