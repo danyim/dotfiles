@@ -2,6 +2,7 @@
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug '/usr/local/bin/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
@@ -442,6 +443,9 @@ let g:ale_sign_error = '●' " Less aggressive than the default '>>'
 let g:ale_sign_warning = '.'
 let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_root_markers = ['Makefile', 'package.json']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERDTree settings
