@@ -166,6 +166,13 @@ set lazyredraw
 " For regular expressions turn magic on
 set magic
 
+" disable auto matching parens
+let g:loaded_matchparen=1
+" don't render special chars (tabs, trails, ...)
+set nolist
+" if number column doesn't make sense to you, just don't render it
+set nonumber
+
 " Show matching brackets when text indicator is over them
 set showmatch
 " How many tenths of a second to blink when matching brackets
