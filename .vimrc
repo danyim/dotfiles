@@ -19,7 +19,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " Syntax checker
 Plug 'terryma/vim-multiple-cursors'
 Plug 'plasticboy/vim-markdown'
-# Plug 'thinca/vim-ambicmd'
+" Plug 'thinca/vim-ambicmd'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'thaerkh/vim-workspace'
 Plug 'leafgarland/typescript-vim'
@@ -167,6 +167,13 @@ set lazyredraw
 " For regular expressions turn magic on
 set magic
 
+" disable auto matching parens
+let g:loaded_matchparen=1
+" don't render special chars (tabs, trails, ...)
+set nolist
+" if number column doesn't make sense to you, just don't render it
+set nonumber
+
 " Show matching brackets when text indicator is over them
 set showmatch
 " How many tenths of a second to blink when matching brackets
@@ -294,9 +301,11 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,1000 bd!<cr>
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
+map <leader>tc :tabnew<cr>
 map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
+map <leader>tn :tabnext<cr>
+map <leader>tp :tabprevious<cr>
+map <leader>tx :tabclose<cr>
 map <leader>tm :tabmove
 " Tab navigation like Firefox
 nnoremap <C-S-tab> :tabprevious<CR>
@@ -482,8 +491,8 @@ autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
 let g:go_list_type = "quickfix" " Make all lists be of type quickfix
 let g:go_fmt_command = "goimports"
 
-# cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-# cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+" cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+" cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
