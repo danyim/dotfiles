@@ -1,6 +1,14 @@
 #!/bin/bash
 # Loads the configuration from the repository
-read -p "Are you sure you want to overwrite your settings the repository's? " -n 1 -r
+UTCTIME=`date -u +%s`
+BACKUP_DIR=$HOME/.dotfiles.backup/$UTCTIME
+
+echo "Loading dotfile configuration from the repository..."
+echo "Re-run with the -i switch to ignore Brewfile installs"
+echo "WARNING: All existing files will be backed up to $BACKUP_DIR"
+echo ""
+
+read -p "Are you SURE you want to backup and overwrite your settings? " -n 1 -r
 echo 
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
@@ -14,9 +22,6 @@ while getopts "i" opt; do
     ;;
   esac
 done
-
-UTCTIME=`date -u +%s`
-BACKUP_DIR=$HOME/.dotfiles.backup/$UTCTIME
 
 # Create a backup directory
 mkdir -p $BACKUP_DIR

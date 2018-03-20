@@ -130,7 +130,7 @@ export PYTHONSTARTUP=$HOME/.pythonrc.py
 export WORKON_HOME=$HOME/Developer/.virtualenvs
 export PROJECT_HOME=$HOME/Developer
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.6
-source /usr/local/bin/virtualenvwrapper.sh
+# source /usr/local/bin/virtualenvwrapper.sh
 
 # Autojump (from Homebrew)
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
@@ -170,8 +170,8 @@ alias less='less -R'
 
 # Always use 256-color tmux sessions
 alias tmux='tmux -2'
-alias tmuxi='tmux new -n 0'
-alias tmuxa='tmux attach -t _base'
+alias tmuxi='tmux new -s _base -n home' # Inits a tmux session
+alias tmuxa='tmux attach -t _base' # Reattaches to a tmux session
 
 # git/git-flow aliases
 alias gita='git add .'

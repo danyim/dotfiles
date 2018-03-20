@@ -2,6 +2,7 @@
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug '/usr/local/bin/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
@@ -18,7 +19,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " Syntax checker
 Plug 'terryma/vim-multiple-cursors'
 Plug 'plasticboy/vim-markdown'
-Plug 'thinca/vim-ambicmd'
+# Plug 'thinca/vim-ambicmd'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'thaerkh/vim-workspace'
 Plug 'leafgarland/typescript-vim'
@@ -449,6 +450,9 @@ let g:ale_sign_error = '●' " Less aggressive than the default '>>'
 let g:ale_sign_warning = '.'
 let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_root_markers = ['Makefile', 'package.json']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERDTree settings
@@ -485,8 +489,8 @@ autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
 let g:go_list_type = "quickfix" " Make all lists be of type quickfix
 let g:go_fmt_command = "goimports"
 
-cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+# cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+# cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
