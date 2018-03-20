@@ -301,9 +301,11 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,1000 bd!<cr>
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
+map <leader>tc :tabnew<cr>
 map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
+map <leader>tn :tabnext<cr>
+map <leader>tp :tabprevious<cr>
+map <leader>tx :tabclose<cr>
 map <leader>tm :tabmove
 " Tab navigation like Firefox
 nnoremap <C-S-tab> :tabprevious<CR>
