@@ -19,7 +19,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " Syntax checker
 Plug 'terryma/vim-multiple-cursors'
 Plug 'plasticboy/vim-markdown'
-# Plug 'thinca/vim-ambicmd'
+" Plug 'thinca/vim-ambicmd'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'thaerkh/vim-workspace'
 Plug 'leafgarland/typescript-vim'
@@ -489,8 +489,8 @@ autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
 let g:go_list_type = "quickfix" " Make all lists be of type quickfix
 let g:go_fmt_command = "goimports"
 
-# cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-# cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+" cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+" cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
