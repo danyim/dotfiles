@@ -1,0 +1,19 @@
+// Delete Backward.
+// Put this into your user packages folder. Can be found by navigating to Preferences > Browse Packages... in Sublime Text.
+// Then add something like this to your user Key Bindings.
+// { "keys": ["alt+backspace"], "command": "run_macro_file", "args": {"file": "res://Packages/User/Delete Subword Backward.sublime-macro"} }
+[
+	{
+		"args":
+		{
+			"by": "subwords",
+			"extend": true,
+			"forward": false
+		},
+		"command": "move"
+	},
+	{
+		"args": null,
+		"command": "left_delete"
+	}
+]
