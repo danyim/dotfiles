@@ -57,7 +57,6 @@ antigen use oh-my-zsh
 antigen bundle git
 antigen bundle tmuxinator
 antigen bundle colorize
-antigen bundle brew
 antigen bundle node
 antigen bundle npm
 antigen bundle ssh-agent
@@ -132,9 +131,7 @@ export PROJECT_HOME=$HOME/Developer
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.6
 # source /usr/local/bin/virtualenvwrapper.sh
 
-# Autojump (from Homebrew)
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
+export VAULT_ADDR=https://vault.secure.car:8200
 
 ###############################################################################
 # Aliases                                                                     #
@@ -225,7 +222,7 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 bindkey "^X\x7f" backward-kill-line
 
 # For Z -- https://github.com/rupa/z
-. `brew --prefix`/etc/profile.d/z.sh
+. /etc/profile.d/z.sh
 
 # For iTerm2
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

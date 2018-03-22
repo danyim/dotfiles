@@ -7,7 +7,7 @@
   signingkey = 718CF85AD27AB3CC1171B08485AE6B361988FBC9
 [core]
   editor = vim
-  excludesfile = /Users/danyim/.gitignore_global
+	excludesfile = /home/dyim/.gitignore
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
@@ -54,3 +54,5 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+[branch]
+	autosetuprebase = always
