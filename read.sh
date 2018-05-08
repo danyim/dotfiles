@@ -46,6 +46,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then # macOS
   cp ~/Library/Fonts/Inconsolata.otf fonts
 fi
 
+# Zenburn
+cp ~/.vim/colors/zenburn.vim zenburn
+
 # tmux
 cp ~/.tmux.conf .
 
