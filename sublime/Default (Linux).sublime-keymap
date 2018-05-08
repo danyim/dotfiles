@@ -1,4 +1,6 @@
 [
+  { "keys": ["ctrl+y"], "command": "redo" },
+
   // Change ctrl+q to nothing
   { "keys": ["ctrl+q"]},
   { "keys": ["ctrl++shift+q"], "command": "exit" },
@@ -8,8 +10,8 @@
   { "keys": ["alt+="], "command": "increase_font_size" },
   { "keys": ["alt+-"], "command": "decrease_font_size" },
 
-  // Go to line
-  { "keys": ["alt+shift+g"], "command": "goto_line", "args": {"line": "10"} },
+  // Go to line -- doesn't work; just Ctrl+P and :
+  // { "keys": ["ctrl+g"], "command": "goto_line", "args": {"line": "10"} },
 
   // Open settings like in OSX
   { "keys": ["ctrl+,"], "command": "edit_settings", "args":
@@ -19,7 +21,8 @@
     }
   },
 
-  // // Bubbling/sinking lines -- doesn't work
+  // Bubbling/sinking lines -- doesn't work because I suspect that a Linux
+  // keybinding is overriding Sublime
   // { "keys": ["ctrl+alt+up"], "command": "swap_line_up" },
   // { "keys": ["ctrl+alt+down"], "command": "swap_line_down" },
   // { "keys": ["alt+delete"], "command": "run_macro_file", "args": {"file": "res://Packages/User/DeleteSubwordForward.sublime-macro"} },
@@ -37,6 +40,7 @@
 
   // Reveals the file in the side bear
   { "keys": ["super+shift+r"], "command": "reveal_in_side_bar"},
+  { "keys": ["alt+shift+r"], "command": "reveal_in_side_bar"},
   { "keys": ["ctrl+shift+r"], "command": "show_panel", "args": {"panel": "replace", "reverse": false} },
 
   // Chrome-like positional tab navigation

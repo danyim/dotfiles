@@ -2,7 +2,8 @@
 	"auto_find_in_selection": false,
 	"binary_file_patterns":
 	[
-		"node_modules/"
+		"node_modules/",
+		"build/"
 	],
 	"bold_folder_labels": true,
 	"caret_extra_bottom": 1,
@@ -12,17 +13,18 @@
 	"color_scheme": "Packages/zenburn.tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
+	"detect_indentation": false,
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": true,
 	"file_exclude_patterns":
 	[
-		".DS_Store"
+		"*.sublime-workspace"
 	],
 	"find_selected_text": true,
 	"folder_exclude_patterns":
 	[
-		".git",
-		"node_modules"
+		"node_modules",
+		"build/"
 	],
 	"font_face": "Inconsolata",
 	"font_size": 14,
@@ -31,7 +33,6 @@
 	"hot_exit": false,
 	"ignored_packages":
 	[
-		"SublimeLinter-contrib-standard",
 		"Vintage"
 	],
 	"indent_guide_options":
