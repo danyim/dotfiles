@@ -75,4 +75,5 @@ cp .tmux.conf ~/.tmux.conf
 cp ~/.vimrc $BACKUP_DIR
 cp .vimrc ~/.vimrc
 cp ~/.vim/colors $BACKUP_DIR
+mkdir -p ~/.vim/colors
 cp zenburn/zenburn.vim ~/.vim/colors
