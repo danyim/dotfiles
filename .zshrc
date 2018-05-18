@@ -96,7 +96,7 @@ PS1='%(5~|…/%3~|%~)'
 # PS1='\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[0;34m\]\w\[\e[0m\]\$ '
 
 export GREP_OPTIONS='--color=auto'
-export EDITOR='sublime --wait' # Sets the default editor
+export EDITOR='subl --wait' # Sets the default editor
 
 # Tell ls to be colorful
 export CLICOLOR=1
@@ -197,7 +197,7 @@ alias gmd='git merge develop --no-ff'
 alias gpom='git pull origin master'
 
 # Sublime
-alias subl='sublime'
+# alias subl='sublime'
 
 # cd into ~/Developer
 alias cdd='cd $HOME/Developer'
