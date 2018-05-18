@@ -3,7 +3,19 @@
 	"binary_file_patterns":
 	[
 		"node_modules/",
-		"build/"
+		"*.jpg",
+		"*.jpeg",
+		"*.png",
+		"*.gif",
+		"*.ttf",
+		"*.tga",
+		"*.dds",
+		"*.ico",
+		"*.eot",
+		"*.pdf",
+		"*.swf",
+		"*.jar",
+		"*.zip"
 	],
 	"bold_folder_labels": true,
 	"caret_extra_bottom": 1,
@@ -13,26 +25,46 @@
 	"color_scheme": "Packages/zenburn.tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
-	"detect_indentation": false,
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": true,
 	"file_exclude_patterns":
 	[
+		".DS_Store",
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.class",
+		"*.psd",
+		"*.db",
 		"*.sublime-workspace"
 	],
 	"find_selected_text": true,
 	"folder_exclude_patterns":
 	[
-		"node_modules",
-		"build/"
+		".git",
+		"node_modules"
 	],
 	"font_face": "Inconsolata",
-	"font_size": 14,
+	"font_size": 16,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"hot_exit": false,
 	"ignored_packages":
 	[
+		"SublimeLinter-contrib-standard",
 		"Vintage"
 	],
 	"indent_guide_options":
@@ -50,7 +82,7 @@
 	"origami_auto_close_empty_panes": true,
 	"rulers":
 	[
-		80
+		120
 	],
 	"show_encoding": true,
 	"tab_size": 2,
