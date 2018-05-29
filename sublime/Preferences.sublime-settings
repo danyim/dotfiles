@@ -2,21 +2,54 @@
 	"auto_find_in_selection": false,
 	"binary_file_patterns":
 	[
-		"node_modules/"
+		"node_modules/",
+		"*.jpg",
+		"*.jpeg",
+		"*.png",
+		"*.gif",
+		"*.ttf",
+		"*.tga",
+		"*.dds",
+		"*.ico",
+		"*.eot",
+		"*.pdf",
+		"*.swf",
+		"*.jar",
+		"*.zip"
 	],
 	"bold_folder_labels": true,
 	"caret_extra_bottom": 1,
 	"caret_extra_top": 1,
 	"caret_extra_width": 1,
 	"caret_style": "solid",
-	"color_scheme": "Packages/User/SublimeLinter/zenburn (SL).tmTheme",
+	"color_scheme": "Packages/zenburn.tmTheme",
 	"default_encoding": "UTF-8",
 	"default_line_ending": "unix",
 	"draw_white_space": "all",
 	"ensure_newline_at_eof_on_save": true,
 	"file_exclude_patterns":
 	[
-		".DS_Store"
+		".DS_Store",
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.class",
+		"*.psd",
+		"*.db",
+		"*.sublime-workspace"
 	],
 	"find_selected_text": true,
 	"folder_exclude_patterns":
@@ -49,7 +82,7 @@
 	"origami_auto_close_empty_panes": true,
 	"rulers":
 	[
-		80
+		120
 	],
 	"show_encoding": true,
 	"tab_size": 2,

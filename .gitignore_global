@@ -1,3 +1,5 @@
 *~
 .DS_Store
-!*.sublime-*
+*.sublime-workspace
+*.sublime-project
+gin-bin

@@ -1,6 +1,6 @@
 [
   { "keys": ["super+shift+r"], "command": "show_panel", "args": {"panel": "replace", "reverse": false} },
-
+  { "keys": ["cmd+alt+n"], "command": "new_snippet" },
   // For Emmet
   // http://www.nitinh.com/2015/02/setting-sublime-text-react-jsx-development/
   {
