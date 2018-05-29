@@ -57,7 +57,6 @@ antigen use oh-my-zsh
 antigen bundle git
 antigen bundle tmuxinator
 antigen bundle colorize
-antigen bundle brew
 antigen bundle node
 antigen bundle npm
 antigen bundle ssh-agent
@@ -97,7 +96,7 @@ PS1='%(5~|…/%3~|%~)'
 # PS1='\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[0;34m\]\w\[\e[0m\]\$ '
 
 export GREP_OPTIONS='--color=auto'
-export EDITOR='sublime --wait' # Sets the default editor
+export EDITOR='subl --wait' # Sets the default editor
 
 # Tell ls to be colorful
 export CLICOLOR=1
@@ -131,10 +130,6 @@ export WORKON_HOME=$HOME/Developer/.virtualenvs
 export PROJECT_HOME=$HOME/Developer
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.6
 # source /usr/local/bin/virtualenvwrapper.sh
-
-# Autojump (from Homebrew)
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-
 
 ###############################################################################
 # Aliases                                                                     #
@@ -193,13 +188,17 @@ alias gsc='git stash clear'
 alias gft='git fetch --tags'
 alias gpt='git push --tags'
 alias gcm='git checkout master'
+alias grm='git rebase master'
 alias gmm='git merge master --no-ff'
 alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
 alias gpom='git pull origin master'
+alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
+gds() { git diff --stat --color "$@" | cat }
+gdsc() { git diff --stat --cached --color "$@" | cat }
 
 # Sublime
-alias subl='sublime'
+# alias subl='sublime'
 
 # cd into ~/Developer
 alias cdd='cd $HOME/Developer'
@@ -225,7 +224,7 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 bindkey "^X\x7f" backward-kill-line
 
 # For Z -- https://github.com/rupa/z
-. `brew --prefix`/etc/profile.d/z.sh
+. /etc/profile.d/z.sh
 
 # For iTerm2
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
