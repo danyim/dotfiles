@@ -4,7 +4,6 @@
 [user]
   name = Daniel Yim
   email = danielyim@gmail.com
-  signingkey = 718CF85AD27AB3CC1171B08485AE6B361988FBC9
 [core]
   editor = vim
 	excludesfile = /home/dyim/.gitignore
@@ -25,7 +24,7 @@
   ff = true
 	rebase = true
 [commit]
-	gpgsign = true
+	gpgsign = false
 [alias]
   # Diff previous commit to its parent
   dhh = diff HEAD^ HEAD
