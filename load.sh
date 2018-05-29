@@ -109,6 +109,6 @@ cp .tmux.conf ~/.tmux.conf
 echo "Importing vim settings..."
 backup_if_exists ~/.vimrc $BACKUP_DIR
 cp .vimrc ~/.vimrc
-backup_if_exists ~/.vim/colors $BACKUP_DIR
+backup_if_exists ~/.vim/colors/zenburn.vim $BACKUP_DIR
 mkdir -p ~/.vim/colors
-cp zenburn/zenburn.vim ~/.vim/colors
+cp zenburn/zenburn.vim ~/.vim/colors/zenburn.vim
