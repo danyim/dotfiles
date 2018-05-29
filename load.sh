@@ -86,14 +86,19 @@ else
 fi
 
 # Copy key fonts (-n option prevents overwrites)
-if is_macos; then  
-  cp -n fonts/Inconsolata-Regular.ttf /Library/Fonts/
-  cp -n fonts/Inconsolata-Bold.ttf /Library/Fonts/
-  cp -n fonts/Inconsolata\ for\ Powerline.otf ~/Library/Fonts/
-  cp -n fonts/Inconsolata-dz\ for\ Powerline.otf ~/Library/Fonts/
-  cp -n fonts/Inconsolata-g\ for\ Powerline.otf ~/Library/Fonts/
-  cp -n fonts/Inconsolata.otf ~/Library/Fonts/
+if is_macos; then
+  FONT_DIR=~/Library/Fonts
+else  
+  FONT_DIR=~/.fonts
 fi
+echo "Installing fonts to $FONT_DIR ..."
+mkdir -p $FONT_DIR
+cp -n fonts/Inconsolata-Regular.ttf $FONT_DIR
+cp -n fonts/Inconsolata-Bold.ttf $FONT_DIR
+cp -n fonts/Inconsolata\ for\ Powerline.otf $FONT_DIR
+cp -n fonts/Inconsolata-dz\ for\ Powerline.otf $FONT_DIR
+cp -n fonts/Inconsolata-g\ for\ Powerline.otf $FONT_DIR
+cp -n fonts/Inconsolata.otf ~/Library/Fonts/ $FONT_DIR
 
 # tmux
 echo "Importing tmux settings..."
