@@ -167,6 +167,13 @@ set lazyredraw
 " For regular expressions turn magic on
 set magic
 
+" disable auto matching parens
+let g:loaded_matchparen=1
+" don't render special chars (tabs, trails, ...)
+set nolist
+" if number column doesn't make sense to you, just don't render it
+set nonumber
+
 " Show matching brackets when text indicator is over them
 set showmatch
 " How many tenths of a second to blink when matching brackets
@@ -294,17 +301,19 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,1000 bd!<cr>
 
 " Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
+map <leader>tc :tabnew<cr>
+" map <leader>to :tabonly<cr>
+map <leader>tn :tabnext<cr>
+map <leader>tp :tabprevious<cr>
+map <leader>tw :tabclose<cr>
 map <leader>tm :tabmove
-" Tab navigation like Firefox
-nnoremap <C-S-tab> :tabprevious<CR>
-nnoremap <C-tab>   :tabnext<CR>
-nnoremap <D-t>     :tabnew<CR>
-inoremap <C-S-tab> <Esc>:tabprevious<CR>
-inoremap <C-tab>   <Esc>:tabnext<CR>
-inoremap <D-t>     <Esc>:tabnew<CR>
+" Tab navigation like Firefox (doesn't work at the moment)
+" nnoremap <C-S-tab> :tabprevious<CR>
+" nnoremap <C-tab>   :tabnext<CR>
+" nnoremap <D-t>     :tabnew<CR>
+" inoremap <C-S-tab> <Esc>:tabprevious<CR>
+" inoremap <C-tab>   <Esc>:tabnext<CR>
+" inoremap <D-t>     <Esc>:tabnew<CR>
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
