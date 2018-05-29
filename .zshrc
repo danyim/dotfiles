@@ -57,6 +57,7 @@ antigen use oh-my-zsh
 antigen bundle git
 antigen bundle tmuxinator
 antigen bundle colorize
+antigen bundle brew
 antigen bundle node
 antigen bundle npm
 antigen bundle ssh-agent
@@ -96,7 +97,7 @@ PS1='%(5~|…/%3~|%~)'
 # PS1='\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[0;34m\]\w\[\e[0m\]\$ '
 
 export GREP_OPTIONS='--color=auto'
-export EDITOR='subl --wait' # Sets the default editor
+export EDITOR='sublime --wait' # Sets the default editor
 
 # Tell ls to be colorful
 export CLICOLOR=1
@@ -131,7 +132,9 @@ export PROJECT_HOME=$HOME/Developer
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.6
 # source /usr/local/bin/virtualenvwrapper.sh
 
-export VAULT_ADDR=https://vault.secure.car:8200
+# Autojump (from Homebrew)
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
 
 ###############################################################################
 # Aliases                                                                     #
@@ -190,14 +193,13 @@ alias gsc='git stash clear'
 alias gft='git fetch --tags'
 alias gpt='git push --tags'
 alias gcm='git checkout master'
-alias grm='git rebase master'
 alias gmm='git merge master --no-ff'
 alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
 alias gpom='git pull origin master'
 
 # Sublime
-# alias subl='sublime'
+alias subl='sublime'
 
 # cd into ~/Developer
 alias cdd='cd $HOME/Developer'
@@ -223,7 +225,7 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 bindkey "^X\x7f" backward-kill-line
 
 # For Z -- https://github.com/rupa/z
-. /etc/profile.d/z.sh
+. `brew --prefix`/etc/profile.d/z.sh
 
 # For iTerm2
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
@@ -235,3 +237,13 @@ unsetopt share_history
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 #source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /usr/local/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+
+# Load local-only configurations
+source "~/.localrc"
