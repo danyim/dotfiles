@@ -444,6 +444,9 @@ map <leader>pp :setlocal paste!<cr>
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>rv :source $MYVIMRC<CR>
 
+nnoremap <leader>h :History<CR>
+nnoremap <leader>f :Files<CR>
+
 " This unsets the "last search pattern" register by hitting return after searching
 nnoremap <CR> :noh<CR><CR>
 
@@ -472,7 +475,7 @@ let NERDTreeShowBookmarks=1
 let NERDTreeQuitOnOpen = 1 " Automatically close NERDTree when opening a file
 " Automatically close a tab if the only remaining window is NERDTree
 " autocmd bufenter * if (winnr(“$”) == 1 && exists(“b:NERDTreeType”) && b:NERDTreeType == “primary”) | q | endif
-nnoremap <leader>f :NERDTreeToggle<CR>
+nnoremap <leader>l :NERDTreeToggle<CR>
 nnoremap <silent> <leader>v :NERDTreeFind<CR>
 
 " vim-go Settings
@@ -489,7 +492,7 @@ endfunction
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 autocmd FileType go nmap <leader>r  <Plug>(go-run)
 autocmd FileType go nmap <leader>t  <Plug>(go-test)
-autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
+autocmd FileType go nmap <leader>c  <Plug>(go-coverage-toggle)
 let g:go_list_type = "quickfix" " Make all lists be of type quickfix
 let g:go_fmt_command = "goimports"
 
