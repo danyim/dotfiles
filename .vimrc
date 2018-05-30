@@ -3,7 +3,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug '/usr/local/bin/fzf'
+Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'elzr/vim-json'
@@ -122,7 +122,7 @@ set showcmd
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
 
-set rtp+=/usr/local/opt/fzf
+set rtp+=~/.fzf
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
