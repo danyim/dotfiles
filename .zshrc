@@ -238,4 +238,4 @@ unsetopt share_history
 #source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Load local-only configurations
-source "~/.localrc"
+source "$HOME/.localrc"
