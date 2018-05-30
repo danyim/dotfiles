@@ -2,7 +2,7 @@
 
 # Checks if the first argument exists, if so, copy to the 2nd arg (backup directory)
 backup_if_exists() {
-  [[ -e $1 ]] && cp $1 $2 
+  [[ -e "$1" ]] && cp "$1" "$2" 
 }
 
 # Checks if the current operating system is macOS

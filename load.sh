@@ -72,24 +72,29 @@ fi
 echo "Importing Sublime Text settings..."
 mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
 mkdir -p $BACKUP_DIR/sublime
-if is_macos; then  
-  cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings $BACKUP_DIR/sublime
-  cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Default\ \(OSX\).sublime-keymap $BACKUP_DIR/sublime
-  cp sublime/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
-  cp sublime/Default\ \(OSX\).sublime-keymap ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
+if is_macos; then
+  # Must use double quotes in paths due to the spaces
+  SUBLIME_DIR="$HOME/Library/Application Support/Sublime Text 3/Packages/User"
+  backup_if_exists "$SUBLIME_DIR/Preferences.sublime-settings" $BACKUP_DIR/sublime
+  backup_if_exists "$SUBLIME_DIR/Default (OSX).sublime-keymap" $BACKUP_DIR/sublime
+  cp ./sublime/Preferences.sublime-settings "$SUBLIME_DIR"
+  cp ./sublime/"Default (OSX)".sublime-keymap "$SUBLIME_DIR"
+  cp ./sublime/zenburn.tmTheme "$SUBLIME_DIR" 
 else
   # TODO: Find out the settings directory on Linux
-  cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings $BACKUP_DIR/sublime
-  cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Default\ \(OSX\).sublime-keymap $BACKUP_DIR/sublime
-  cp sublime/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
-  cp sublime/Default\ \(Linux\).sublime-keymap ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
+  SUBLIME_DIR="$HOME/.config/sublime-text-3/Packages/User"
+  backup_if_exists $SUBLIME_DIR/Preferences.sublime-settings $BACKUP_DIR/sublime
+  backup_if_exists $SUBLIME_DIR/Default\ \(Linux\).sublime-keymap $BACKUP_DIR/sublime
+  cp sublime/Preferences.sublime-settings $SUBLIME_DIR 
+  cp sublime/Default\ \(Linux\).sublime-keymap $SUBLIME_DIR
+  cp sublime/zenburn.tmTheme $SUBLIME_DIR 
 fi
 
 # Copy key fonts (-n option prevents overwrites)
 if is_macos; then
-  FONT_DIR=~/Library/Fonts
+  FONT_DIR=$HOME/Library/Fonts
 else  
-  FONT_DIR=~/.fonts
+  FONT_DIR=$HOME/.fonts
 fi
 echo "Installing fonts to $FONT_DIR ..."
 mkdir -p $FONT_DIR
@@ -98,7 +103,7 @@ cp -n fonts/Inconsolata-Bold.ttf $FONT_DIR
 cp -n fonts/Inconsolata\ for\ Powerline.otf $FONT_DIR
 cp -n fonts/Inconsolata-dz\ for\ Powerline.otf $FONT_DIR
 cp -n fonts/Inconsolata-g\ for\ Powerline.otf $FONT_DIR
-cp -n fonts/Inconsolata.otf ~/Library/Fonts/ $FONT_DIR
+cp -n fonts/Inconsolata.otf $FONT_DIR
 
 # tmux
 echo "Importing tmux settings..."
@@ -112,3 +117,7 @@ cp .vimrc ~/.vimrc
 backup_if_exists ~/.vim/colors/zenburn.vim $BACKUP_DIR
 mkdir -p ~/.vim/colors
 cp zenburn/zenburn.vim ~/.vim/colors/zenburn.vim
+
+echo ""
+echo "Import complete!"
+echo ""
