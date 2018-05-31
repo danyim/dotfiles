@@ -54,7 +54,12 @@ touch ~/.localrc # Make sure a ~/.localrc exists
 # Git
 echo "importing git settings..."
 backup_if_exists ~/.gitconfig $BACKUP_DIR
+GIT_USERNAME=$(git config --global user.name)
+GIT_EMAIL=$(git config --global user.email)
 cp .gitconfig ~/.gitconfig
+# Replace username & email
+git config --global user.name "$GIT_USERNAME"
+git config --global user.email "$GIT_EMAIL"
 backup_if_exists ~/.gitignore $BACKUP_DIR
 cp .gitignore ~/.gitignore_global
 
