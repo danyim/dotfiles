@@ -123,6 +123,11 @@ backup_if_exists ~/.vim/colors/zenburn.vim $BACKUP_DIR
 mkdir -p ~/.vim/colors
 cp zenburn/zenburn.vim ~/.vim/colors/zenburn.vim
 
+if is_macos; then
+  echo "Running macOS settings script..."
+  ./macos-settings.sh
+fi
+
 echo ""
 echo "Import complete!"
 echo ""
