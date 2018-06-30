@@ -3,7 +3,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug '~/.fzf'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
 Plug 'elzr/vim-json'
@@ -122,6 +122,7 @@ set showcmd
 " Start scrolling three lines before the horizontal window border
 set scrolloff=3
 
+" For fuzzy find
 set rtp+=~/.fzf
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -301,7 +302,7 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,1000 bd!<cr>
 
 " Useful mappings for managing tabs
-map <leader>tc :tabnew<cr>
+map <leader>tt :tabnew<cr>
 " map <leader>to :tabonly<cr>
 map <leader>tn :tabnext<cr>
 map <leader>tp :tabprevious<cr>
@@ -444,11 +445,11 @@ map <leader>pp :setlocal paste!<cr>
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>rv :source $MYVIMRC<CR>
 
-nnoremap <leader>h :History<CR>
-nnoremap <leader>f :Files<CR>
-
 " This unsets the "last search pattern" register by hitting return after searching
 nnoremap <CR> :noh<CR><CR>
+
+" Changes working directory to current file's directory
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
@@ -460,6 +461,32 @@ let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_root_markers = ['Makefile', 'package.json']
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" FZF Settings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Open fzf
+nnoremap <leader>h :History<CR>
+nnoremap <leader>f :Files<CR>
+nnoremap <C-t> :Files<CR>
+nnoremap <C-p> :Files<CR>
+nnoremap <C-S-f> :Find<CR>
+
+" Combining ripgrep with fzf with the new :Find command:
+
+" --column: Show column number
+" --line-number: Show line number
+" --no-heading: Do not show file headings in results
+" --fixed-strings: Search term as a literal string
+" --ignore-case: Case insensitive search
+" --no-ignore: Do not respect .gitignore, etc...
+" --hidden: Search hidden files and folders
+" --follow: Follow symlinks
+" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+" --color: Search color options
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*,!node_modules/**/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+set grepprg=rg\ --vimgrep
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERDTree settings
