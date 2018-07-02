@@ -2,16 +2,14 @@
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'othree/yajs.vim', { 'for': 'javascript' }
-Plug 'elzr/vim-json'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'mbbill/undotree'
-Plug 'scrooloose/nerdcommenter'
+Plug 'townk/vim-autoclose'
 Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
@@ -19,9 +17,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale' " Syntax checker
 Plug 'terryma/vim-multiple-cursors'
 Plug 'plasticboy/vim-markdown'
-" Plug 'thinca/vim-ambicmd'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'thaerkh/vim-workspace'
+" Plug 'elzr/vim-json'
+" Plug 'scrooloose/nerdcommenter'
+" Plug 'thinca/vim-ambicmd'
+" Plug 'thaerkh/vim-workspace'
 Plug 'leafgarland/typescript-vim'
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx'
@@ -205,10 +205,7 @@ set number
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enable syntax highlighting
 syntax enable
-
-" Enable zenburn theme
 colors zenburn
 
 " Set extra options when running in GUI mode
@@ -241,16 +238,11 @@ set nobackup
 set nowb
 set noswapfile
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
 set expandtab
-
-" Be smart when using tabs ;)
 set smarttab
-
 " 1 tab == 2 spaces
 set shiftwidth=2
 set tabstop=2
@@ -263,12 +255,10 @@ set ai " Auto indent
 set si " Smart indent
 set wrap " Wrap lines
 
-
 """"""""""""""""""""""""""""""
 " => Visual mode related
 """"""""""""""""""""""""""""""
 " Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
 
@@ -372,7 +362,7 @@ if has("mac") || has("macunix")
   vmap <D-k> <M-k>
 endif
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+" Delete trailing white space on save
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
@@ -416,18 +406,6 @@ map <leader>p :cp<cr>
 " Allows searching for visually selected text
 vnoremap // y/\V<C-R>"<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell!<cr>
-
-" Shortcuts using <leader>
-map <leader>sn ]s
-map <leader>sp [s
-map <leader>sa zg
-map <leader>s? z=
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
@@ -435,7 +413,7 @@ map <leader>s? z=
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
-" Quickly open a buffer for scripbble
+" Quickly open a buffer
 map <leader>q :e ~/buffer<cr>
 
 " Toggle paste mode on and off
@@ -458,20 +436,27 @@ let g:ale_sign_error = '●' " Less aggressive than the default '>>'
 let g:ale_sign_warning = '.'
 let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
 
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_root_markers = ['Makefile', 'package.json']
+" let g:ctrlp_map = '<c-p>'
+" let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_root_markers = ['Makefile', 'package.json']
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Prettier Settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Run Prettier asynchronously on save, not just on files with the @format doc tag
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " FZF Settings
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Open fzf
 nnoremap <leader>h :History<CR>
 nnoremap <leader>f :Files<CR>
 nnoremap <C-t> :Files<CR>
-nnoremap <C-p> :Files<CR>
+nnoremap <C-p> :GFiles<CR>
 nnoremap <C-S-f> :Find<CR>
+nnoremap \ :Find<CR>
 
 " Combining ripgrep with fzf with the new :Find command:
 
@@ -487,6 +472,9 @@ nnoremap <C-S-f> :Find<CR>
 " --color: Search color options
 command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*,!node_modules/**/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
 set grepprg=rg\ --vimgrep
+
+" Hit K to grep the word under cursor
+" nnoremap K :Find! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " NERDTree settings
