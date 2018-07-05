@@ -30,7 +30,8 @@ tt () {
   if [ -z $TMUX ] ; then
     echo -e "\033];$@\007"
   else
-   tmux rename-window $@
+   #tmux rename-window $@
+   printf "\033]2;$@\033\\"
   fi
 }
 
@@ -183,7 +184,7 @@ alias gs='git stash'
 alias gitsl='git sl'
 alias gaa='git add -A'
 alias gsa='git stash apply'
-alias gsl='git stash list'
+alias gsl='git stash list --date=relative'
 alias gsc='git stash clear'
 alias gft='git fetch --tags'
 alias gpt='git push --tags'
@@ -194,6 +195,7 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
 alias gpom='git pull origin master'
 alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
+# "git diff stats"
 gds() { git diff --stat --color "$@" | cat }
 gdsc() { git diff --stat --cached --color "$@" | cat }
 
