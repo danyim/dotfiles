@@ -8,7 +8,7 @@ UTCTIME=`date -u +%s`
 BACKUP_DIR=$HOME/.dotfiles.backup/$UTCTIME
 
 echo "Loading dotfile configuration from the repository..."
-echo "Re-run with the -i switch to ignore Brewfile installs"
+echo "Re-run with the -b switch to install the Brewfile manifest"
 echo "WARNING: All existing files will be backed up to $BACKUP_DIR"
 echo ""
 
@@ -19,10 +19,10 @@ then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
 fi
 
-PARSE_BREWS=1
-while getopts "i" opt; do
+PARSE_BREWS=0
+while getopts "b" opt; do
   case "$opt" in
-    i)  PARSE_BREWS=0
+    b)  PARSE_BREWS=1
     ;;
   esac
 done
@@ -30,10 +30,9 @@ done
 # Create a backup directory
 mkdir -p $BACKUP_DIR
 
-if [ $PARSE_BREWS -eq 1 ]
-then
+if is_macos && [ $PARSE_BREWS -eq 1 ]; then
   echo "Parsing Brewfile..."
-# Read the Brewfile and invoke Homebrew to install
+  # Read the Brewfile and invoke Homebrew to install
   brew update
   brew upgrade
   brew bundle

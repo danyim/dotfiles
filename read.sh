@@ -4,6 +4,7 @@
 current_dir="$( cd "$( dirname "${bash_source[0]}" )" && pwd )"
 source "$current_dir/lib/helpers.sh"
 
+echo "Re-run with the -b switch to parse the Brewfile"
 read -p "Read system config and update repo; continue? [Y/n] " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
@@ -11,7 +12,16 @@ then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
 fi
 
-if is_macos; then # macOS
+PARSE_BREWS=0
+while getopts "b" opt; do
+  case "$opt" in
+    b)  PARSE_BREWS=1
+    ;;
+  esac
+done
+
+if is_macos && [ $PARSE_BREWS -eq 1 ]; then # macOS
+  echo "Creating Brewfile..."
   # Homebrew config via bundling
   rm BrewFile
   brew bundle dump --force
@@ -62,3 +72,5 @@ cp ~/.tmux.conf .
 
 # vim
 cp ~/.vimrc .
+
+echo "Read complete!"
