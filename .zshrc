@@ -88,7 +88,6 @@ antigen apply
 
 source $ZSH/oh-my-zsh.sh
 
-
 ###############################################################################
 # Environment variables                                                       #
 ###############################################################################
@@ -164,10 +163,13 @@ mkcd() {
 alias more='less'
 alias less='less -R'
 
-# Always use 256-color tmux sessions
-alias tmux='tmux -2'
+# Attaches to the existing tmux session if it exists; create one if not
+alias tmux='tmux attach -t _base || tmux new -s _base -n home'
 alias tmuxi='tmux new -s _base -n home' # Inits a tmux session
 alias tmuxa='tmux attach -t _base' # Reattaches to a tmux session
+
+# macOS only -- opens Alacritty as a new window (supports multiple)
+alias alac='open -nb io.alacritty'
 
 # git/git-flow aliases
 alias gita='git add .'
@@ -188,8 +190,10 @@ alias gsl='git stash list --date=relative'
 alias gsc='git stash clear'
 alias gft='git fetch --tags'
 alias gpt='git push --tags'
+alias gcd='git checkout develop'
 alias gcm='git checkout master'
 alias grm='git rebase master'
+alias grd='git rebase develop'
 alias gmm='git merge master --no-ff'
 alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
@@ -213,9 +217,6 @@ alias npmls='npm ls -g --depth=0' # Prints all root packages installed globally
 alias ip="ifconfig en0 | grep 'inet ' | cut -d ' ' -f 2" # Grabs local IP
 alias ipcopy='ip | pbcopy'
 
-# For Zippy
-alias gen="go generate teleopui/teleopui.go"
-alias gobuild="gen && go build ./cmd/teleop-server && ./teleop-server"
 
 ###############################################################################
 # Misc                                                                        #
