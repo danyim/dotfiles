@@ -297,7 +297,7 @@ map <leader>tt :tabnew<cr>
 map <leader>tn :tabnext<cr>
 map <leader>tp :tabprevious<cr>
 map <leader>tw :tabclose<cr>
-map <leader>tm :tabmove
+map <leader>tm :tabmove<space>
 " Tab navigation like Firefox (doesn't work at the moment)
 " nnoremap <C-S-tab> :tabprevious<CR>
 " nnoremap <C-tab>   :tabnext<CR>
