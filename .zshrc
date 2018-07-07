@@ -30,14 +30,9 @@ tt () {
   if [ -z $TMUX ] ; then
     echo -e "\033];$@\007"
   else
-   #tmux rename-window $@
    printf "\033]2;$@\033\\"
   fi
 }
-
-# Autocompletion for tmuxinator
-# (Disabled because of error "command not found: compdef")
-# source ~/.bin/tmuxinator.zsh
 
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
@@ -56,7 +51,6 @@ export DEFAULT_USER=danyim
 source /usr/local/share/antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen bundle git
-antigen bundle tmuxinator
 antigen bundle colorize
 antigen bundle node
 antigen bundle npm
@@ -64,7 +58,6 @@ antigen bundle ssh-agent
 antigen bundle sublime
 antigen bundle supervisor
 antigen bundle lukechilds/zsh-better-npm-completion
-# antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zdharma/fast-syntax-highlighting
 if ! (( ${+functions[_zsh_highlight]} )); then
@@ -72,8 +65,6 @@ if ! (( ${+functions[_zsh_highlight]} )); then
 fi
 antigen bundle history
 antigen bundle history-substring-search
-# antigen bundle command-not-found
-# antigen bundle sudo
 # antigen bundle zsh-users/zsh-completions
 #POWERLEVEL9K_MODE='awesome-patched'
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
@@ -93,10 +84,9 @@ source $ZSH/oh-my-zsh.sh
 ###############################################################################
 # Change the prompt styles
 PS1='%(5~|…/%3~|%~)'
-# PS1='\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[0;34m\]\w\[\e[0m\]\$ '
 
 export GREP_OPTIONS='--color=auto'
-export EDITOR='subl --wait' # Sets the default editor
+export EDITOR='vim'
 
 # Tell ls to be colorful
 export CLICOLOR=1
@@ -111,13 +101,6 @@ export GPGKEY=1988FBC9
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
 
 # For SSH
 export SSH_KEY_PATH=$HOME/.ssh/id_rsa
@@ -164,9 +147,7 @@ alias more='less'
 alias less='less -R'
 
 # Attaches to the existing tmux session if it exists; create one if not
-alias tmux='tmux attach -t _base || tmux new -s _base -n home'
-alias tmuxi='tmux new -s _base -n home' # Inits a tmux session
-alias tmuxa='tmux attach -t _base' # Reattaches to a tmux session
+alias tm='tmux new -A -s _base -n home'
 
 # macOS only -- opens Alacritty as a new window (supports multiple)
 alias alac='open -nb io.alacritty'
@@ -244,7 +225,6 @@ unsetopt share_history
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*,!node_modules/**/*"'
 
-#source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # Load local-only configurations
 source "$HOME/.localrc"
+
