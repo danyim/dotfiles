@@ -167,7 +167,7 @@ alias gs='git stash'
 alias gitsl='git sl'
 alias gaa='git add -A'
 alias gsa='git stash apply'
-alias gsl='git stash list --date=relative'
+alias gsl="git --no-pager stash list --format='%C(blue)%gd: %C(bold)%C(green)%gs %C(white)%cd'"
 alias gsc='git stash clear'
 alias gft='git fetch --tags'
 alias gpt='git push --tags'
