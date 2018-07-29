@@ -81,16 +81,20 @@ if is_macos; then
   SUBLIME_DIR="$HOME/Library/Application Support/Sublime Text 3/Packages/User"
   backup_if_exists "$SUBLIME_DIR/Preferences.sublime-settings" $BACKUP_DIR/sublime
   backup_if_exists "$SUBLIME_DIR/Default (OSX).sublime-keymap" $BACKUP_DIR/sublime
+  backup_if_exists "$SUBLIME_DIR/*.sublime-snippet" $BACKUP_DIR/sublime
   cp ./sublime/Preferences.sublime-settings "$SUBLIME_DIR"
   cp ./sublime/"Default (OSX)".sublime-keymap "$SUBLIME_DIR"
+  cp ./sublime/*.sublime-snippet "$SUBLIME_DIR"
   cp ./sublime/zenburn.tmTheme "$SUBLIME_DIR" 
 else
   # TODO: Find out the settings directory on Linux
   SUBLIME_DIR="$HOME/.config/sublime-text-3/Packages/User"
-  backup_if_exists $SUBLIME_DIR/Preferences.sublime-settings $BACKUP_DIR/sublime
-  backup_if_exists $SUBLIME_DIR/Default\ \(Linux\).sublime-keymap $BACKUP_DIR/sublime
+  backup_if_exists "$SUBLIME_DIR/Preferences.sublime-settings" $BACKUP_DIR/sublime
+  backup_if_exists "$SUBLIME_DIR/Default\ \(Linux\).sublime-keymap" $BACKUP_DIR/sublime
+  backup_if_exists "$SUBLIME_DIR/*.sublime-snippet" $BACKUP_DIR/sublime
   cp sublime/Preferences.sublime-settings $SUBLIME_DIR 
   cp sublime/Default\ \(Linux\).sublime-keymap $SUBLIME_DIR
+  cp sublime/*.sublime-snippet $SUBLIME_DIR
   cp sublime/zenburn.tmTheme $SUBLIME_DIR 
 fi
 

@@ -49,9 +49,11 @@ fi
 if is_macos; then # macOS
   cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings sublime/
   cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Default\ \(OSX\).sublime-keymap sublime/
+  cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/*.sublime-snippet sublime/
 else
   cp ~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings sublime/
   cp ~/.config/sublime-text-3/Packages/User/Default\ \(Linux\).sublime-keymap sublime/
+  cp ~/.config/sublime-text-3/Packages/User/*.sublime-snippet sublime/
 fi
 
 # Copy key fonts
