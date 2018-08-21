@@ -33,8 +33,19 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Install Rust
+echo "Installing Rust..."
 curl https://sh.rustup.rs -sSf | sh
 
 # Install Alacritty
+echo "Installing Alacritty..."
 git clone --depth 1 https://github.com/jwilm/alacritty $INSTALL_ROOT/alacritty
 
+# Install Exa
+echo "Installing exa..."
+cargo install exa
+
+# Install nvm
+echo "Installing nvm..."
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+
+echo "\n\nComplete. Please open a new shell."
