@@ -52,4 +52,15 @@ cargo install exa
 echo "Installing nvm..."
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
+# Install TPM
+echo "Installing TPM (tmux plugin manager)..."
+git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+
+if is_macos; then
+  echo "Installing Homebrew..."
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  brew install git vim tmux
+fi
+
 echo "\n\nComplete. Please open a new shell."
