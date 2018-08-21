@@ -7,6 +7,10 @@ INSTALL_ROOT=$HOME/tmp
 
 mkdir -p $INSTALL_ROOT
 
+# Install powerline theme
+echo "Installing Powerlevel9k themes..."
+git clone --depth 1 https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/themes/powerlevel9k
+
 # Install antigen (oh-my-zsh plugin manager)
 echo "Installing antigen..."
 sudo mkdir -p /usr/local/share/antigen
