@@ -198,7 +198,10 @@ alias npmls='npm ls -g --depth=0' # Prints all root packages installed globally
 alias ip="ifconfig en0 | grep 'inet ' | cut -d ' ' -f 2" # Grabs local IP
 alias ipcopy='ip | pbcopy'
 
-
+alias cat=bat
+alias preview="fzf --preview 'bat --color \"always\" {}'"
+alias top="sudo htop"
+alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 ###############################################################################
 # Misc                                                                        #
 ###############################################################################
