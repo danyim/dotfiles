@@ -1,0 +1,9 @@
+<snippet>
+  <content><![CDATA[
+// \$FlowFixMe
+]]></content>
+
+  <tabTrigger>ffm</tabTrigger>
+  <scope>source.js, source.jsx, source.ts</scope>
+  <description>Insert $FlowFixMe</description>
+</snippet>
