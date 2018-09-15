@@ -45,6 +45,13 @@ else
   cp ~/.config/alacritty/alacritty.yml alacritty-linux.yml
 fi
 
+# Kitty configs
+if is_macos; then # macOS
+  cp ~/.config/kitty/kitty.conf.
+else 
+  cp ~/.config/kitty/kitty.conf kitty-linux.conf
+fi
+
 # Sublime
 if is_macos; then # macOS
   cp ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User/Preferences.sublime-settings sublime/
