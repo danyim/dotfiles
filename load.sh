@@ -119,6 +119,7 @@ mkdir -p $FONT_DIR
 cp -n fonts/Inconsolata-Regular.ttf $FONT_DIR
 cp -n fonts/Inconsolata-Bold.ttf $FONT_DIR
 cp -n fonts/Inconsolata\ for\ Powerline.otf $FONT_DIR
+cp -n fonts/Inconsolata\ Bold\ for\ Powerline.ttf $FONT_DIR
 cp -n fonts/Inconsolata-dz\ for\ Powerline.otf $FONT_DIR
 cp -n fonts/Inconsolata-g\ for\ Powerline.otf $FONT_DIR
 cp -n fonts/Inconsolata.otf $FONT_DIR
