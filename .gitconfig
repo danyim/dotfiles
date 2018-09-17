@@ -3,10 +3,14 @@
 	smudge = git-media-smudge %f
 [user]
 	name = Daniel Yim
-	email = danielyim@gmail.com
+	email = daniel.yim@getcruise.com
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
+  pager = diff-so-fancy | less --tabs=4 -RFX
+[pager]
+  diff = diff-so-fancy | less --tabs=1,5 -RFX
+  show = diff-so-fancy | less --tabs=1,5 -RFX
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =

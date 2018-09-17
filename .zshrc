@@ -202,6 +202,9 @@ alias cat=bat
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
+
+alias kc=kubectl
+
 ###############################################################################
 # Misc                                                                        #
 ###############################################################################
