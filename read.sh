@@ -47,7 +47,7 @@ fi
 
 # Kitty configs
 if is_macos; then # macOS
-  cp ~/.config/kitty/kitty.conf.
+  cp ~/.config/kitty/kitty.conf .
 else 
   cp ~/.config/kitty/kitty.conf kitty-linux.conf
 fi
