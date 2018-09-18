@@ -77,9 +77,9 @@ echo "Importing Kitty settings..."
 mkdir -p ~/.config/kitty
 backup_if_exists ~/.config/kitty/kitty.conf $BACKUP_DIR
 if is_macos; then
-  cp kitty.conf ~/.config/kitty/kitty.conf .
+  cp kitty.conf ~/.config/kitty/kitty.conf
 else
-  cp kitty-linux.conf ~/.config/kitty/kitty.conf .
+  cp kitty-linux.conf ~/.config/kitty/kitty.conf
 fi
 
 # Sublime
