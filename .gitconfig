@@ -3,7 +3,7 @@
 	smudge = git-media-smudge %f
 [user]
 	name = Daniel Yim
-	email = daniel.yim@getcruise.com
+	email = danielyim@gmail.com
 [core]
 	editor = vim
 	excludesfile = ~/.gitignore
@@ -54,10 +54,10 @@
 	pushInsteadOf = "https://github.com/"
 [gpg]
 	program = gpg
-[filter "lfs"]
-	process = git-lfs filter-process
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
 [branch]
 	autosetuprebase = always
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
