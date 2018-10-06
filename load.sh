@@ -123,6 +123,7 @@ cp -n fonts/Inconsolata\ Bold\ for\ Powerline.ttf $FONT_DIR
 cp -n fonts/Inconsolata-dz\ for\ Powerline.otf $FONT_DIR
 cp -n fonts/Inconsolata-g\ for\ Powerline.otf $FONT_DIR
 cp -n fonts/Inconsolata.otf $FONT_DIR
+cp -n fonts/SourceCodeVariable*.ttf $FONT_DIR
 
 # tmux
 echo "Importing tmux settings..."
