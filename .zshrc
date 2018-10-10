@@ -208,6 +208,8 @@ alias kc=kubectl
 alias kcns=kubens
 alias kctx=kubectx
 alias kcp=kc get pods  --sort-by=.metadata.creationTimestamp
+alias kclg=kc logs -f $(kc get pods | grep gateway | cut -d' ' -f-1)
+
 
 ###############################################################################
 # Misc                                                                        #
