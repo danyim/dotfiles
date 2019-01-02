@@ -148,6 +148,7 @@ alias less='less -R'
 
 # Attaches to the existing tmux session if it exists; create one if not
 alias tm='tmux new -A -s _base -n home'
+# Connect to desktop via SSH and immediately open tmux; reuse session if exists 
 alias ssh-desktop='ssh -t desktop tmux new -A -s _cruise -n cruise'
 
 # macOS only -- opens Alacritty as a new window (supports multiple)
