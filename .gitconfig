@@ -23,7 +23,7 @@
 	tool = vimdiff
 	ff = false
 [push]
-	default = simple
+	default = current
 [pull]
 	ff = true
 	rebase = true
