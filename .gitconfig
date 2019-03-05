@@ -40,7 +40,7 @@
 	sl = stash list --pretty=format:\"%C(red)%h%C(reset) - %C(dim yellow)(%C(bold magenta)%gd%C(dim yellow))%C(reset) %<(70,trunc)%s %C(green)(%cr) %C(bold blue)<%an>%C(reset)\"
 	d = diff -w
 	dc = diff -w --cached
-	dd = diff HEAD^ HEAD
+	dd = diff HEAD HEAD^
 	# From https://csswizardry.com/2017/05/little-things-i-like-to-do-with-git/
 	# ===============================================
 	# Leaderboards (how many commits by person sorted descending)

@@ -13,6 +13,7 @@ export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools
 export GOPATH=$HOME/go
 export GOROOT=/usr/local/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export GO111MODULE=on # Enable Go module support
 # For RVM (Ruby)
 export PATH=$HOME/.rbenv/bin:$PATH
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
