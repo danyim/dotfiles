@@ -58,13 +58,12 @@
 		"node_modules"
 	],
 	"font_face": "Inconsolata",
-	"font_size": 18,
+	"font_size": 17,
 	"highlight_line": true,
 	"highlight_modified_tabs": true,
 	"hot_exit": false,
 	"ignored_packages":
 	[
-		"SublimeLinter-contrib-standard",
 		"Vintage"
 	],
 	"indent_guide_options":
