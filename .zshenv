@@ -7,14 +7,13 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # For NVM (Node Version Manager)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-# For Yarn (Node)
-export PATH="$PATH:`yarn global bin`" # Yarn
 # For Android simulation
 export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools
 # For Golang
 export GOPATH=$HOME/go
 export GOROOT=/usr/local/go
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export GO111MODULE=on # Enable Go module support
 # For RVM (Ruby)
 export PATH=$HOME/.rbenv/bin:$PATH
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi

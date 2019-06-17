@@ -64,6 +64,7 @@
 	"hot_exit": false,
 	"ignored_packages":
 	[
+		"SublimeLinter-contrib-standard",
 		"Vintage"
 	],
 	"indent_guide_options":

@@ -205,10 +205,14 @@ alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 
+# Docker
+alias dockerkill='docker kill $(docker ps -q)'
+
 # Kubernetes
 alias kc=kubectl
 alias kcns=kubens
 alias kctx=kubectx
+alias kce=kubectx exec -it
 alias kcp=kc get pods  --sort-by=.metadata.creationTimestamp
 alias kclg=kc logs -f $(kc get pods | grep gateway | cut -d' ' -f-1)
 
