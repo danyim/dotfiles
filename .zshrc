@@ -172,6 +172,8 @@ alias gsa='git stash apply'
 alias gsl="git --no-pager stash list --format='%C(blue)%gd: %C(bold)%C(green)%gs %C(white)%cd'"
 alias gsc='git stash clear'
 alias gft='git fetch --tags'
+alias gpn='git push --no-verify'
+alias gpnf='git push --no-verify -f'
 alias gpt='git push --tags'
 alias gcd='git checkout develop'
 alias gcm='git checkout master'
