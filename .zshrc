@@ -208,7 +208,8 @@ alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 
 # Docker
-alias dockerkill='docker kill $(docker ps -q)'
+alias dockerkill="docker kill $(docker ps -q)"
+alias ld="lazydocker"
 
 # Kubernetes
 alias kc=kubectl
