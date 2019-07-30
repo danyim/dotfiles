@@ -219,6 +219,10 @@ alias kce=kubectx exec -it
 alias kcp=kc get pods  --sort-by=.metadata.creationTimestamp
 alias kclg=kc logs -f $(kc get pods | grep gateway | cut -d' ' -f-1)
 
+# Chrome (load with WebRTC testing profile)
+alias chrome-test="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --console --no-first-run --user-data-dir=$HOME/.config/chrome-test --use-fake-device-for-media-stream --enable-logging --v=1 --vmodule=*third_party/libjingle/*=3,*=0"
+alias chrome-test-clean="rm -rf $HOME/.config/chrome-test"
+
 # Fuzzy searching tmux panes
 ftpane() {
   local panes current_window current_pane target target_window target_pane
