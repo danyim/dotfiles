@@ -187,6 +187,19 @@ alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
 # "git diff stats"
 gds() { git diff --stat --color "$@" | cat }
 gdsc() { git diff --stat --cached --color "$@" | cat }
+# Prints orphaned branches (local branches without a remote branch)
+gitOrphans() { for branch in `git branch -vv --no-color | grep ': gone]' | awk '{print $1}'`; do echo $branch; done }
+
+# Cleans local branches without remotes
+gitclean() {
+  git fetch -p
+  gitOrphans
+  echo -n "\nDelete all local branches above? [Y/n]: "
+  read input
+  if [[ $input == "Y" || $input == "y" ]]; then
+    for branch in `gitOrphans`; do git branch -D $branch; done
+  fi
+}
 
 # Sublime
 # alias subl='sublime'
