@@ -193,8 +193,9 @@ gitOrphans() { for branch in `git branch -vv --no-color | grep ': gone]' | awk '
 # Cleans local branches without remotes
 gitclean() {
   git fetch -p
+  echo -n '\n\nLocal orphaned branches:'
   gitOrphans
-  echo -n "\nDelete all local branches above? [Y/n]: "
+  echo -n "\nDelete all branches above? [Y/n]: "
   read input
   if [[ $input == "Y" || $input == "y" ]]; then
     for branch in `gitOrphans`; do git branch -D $branch; done
