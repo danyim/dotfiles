@@ -61,3 +61,5 @@
 	smudge = git-lfs smudge -- %f
 [branch]
 	autosetuprebase = always
+[hub]
+	host = github.robot.car
