@@ -190,9 +190,9 @@ gdsc() { git diff --stat --cached --color "$@" | cat }
 # Prints orphaned branches (local branches without a remote branch)
 gitOrphans() { for branch in `git branch -vv --no-color | grep ': gone]' | awk '{print $1}'`; do echo $branch; done }
 
-# Cleans local branches without remotes
-gitclean() {
-  echo -n "\nFetch & prune...\n"
+# Cleans orphaned local branches with deleted remote tracking branches
+gcln() {
+  echo -n "Fetching & prune from remote...\n"
   git fetch -p
   echo -n "\n\nLocal orphaned branches:\n"
   gitOrphans
@@ -202,7 +202,6 @@ gitclean() {
     for branch in `gitOrphans`; do git branch -D $branch; done
   fi
 }
-alias gcln=gitclean
 
 # Sublime
 # alias subl='sublime'
