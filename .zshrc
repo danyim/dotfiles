@@ -184,12 +184,12 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
 alias gpom='git pull origin master'
 alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
+alias mkpr='hub pull-request --base develop --head $(git rev-parse --abbrev-ref HEAD)'
 # "git diff stats"
 gds() { git diff --stat --color "$@" | cat }
 gdsc() { git diff --stat --cached --color "$@" | cat }
 # Prints orphaned branches (local branches without a remote branch)
 gitOrphans() { for branch in `git branch -vv --no-color | grep ': gone]' | awk '{print $1}'`; do echo $branch; done }
-
 # Cleans orphaned local branches with deleted remote tracking branches
 gcln() {
   echo -n "Fetching & prune from remote...\n"
