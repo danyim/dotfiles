@@ -184,7 +184,7 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
 alias gpom='git pull origin master'
 alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
-alias gcn='git commend --no-verify' # Commit amend and bypass hooks
+alias gcmdnv='git commend --no-verify' # Commit amend and bypass hooks
 alias mkpr='hub pull-request --base develop --head $(git rev-parse --abbrev-ref HEAD)'
 # "git diff stats"
 gds() { git diff --stat --color "$@" | cat }
@@ -224,7 +224,8 @@ alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 
 # Docker
-alias dockerkill="docker kill $(docker ps -q)"
+alias dkrkill="docker kill $(docker ps -q)"
+alias dkrclean="docker system prune && rm ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2"
 alias ld="lazydocker"
 
 # Kubernetes
