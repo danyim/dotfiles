@@ -85,7 +85,6 @@ source $ZSH/oh-my-zsh.sh
 # Change the prompt styles
 PS1='%(5~|…/%3~|%~)'
 
-export GREP_OPTIONS='--color=auto'
 export EDITOR='vim'
 
 # Tell ls to be colorful
@@ -218,7 +217,7 @@ alias npmls='npm ls -g --depth=0' # Prints all root packages installed globally
 alias ip="ifconfig en0 | grep 'inet ' | cut -d ' ' -f 2" # Grabs local IP
 alias ipcopy='ip | pbcopy'
 
-alias cat=bat
+#alias cat=bat
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
