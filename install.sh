@@ -31,6 +31,11 @@ echo "Installing fzf..."
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
+# Install diff-so-fancy
+echo "Installing diff-so-fancy..."
+git clone git@github.com:so-fancy/diff-so-fancy.git $INSTALL_ROOT/diff-so-fancy
+sudo ln -s $INSTALL_ROOT/diff-so-fancy/diff-so-fancy /usr/local/bin/diff-so-fancy
+
 # Install vim-plug
 echo "Installing vim-plug..."
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
