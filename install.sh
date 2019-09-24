@@ -24,7 +24,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 echo "Installing z (jump around)..."
 sudo mkdir -p /etc/profile.d
 git clone --depth 1 https://github.com/rupa/z $INSTALL_ROOT/z
-cp $INSTALL_ROOT/z/z.sh /etc/profile.d
+sudo cp $INSTALL_ROOT/z/z.sh /etc/profile.d
 
 # Install fzf
 echo "Installing fzf..."
@@ -56,6 +56,9 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | 
 echo "Installing TPM (tmux plugin manager)..."
 git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+# Install kubectl
+echo "Installing kubectl..."
+curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl
 
 if is_macos; then
   echo "Installing Homebrew..."
