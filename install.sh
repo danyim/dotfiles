@@ -24,7 +24,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 echo "Installing z (jump around)..."
 sudo mkdir -p /etc/profile.d
 git clone --depth 1 https://github.com/rupa/z $INSTALL_ROOT/z
-cp $INSTALL_ROOT/z.sh /etc/profile.d
+cp $INSTALL_ROOT/z/z.sh /etc/profile.d
 
 # Install fzf
 echo "Installing fzf..."
