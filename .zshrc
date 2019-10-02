@@ -183,6 +183,7 @@ alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
 alias gpom='git pull origin master'
 alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
+alias gcmd='git commend' # Commit amend
 alias gcmdnv='git commend --no-verify' # Commit amend and bypass hooks
 alias mkpr='hub pull-request --base develop --head $(git rev-parse --abbrev-ref HEAD)'
 # "git diff stats"
