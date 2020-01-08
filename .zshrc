@@ -26,7 +26,7 @@ DISABLE_AUTO_TITLE="true"
 
 # "tt [title]" will title the iTerm2 tab if outside of tmux. If inside of tmux,
 # it will rename the tmux window
-tt () {
+function () {
   if [ -z $TMUX ] ; then
     echo -e "\033];$@\007"
   else
@@ -137,7 +137,7 @@ alias l='exa -lr'
 alias ll='exa -lra'
 
 # Helpful commands
-mkcd() {
+function mkcd {
   mkdir $1
   cd $1
 }
@@ -187,12 +187,12 @@ alias gcmd='git commend' # Commit amend
 alias gcmdnv='git commend --no-verify' # Commit amend and bypass hooks
 alias mkpr='hub pull-request --base develop --head $(git rev-parse --abbrev-ref HEAD)'
 # "git diff stats"
-gds() { git diff --stat --color "$@" | cat }
-gdsc() { git diff --stat --cached --color "$@" | cat }
+function gds { git diff --stat --color "$@" | cat }
+function gdsc { git diff --stat --cached --color "$@" | cat }
 # Prints orphaned branches (local branches without a remote branch)
-gitOrphans() { for branch in `git branch -vv --no-color | grep ': gone]' | awk '{print $1}'`; do echo $branch; done }
+function gitOrphans { for branch in `git branch -vv --no-color | grep ': gone]' | awk '{print $1}'`; do echo $branch; done }
 # Cleans orphaned local branches with deleted remote tracking branches
-gcln() {
+function gcln {
   echo -n "Fetching & prune from remote...\n"
   git fetch -p
   echo -n "\n\nLocal orphaned branches:\n"
@@ -225,7 +225,18 @@ alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 
 # Docker
 alias dkrkill="docker kill $(docker ps -q)"
-alias dkrclean="docker system prune && rm ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2"
+
+function dkrclean {
+  echo -n "Remove all images and reset Docker? [Y/n]: "
+  read input
+  if [[ $input == "Y" || $input == "y" ]]; then
+    echo "Cleaning all Docker images..."
+    docker system prune -f
+    docker rmi -f $(docker images -q)
+    docker rm $(docker ps -aq)
+    rm ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+  fi
+}
 alias ld="lazydocker"
 
 # Kubernetes
@@ -241,7 +252,7 @@ alias chrome-test="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrom
 alias chrome-test-clean="rm -rf $HOME/.config/chrome-test"
 
 # Fuzzy searching tmux panes
-ftpane() {
+function ftpane {
   local panes current_window current_pane target target_window target_pane
   panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
   current_pane=$(tmux display-message -p '#I:#P')
