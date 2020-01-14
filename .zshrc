@@ -300,3 +300,5 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 # Load local-only configurations
 source "$HOME/.localrc"
 
+
+source /Users/dyim/Library/Preferences/org.dystroy.broot/launcher/bash/br
