@@ -185,7 +185,7 @@ alias gpom='git pull origin master'
 alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
 alias gcmd='git commend' # Commit amend
 alias gcmdnv='git commend --no-verify' # Commit amend and bypass hooks
-alias mkpr='hub pull-request --base develop --head $(git rev-parse --abbrev-ref HEAD)'
+alias mkpr='hub pull-request --base develop --head $(git rev-parse --abbrev-ref HEAD) -d'
 # "git diff stats"
 function gds { git diff --stat --color "$@" | cat }
 function gdsc { git diff --stat --cached --color "$@" | cat }
