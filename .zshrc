@@ -182,6 +182,7 @@ alias gmm='git merge master --no-ff'
 alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
 alias gpom='git pull origin master'
+alias gpp='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
 alias gcmd='git commend' # Commit amend
 alias gcmdnv='git commend --no-verify' # Commit amend and bypass hooks
