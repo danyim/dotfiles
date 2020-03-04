@@ -435,6 +435,10 @@ nnoremap <CR> :noh<CR><CR>
 " Changes working directory to current file's directory
 nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
+" Press F5 in normal or insert mode to insert the current timestamp
+nnoremap <F5> "=strftime("%F")<CR>P
+:inoremap <F5> <C-R>=strftime("%F")<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
