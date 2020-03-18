@@ -49,6 +49,10 @@ curl https://sh.rustup.rs -sSf | sh
 echo "Installing Alacritty..."
 git clone --depth 1 https://github.com/jwilm/alacritty $INSTALL_ROOT/alacritty
 
+# Install broot
+echo "Installing broot..."
+cargo install broot 
+
 # Install Exa
 echo "Installing exa..."
 cargo install exa

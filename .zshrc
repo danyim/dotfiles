@@ -317,4 +317,3 @@ source "$HOME/.localrc"
 
 
 source /Users/dyim/Library/Preferences/org.dystroy.broot/launcher/bash/br
-
