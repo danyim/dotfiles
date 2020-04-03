@@ -63,6 +63,11 @@ else
   cp ~/.config/sublime-text-3/Packages/User/*.sublime-snippet sublime/
 fi
 
+# VSCode
+if is_macos; then
+  cp ~/Library/Application\ Support/Code/User/keybindings.json vscode
+fi
+
 # Copy key fonts
 if is_macos; then # macOS
   cp /Library/Fonts/Inconsolata-Regular.ttf fonts

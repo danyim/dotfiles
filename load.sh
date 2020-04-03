@@ -108,6 +108,17 @@ else
   cp sublime/zenburn.tmTheme $SUBLIME_DIR 
 fi
 
+# VSCode
+echo "Importing VSCode settings..."
+mkdir -p ~/Library/Application\ Support/Code/User
+mkdir -p $BACKUP_DIR/vscode
+if is_macos; then
+  VSCODE_DIR="$HOME/Library/Application Support/Code/User"
+  backup_if_exists "$VSCODE_DIR/keybindings.json" $BACKUP_DIR/vscode
+  cp ./vscode/keybindings.json $VSCODE_DIR
+fi
+
+
 # Copy key fonts (-n option prevents overwrites)
 if is_macos; then
   FONT_DIR=$HOME/Library/Fonts
