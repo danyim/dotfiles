@@ -10,21 +10,21 @@
     "when": "inSearchEditor && inputBoxFocus"
   },
   {
-    "key": "down",
-    "command": "search.action.focusNextSearchResult",
-    "when": "inSearchEditor && !inputBoxFocus"
-  },
-  {
     "key": "up",
     "command": "search.action.focusPreviousSearchResult",
     "when": "inSearchEditor && !inputBoxFocus"
   },
   {
+    "key": "down",
+    "command": "search.action.focusNextSearchResult",
+    "when": "inSearchEditor && !inputBoxFocus"
+  },
+  {
     "key": "enter",
     "command": "editor.action.revealDefinition",
-    "when": "inSearchEditor"
+    "when": "inSearchEditor && !inputBoxFocus"
   },
-  
+
   // Toggle between terminal and editor focus
   {
     "key": "ctrl+a o",
@@ -45,16 +45,16 @@
     "key": "ctrl+backspace",
     "command": "deleteWordPartLeft",
     "when": "editorTextFocus"
-  },      
+  },
   {
     "key": "ctrl+left",
     "command": "cursorWordPartLeft",
-    "when": "editorTextFocus",
+    "when": "editorTextFocus"
   },
   {
     "key": "ctrl+right",
     "command": "cursorWordPartRight",
-    "when": "editorTextFocus",
+    "when": "editorTextFocus"
   },
   {
     "key": "shift+ctrl+left",

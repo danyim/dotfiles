@@ -5,3 +5,4 @@
 *.code-project
 *.sublime-project
 gin-bin
+.eslintcache
