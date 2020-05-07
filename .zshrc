@@ -9,7 +9,7 @@ export TERM="xterm-256color" # Enables 265 colors in tmux
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Autostart tmux
 ZSH_TMUX_AUTOSTART='true'
@@ -55,7 +55,6 @@ antigen bundle colorize
 antigen bundle node
 antigen bundle npm
 antigen bundle ssh-agent
-antigen bundle sublime
 antigen bundle supervisor
 antigen bundle lukechilds/zsh-better-npm-completion
 antigen bundle zsh-users/zsh-autosuggestions
@@ -66,15 +65,15 @@ fi
 antigen bundle history
 antigen bundle history-substring-search
 # antigen bundle zsh-users/zsh-completions
-#POWERLEVEL9K_MODE='awesome-patched'
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(node_version time)
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
+#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(node_version time)
 POWERLEVEL9K_NODE_VERSION_BACKGROUND='022'
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_package_name"
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 POWERLEVEL9K_TIME_FORMAT="%D{%L:%M:%S %p}"
+POWERLEVEL9K_DISABLE_RPROMPT=true
 
-antigen theme bhilburn/powerlevel9k
+antigen theme romkatv/powerlevel10k
 antigen apply
 
 source $ZSH/oh-my-zsh.sh
