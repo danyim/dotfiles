@@ -2,17 +2,11 @@
 # .zshenv → [.zprofile if login] → [.zshrc if interactive] →
 # [.zlogin if login] → [.zlogout sometimes]
 
-# Use a 256-color terminal setting
 export TERM="xterm-256color" # Enables 265 colors in tmux
-
-# Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Autostart tmux
-ZSH_TMUX_AUTOSTART='true'
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
@@ -41,7 +35,6 @@ function () {
 COMPLETION_WAITING_DOTS="true"
 
 # Set the username for prompts
-# prompt_context () { }
 export DEFAULT_USER=danyim
 
 # The offical Powerline repo suggests running this, but we're seeing script errors
@@ -65,9 +58,9 @@ fi
 antigen bundle history
 antigen bundle history-substring-search
 # antigen bundle zsh-users/zsh-completions
+
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
 #POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(node_version time)
-POWERLEVEL9K_NODE_VERSION_BACKGROUND='022'
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_package_name"
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 POWERLEVEL9K_TIME_FORMAT="%D{%L:%M:%S %p}"
@@ -97,10 +90,7 @@ export PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
 # Sets pgp key generated on 1/15/2015 as the default key
 export GPGKEY=1988FBC9
 
-# You may need to manually set your language environment
 export LANG=en_US.UTF-8
-
-# For SSH
 export SSH_KEY_PATH=$HOME/.ssh/id_rsa
 
 # For Python tab completions

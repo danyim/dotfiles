@@ -600,3 +600,7 @@ if has ('autocmd') " Remain compatible with earlier versions
     autocmd! BufWritePost $MYGVIMRC if has('gui_running') | so % | echom "Reloaded " . $MYGVIMRC | endif | redraw
   augroup END
 endif " has autocmd
+
+
+" Ignore go-vim warning about Vim 8.3
+let g:go_version_warning = 0
