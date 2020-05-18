@@ -110,12 +110,12 @@ fi
 
 # VSCode
 echo "Importing VSCode settings..."
-mkdir -p ~/Library/Application\ Support/Code/User
+VSCODE_DIR="$HOME/Library/Application Support/Code/User"
+mkdir -p "$VSCODE_DIR"
 mkdir -p $BACKUP_DIR/vscode
 if is_macos; then
-  VSCODE_DIR="$HOME/Library/Application Support/Code/User"
   backup_if_exists "$VSCODE_DIR/keybindings.json" $BACKUP_DIR/vscode
-  cp ./vscode/keybindings.json $VSCODE_DIR
+  cp ./vscode/*.json "$VSCODE_DIR"
 fi
 
 

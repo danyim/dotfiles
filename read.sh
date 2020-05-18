@@ -65,7 +65,7 @@ fi
 
 # VSCode
 if is_macos; then
-  cp ~/Library/Application\ Support/Code/User/keybindings.json vscode
+  cp ~/Library/Application\ Support/Code/User/*.json vscode
 fi
 
 # Copy key fonts
