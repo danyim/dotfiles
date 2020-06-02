@@ -152,7 +152,8 @@ alias gitlg='git log --graph --decorate --oneline'
 alias gits='git status'
 alias gitr='git recent'
 alias gitch='git ch'
-alias gch='git ch'
+#alias gch='git ch'
+alias gch='gitr | fzf | xargs git checkout'
 alias gs='git stash'
 alias gitsl='git sl'
 alias gaa='git add -A'
@@ -205,6 +206,17 @@ alias -- -='cd ~-' # Typing '-' navigates to the previous directory
 
 # NPM
 alias npmls='npm ls -g --depth=0' # Prints all root packages installed globally
+# Swaps the NPM repository information with the publish version
+function npmrc_swap {
+  FILE=~/.npmrc.publish
+  if [[ -f "$FILE" ]]; then
+    mv ~/.npmrc ~/.npmrc.bak && mv ~/.npmrc.publish ~/.npmrc
+  else
+    mv ~/.npmrc ~/.npmrc.publish && mv ~/.npmrc.bak ~/.npmrc
+  fi
+  
+  ls ~/.npmrc*
+}
 
 # IP
 alias ip="ifconfig en0 | grep 'inet ' | cut -d ' ' -f 2" # Grabs local IP
