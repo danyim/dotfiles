@@ -1,37 +1,39 @@
 {
-    "editor.rulers": [
-        100
-    ],
-    "telemetry.enableTelemetry": false,
-    "telemetry.enableCrashReporter": false,
-    "editor.tabSize": 2,
-    "editor.fontFamily": "Inconsolata for Powerline, 'Courier New', monospace",
-    "window.zoomLevel": 0,
-    "editor.fontSize": 15,
-    "terminal.integrated.fontSize": 15,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "gitlens.views.repositories.location": "gitlens",
-    "gitlens.views.fileHistory.location": "gitlens",
-    "gitlens.views.lineHistory.location": "gitlens",
-    "gitlens.views.compare.location": "gitlens",
-    "gitlens.views.search.location": "gitlens",
-    "editor.formatOnSave": true,
-    "gitlens.codeLens.enabled": false,
-    "gitlens.statusBar.enabled": false,
-    "gitlens.hovers.avatars": false,
-    "gitlens.hovers.currentLine.changes": false,
-    "editor.quickSuggestions": {
-        "other": true,
-        "comments": false,
-        "strings": false
-    },
-    "editor.formatOnPaste": false,
-    "workbench.colorTheme": "Zenburn",
-    "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.rulers": [100],
+  "telemetry.enableTelemetry": false,
+  "telemetry.enableCrashReporter": false,
+  "editor.tabSize": 2,
+  "editor.fontFamily": "Inconsolata for Powerline, Inconsolata, Consolas, monospace",
+  "window.zoomLevel": 0,
+  "editor.fontSize": 15,
+  "terminal.integrated.fontSize": 15,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "gitlens.views.repositories.location": "gitlens",
+  "gitlens.views.fileHistory.location": "gitlens",
+  "gitlens.views.lineHistory.location": "gitlens",
+  "gitlens.views.compare.location": "gitlens",
+  "gitlens.views.search.location": "gitlens",
+  "editor.formatOnSave": true,
+  "gitlens.codeLens.enabled": false,
+  "gitlens.statusBar.enabled": false,
+  "gitlens.hovers.avatars": false,
+  "gitlens.hovers.currentLine.changes": false,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  },
+  "workbench.colorTheme": "Zenburn",
+  "workbench.colorCustomizations": {
+    "list.activeSelectionBackground": "#424944",
+    "list.inactiveSelectionBackground": "#1F2320"
+  },
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnPaste": false
 }
