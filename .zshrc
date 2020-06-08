@@ -152,8 +152,15 @@ alias gitlg='git log --graph --decorate --oneline'
 alias gits='git status'
 alias gitr='git recent'
 alias gitch='git ch'
-#alias gch='git ch'
-alias gch='gitr | fzf | xargs git checkout'
+# Opens FZF with most recently used branches if no arg
+function gch {
+  if [ $# -eq 0 ]; then
+    gitr | fzf | xargs git checkout
+  else
+    # Applies a partial match search to all branches if arg exists
+    gitr | fzf -q "$1" -1 | xargs git checkout
+  fi
+}
 alias gs='git stash'
 alias gitsl='git sl'
 alias gaa='git add -A'
