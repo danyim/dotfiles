@@ -1,13 +1,18 @@
 {
-  "editor.rulers": [100],
   "telemetry.enableTelemetry": false,
   "telemetry.enableCrashReporter": false,
+  "editor.rulers": [100],
   "editor.tabSize": 2,
   "editor.fontFamily": "Inconsolata for Powerline, Inconsolata, Consolas, monospace",
-  "window.zoomLevel": 0,
   "editor.fontSize": 15,
-  "terminal.integrated.fontSize": 15,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -19,21 +24,16 @@
   "gitlens.views.lineHistory.location": "gitlens",
   "gitlens.views.compare.location": "gitlens",
   "gitlens.views.search.location": "gitlens",
-  "editor.formatOnSave": true,
   "gitlens.codeLens.enabled": false,
   "gitlens.statusBar.enabled": false,
   "gitlens.hovers.avatars": false,
   "gitlens.hovers.currentLine.changes": false,
-  "editor.quickSuggestions": {
-    "other": true,
-    "comments": false,
-    "strings": false
-  },
+  "terminal.integrated.fontSize": 15,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "window.zoomLevel": 0,
   "workbench.colorTheme": "Zenburn",
   "workbench.colorCustomizations": {
     "list.activeSelectionBackground": "#424944",
     "list.inactiveSelectionBackground": "#1F2320"
-  },
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "editor.formatOnPaste": false
+  }
 }

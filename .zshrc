@@ -155,10 +155,10 @@ alias gitch='git ch'
 # Opens FZF with most recently used branches if no arg
 function gch {
   if [ $# -eq 0 ]; then
-    gitr | fzf | xargs git checkout
+    git recent | fzf | xargs git checkout
   else
     # Applies a partial match search to all branches if arg exists
-    gitr | fzf -q "$1" -1 | xargs git checkout
+    git recent | fzf -q "$1" -1 | xargs git checkout
   fi
 }
 alias gs='git stash'
@@ -216,9 +216,13 @@ alias npmls='npm ls -g --depth=0' # Prints all root packages installed globally
 # Swaps the NPM repository information with the publish version
 function npmrc_swap {
   FILE=~/.npmrc.publish
+  [ ! -f ~/.npmrc ] && echo "No ~/.npmrc present. Exiting." && return 1
+
   if [[ -f "$FILE" ]]; then
+    echo ">> Using PUBLISH .npmrc"
     mv ~/.npmrc ~/.npmrc.bak && mv ~/.npmrc.publish ~/.npmrc
   else
+    echo ">> Using DEVELOPMENT .npmrc"
     mv ~/.npmrc ~/.npmrc.publish && mv ~/.npmrc.bak ~/.npmrc
   fi
   
