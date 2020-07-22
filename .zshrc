@@ -161,6 +161,16 @@ function gch {
     git recent | fzf -q "$1" -1 | xargs git checkout
   fi
 }
+# Shows commit details of the last commit and will reset soft if confirmed
+function glast {
+  git show --stat HEAD
+  echo -n "\nUncommit and stage the above? [Y/n]: "
+  read input
+  if [[ $input == "Y" || $input == "y" ]]; then
+    git reset --soft HEAD^
+  fi
+
+}
 alias gs='git stash'
 alias gitsl='git sl'
 alias gaa='git add -A'
@@ -317,3 +327,4 @@ source "$HOME/.localrc"
 
 
 source /Users/dyim/Library/Preferences/org.dystroy.broot/launcher/bash/br
+
