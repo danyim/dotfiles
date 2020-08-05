@@ -1,13 +1,14 @@
 [
+  /** Search Editor Keybindings **/
   // Use the search editor instead of the search panel
   {
     "key": "cmd+shift+f",
     "command": "search.action.openNewEditor"
   },
   {
-    "key": "down",
-    "command": "search.action.focusNextSearchResult",
-    "when": "inSearchEditor && inputBoxFocus"
+    "key": "escape",
+    "command": "search.action.focusQueryEditorWidget",
+    "when": "inSearchEditor && !inputBoxFocus"
   },
   {
     "key": "up",
@@ -40,7 +41,8 @@
     "command": "workbench.action.reopenClosedEditor",
     "when": "editorTextFocus"
   },
-  // Editing controls
+
+  // Sublime-like editing controls
   {
     "key": "ctrl+backspace",
     "command": "deleteWordPartLeft",

@@ -35,5 +35,6 @@
     "list.activeSelectionBackground": "#424944",
     "list.inactiveSelectionBackground": "#1F2320"
   },
-  "workbench.colorTheme": "Zenburn"
+  "workbench.colorTheme": "Zenburn",
+  "python.insidersChannel": "off"
 }
