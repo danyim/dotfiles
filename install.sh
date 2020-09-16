@@ -13,7 +13,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 # Install powerline theme
 echo "Installing Powerlevel10k for oh-my-zsh..."
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 # Install antigen (oh-my-zsh plugin manager)
 echo "Installing antigen..."
@@ -71,8 +71,8 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s http
 
 if is_macos; then
   echo "Installing Homebrew..."
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  brew install git vim tmux
+  mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
+  brew install git vim tmux jq 
 fi
 
 echo "\n\nComplete. Please open a new shell."
