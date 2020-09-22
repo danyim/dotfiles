@@ -79,7 +79,7 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 if is_macos; then
   echo "Installing Homebrew..."
   mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
-  brew install git vim tmux jq 
+  brew install git vim tmux jq hub
 fi
 
 echo "\n\nComplete. Please open a new shell."
