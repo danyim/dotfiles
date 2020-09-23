@@ -7,6 +7,9 @@ INSTALL_ROOT=$HOME/tmp
 
 mkdir -p $INSTALL_ROOT
 
+# Elevate shell script
+[ "$UID" -eq 0 ] || exec sudo bash "$0" "$@"
+
 # Install oh-my-zsh
 echo "Installing oh-my-zsh..."
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -79,7 +82,10 @@ sudo mv ./kubectl /usr/local/bin/kubectl
 if is_macos; then
   echo "Installing Homebrew..."
   mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
-  brew install git vim tmux jq hub
+  brew install \
+    git vim tmux jq hub ripgrep
+  brew cask install \
+    spectacle clipy alfred spotify
 fi
 
 echo "\n\nComplete. Please open a new shell."

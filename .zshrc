@@ -151,6 +151,7 @@ alias gitl='git lg'   # git log
 alias gitlg='git log --graph --decorate --oneline'
 alias gits='git status'
 alias gitr='git recent'
+alias gitrm='git branch -r --format "%(refname:short)" | sed "s/origin\///g"' # List remote branches
 alias gitch='git ch'
 # Opens FZF with most recently used branches if no arg
 function gch {
@@ -158,7 +159,7 @@ function gch {
     git recent | fzf | xargs git checkout
   else
     # Applies a partial match search to all branches if arg exists
-    git recent | fzf -q "$1" -1 | xargs git checkout
+    { git recent; gitrm } | cat | sort | uniq | fzf -q "$1" -1 | xargs git checkout
   fi
 }
 # Shows commit details of the last commit and will reset soft if confirmed
