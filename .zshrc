@@ -172,6 +172,15 @@ function glast {
   fi
 
 }
+# clc "Copy last commit": Copies the last commit in the current branch (from https://gist.github.com/alexmacarthur/933a50c3e072baaf7b6ed18b94e0e873)
+function clc {
+  COLOR_GREEN="\033[0;32m"
+  COLOR_RESET="\033[0m"
+  [[ -z $1 ]] && BRANCH=$(git rev-parse --abbrev-ref HEAD) || BRANCH=$1
+  LAST_COMMIT_SHA=$(git rev-parse $BRANCH | tail -n 1)
+  echo "$LAST_COMMIT_SHA" | tr -d '\n' | pbcopy
+  echo "Copied ${COLOR_GREEN}${LAST_COMMIT_SHA} ${COLOR_RESET}from ${BRANCH}."
+}
 alias gs='git stash'
 alias gitsl='git sl'
 alias gaa='git add -A'
