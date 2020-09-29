@@ -1,0 +1,54 @@
+# All colors must be in the form of '#rrggbb' or '#rgb'.
+# You cannot use color names.
+
+log-view:
+  nickname-format: "[%n] "
+  scroller-highlight-color: "#f0f"
+input-text:
+  font-family: "Inconsolata"
+  font-size: 13.0
+  background-color: "#393939"
+  color: "#dedede"
+  selected:
+    background-color: "#ccc"
+member-list:
+  font-family: "Inconsolata"
+  font-size: 14.0
+  color: "#dedede"
+  background-color: "#393939"
+  operator:
+    color: "#dedede"
+  selected:
+    color: "#393939"
+    background:
+      # gradient
+      top-line-color: "#888"
+      bottom-line-color: "#888"
+      top-color: "#888"
+      bottom-color: "#888"
+server-tree:
+  font-family: "Inconsolata"
+  font-size: 14.0
+  background-color: "#393939"
+  highlight:
+    color: "#87AE86"
+  newtalk:
+    color: "#d7a5a4"
+  unread:
+    color: "#c6eaff"
+  normal:
+    active:
+      color: "#dedede"
+    inactive:
+      color: "#ccc"
+  selected:
+    active:
+      color: "#dedede"
+    inactive:
+      color: "#888"
+    background:
+      # gradient
+      top-line-color: "#adbbd0"
+      bottom-line-color: "#8c98b0"
+      top-color: "#adbbd0"
+      bottom-color: "#98aac4"
