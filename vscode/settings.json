@@ -13,14 +13,25 @@
     "comments": false,
     "strings": false
   },
-  "[php]": {
-    "editor.formatOnSave": true
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false
   },
   "gitlens.views.repositories.location": "gitlens",
   "gitlens.views.fileHistory.location": "gitlens",
@@ -39,5 +50,6 @@
     "list.inactiveSelectionBackground": "#1F2320"
   },
   "workbench.colorTheme": "Zenburn",
-  "python.insidersChannel": "off"
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "extensions.autoUpdate": false
 }
