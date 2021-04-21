@@ -1,47 +1,61 @@
 {
-  "telemetry.enableTelemetry": false,
-  "telemetry.enableCrashReporter": false,
-  "editor.rulers": [100],
-  "editor.tabSize": 2,
-  "editor.fontFamily": "Inconsolata for Powerline, Inconsolata, Consolas, monospace",
-  "editor.fontSize": 15,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": false,
-  "editor.quickSuggestions": {
-    "other": true,
-    "comments": false,
-    "strings": false
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": false
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": false
-  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": false
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
   },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": false
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
   },
-  "gitlens.views.repositories.location": "gitlens",
-  "gitlens.views.fileHistory.location": "gitlens",
-  "gitlens.views.lineHistory.location": "gitlens",
-  "gitlens.views.compare.location": "gitlens",
-  "gitlens.views.search.location": "gitlens",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
+  },
+  "editor.fontFamily": "Inconsolata for Powerline, Inconsolata, Consolas, monospace",
+  "editor.fontSize": 15,
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.quickSuggestions": {
+    "comments": false,
+    "other": true,
+    "strings": false
+  },
+  "editor.rulers": [100],
+  "editor.tabSize": 2,
+  "explorer.confirmDelete": false,
+  "extensions.autoUpdate": true,
   "gitlens.codeLens.enabled": false,
-  "gitlens.statusBar.enabled": false,
   "gitlens.hovers.avatars": false,
   "gitlens.hovers.currentLine.changes": false,
+  "gitlens.statusBar.enabled": false,
+  "gitlens.views.compare.location": "gitlens",
+  "gitlens.views.fileHistory.location": "gitlens",
+  "gitlens.views.lineHistory.location": "gitlens",
+  "gitlens.views.repositories.location": "gitlens",
+  "gitlens.views.search.location": "gitlens",
+  "gitweblinks.defaultBranch": "develop",
+  "gitweblinks.gitHubEnterprise": [
+    {
+      "http": "https://github.robot.car",
+      "ssh": "git@github.robot.car"
+    }
+  ],
+  "gitweblinks.linkType": "defaultBranch",
+  "go.useLanguageServer": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false,
   "terminal.integrated.fontSize": 15,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "window.zoomLevel": 0,
@@ -49,7 +63,5 @@
     "list.activeSelectionBackground": "#424944",
     "list.inactiveSelectionBackground": "#1F2320"
   },
-  "workbench.colorTheme": "Zenburn",
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "extensions.autoUpdate": false
+  "workbench.colorTheme": "Zenburn"
 }
