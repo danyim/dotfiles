@@ -63,8 +63,8 @@ fi
 
 # Copy key fonts
 if is_macos; then # macOS
-  cp /Library/Fonts/Inconsolata-Regular.ttf fonts
-  cp /Library/Fonts/Inconsolata-Bold.ttf fonts
+  cp ~/Library/Fonts/Inconsolata-Regular.ttf fonts
+  cp ~/Library/Fonts/Inconsolata-Bold.ttf fonts
   cp ~/Library/Fonts/Inconsolata\ Bold\ for\ Powerline.ttf fonts
   cp ~/Library/Fonts/Inconsolata\ for\ Powerline.otf fonts
   cp ~/Library/Fonts/Inconsolata-dz\ for\ Powerline.otf fonts
