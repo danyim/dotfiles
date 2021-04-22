@@ -56,5 +56,13 @@ NSUserKeyEquivalents() {
     done
 }
 ################################################################################
-NSUserKeyEquivalents 'com.omnigroup.OmniFocus3' "Quit OmniFocus" '@$q'
-NSUserKeyEquivalents 'com.omnigroup.OmniFocus3' "Search Here" '@p'
+NSUserKeyEquivalents 'com.apple.Preview' "Move To..." '@$m'
+NSUserKeyEquivalents 'com.apple.Terminal' "Select Next Tab" '^\\U21e5'
+NSUserKeyEquivalents 'com.apple.Terminal' "Select Previous Tab" '^$\\U21e5'
+NSUserKeyEquivalents 'com.google.Chrome' "Pin Tab" '@$p'
+NSUserKeyEquivalents 'com.google.Chrome' "Quit Google Chrome" '~q'
+NSUserKeyEquivalents 'com.omnigroup.OmniFocus3.MacAppStore' "New Folder" '@$n'
+NSUserKeyEquivalents 'com.omnigroup.OmniFocus3.MacAppStore' "Quit OmniFocus" '@$q'
+NSUserKeyEquivalents 'com.omnigroup.OmniFocus3.MacAppStore' "Search Here" '@p'
+NSUserKeyEquivalents 'com.sublimetext.3' "Hide Sublime Text" '@~^$h'
+NSUserKeyEquivalents 'com.sublimetext.3' "Quit Sublime Text" '@^q'
