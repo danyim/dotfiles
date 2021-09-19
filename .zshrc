@@ -326,6 +326,9 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 # Don't share command history with other tabs
 unsetopt share_history
 
+# Disable capturing no glob matches
+setopt +o nomatch
+
 # For fuzzy search
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # --files: List files that would be searched but do not search
@@ -337,6 +340,3 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 # Load local-only configurations
 source "$HOME/.localrc"
-
-source $HOME/.config/broot/launcher/bash/br
-

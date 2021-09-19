@@ -1,4 +1,9 @@
 {
+  "[rust]": {
+    "editor.defaultFormatter": "statiolake.vscode-rustfmt",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
+  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnPaste": false,
@@ -25,7 +30,6 @@
   "editor.fontFamily": "Inconsolata for Powerline, Inconsolata, Consolas, monospace",
   "editor.fontSize": 15,
   "editor.formatOnPaste": false,
-  "editor.formatOnSave": true,
   "editor.quickSuggestions": {
     "comments": false,
     "other": true,

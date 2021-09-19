@@ -1,3 +1,4 @@
+alias br=broot
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/usr/local/git/bin:/usr/local/sbin:$PATH"
 # For Heroku
