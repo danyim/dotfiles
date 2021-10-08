@@ -2,22 +2,18 @@
 # .zshenv → [.zprofile if login] → [.zshrc if interactive] →
 # [.zlogin if login] → [.zlogout sometimes]
 
-export TERM="xterm-256color" # Enables 265 colors in tmux
+export TERM="alacritty" # Enables 265 colors in tmux
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="true"
-
 # How often to auto-update (in days).
-export UPDATE_ZSH_DAYS=7
-
+export UPDATE_ZSH_DAYS=25
 # Uncomment the following line to disable auto-setting terminal title.
 DISABLE_AUTO_TITLE="true"
-
 # "tt [title]" will title the iTerm2 tab if outside of tmux. If inside of tmux,
 # it will rename the tmux window
 function () {
@@ -310,12 +306,23 @@ function ftpane {
 }
 
 ###############################################################################
-# Misc                                                                        #
+# Keybindings                                                                 #
 ###############################################################################
+# Tip: run "cat" and type characters to find their code
 
 # Allow for reverse tab of completion lists
 bindkey -M menuselect '^[[Z' reverse-menu-complete
+
 bindkey "^X\x7f" backward-kill-line
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
+# Undo/redo still in progress
+#bindkey "^[undo" undo
+#bindkey "^[redo" redo 
+
+###############################################################################
+# Misc                                                                        #
+###############################################################################
 
 # For Z -- https://github.com/rupa/z
 . /etc/profile.d/z.sh
