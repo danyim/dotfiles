@@ -2,7 +2,7 @@
 # .zshenv → [.zprofile if login] → [.zshrc if interactive] →
 # [.zlogin if login] → [.zlogout sometimes]
 
-export TERM="alacritty" # Enables 265 colors in tmux
+export TERM="screen-256color" # Enables 265 colors in tmux
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load
