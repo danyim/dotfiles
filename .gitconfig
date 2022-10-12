@@ -63,3 +63,5 @@
 	autosetuprebase = always
 [hub]
 	host = github.robot.car
+[init]
+	defaultBranch = main
