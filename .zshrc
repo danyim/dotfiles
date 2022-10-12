@@ -32,21 +32,27 @@ function () {
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
+# Lazy load NVM since it can contribute to a slower shell startup time
+export NVM_LAZY_LOAD=true
+export NVM_COMPLETION=true
+
 # The offical Powerline repo suggests running this, but we're seeing script errors
 # when loading
 #. $HOME/Library/Python/3.6/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
 
 source /usr/local/share/antigen/antigen.zsh
 antigen use oh-my-zsh
-antigen bundle git
 antigen bundle colorize
+antigen bundle git
+antigen bundle lukechilds/zsh-better-npm-completion
+antigen bundle lukechilds/zsh-nvm
+antigen bundle mroth/evalcache
 antigen bundle node
 antigen bundle npm
 antigen bundle ssh-agent
 antigen bundle supervisor
-antigen bundle lukechilds/zsh-better-npm-completion
-antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zdharma/fast-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
 if ! (( ${+functions[_zsh_highlight]} )); then
     . $HOME/.antigen/bundles/zdharma/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 fi
