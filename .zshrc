@@ -44,21 +44,19 @@ source /usr/local/share/antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen bundle colorize
 antigen bundle git
+antigen bundle history
+antigen bundle history-substring-search
 antigen bundle lukechilds/zsh-better-npm-completion
 antigen bundle lukechilds/zsh-nvm
 antigen bundle mroth/evalcache
-antigen bundle node
 antigen bundle npm
 antigen bundle ssh-agent
-antigen bundle supervisor
 antigen bundle zdharma/fast-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
 if ! (( ${+functions[_zsh_highlight]} )); then
     . $HOME/.antigen/bundles/zdharma/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 fi
-antigen bundle history
-antigen bundle history-substring-search
-# antigen bundle zsh-users/zsh-completions
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_package_name"
@@ -270,6 +268,12 @@ alias kcp=kc get pods  --sort-by=.metadata.creationTimestamp
 
 # Apple services
 alias restart_audio=sudo killall -9 coreaudiod
+
+# Time zsh shell startup
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
 
 # Fuzzy searching tmux panes
 function ftpane {
