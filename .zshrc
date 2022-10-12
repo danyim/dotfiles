@@ -56,7 +56,6 @@ antigen bundle history-substring-search
 # antigen bundle zsh-users/zsh-completions
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
-#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(node_version time)
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_package_name"
 POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 POWERLEVEL9K_TIME_FORMAT="%D{%L:%M:%S %p}"
@@ -92,11 +91,10 @@ export SSH_KEY_PATH=$HOME/.ssh/id_rsa
 # For Python tab completions
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
-# For Python virtual env
-export WORKON_HOME=$HOME/Developer/.virtualenvs
-export PROJECT_HOME=$HOME/Developer
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.6
-# source /usr/local/bin/virtualenvwrapper.sh
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+eval "$(pyenv init -)"
 
 ###############################################################################
 # Aliases                                                                     #
@@ -347,3 +345,11 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 # Load local-only configurations
 source "$HOME/.localrc"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+fi
+
