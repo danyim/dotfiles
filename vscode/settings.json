@@ -1,8 +1,6 @@
 {
-  "[rust]": {
-    "editor.defaultFormatter": "statiolake.vscode-rustfmt",
-    "editor.formatOnPaste": false,
-    "editor.formatOnSave": true
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -16,6 +14,11 @@
   },
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "statiolake.vscode-rustfmt",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -35,6 +38,7 @@
     "other": true,
     "strings": false
   },
+  "json.schemas": [],
   "editor.rulers": [100],
   "editor.tabSize": 2,
   "explorer.confirmDelete": false,
@@ -43,11 +47,6 @@
   "gitlens.hovers.avatars": false,
   "gitlens.hovers.currentLine.changes": false,
   "gitlens.statusBar.enabled": false,
-  "gitlens.views.compare.location": "gitlens",
-  "gitlens.views.fileHistory.location": "gitlens",
-  "gitlens.views.lineHistory.location": "gitlens",
-  "gitlens.views.repositories.location": "gitlens",
-  "gitlens.views.search.location": "gitlens",
   "gitweblinks.defaultBranch": "develop",
   "gitweblinks.gitHubEnterprise": [
     {
@@ -56,16 +55,13 @@
     }
   ],
   "gitweblinks.linkType": "defaultBranch",
-  "go.useLanguageServer": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "telemetry.enableCrashReporter": false,
-  "telemetry.enableTelemetry": false,
+  "telemetry.telemetryLevel": "off",
   "terminal.integrated.fontSize": 15,
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "window.zoomLevel": 0,
   "workbench.colorCustomizations": {
     "list.activeSelectionBackground": "#424944",
     "list.inactiveSelectionBackground": "#1F2320"
   },
-  "workbench.colorTheme": "Zenburn"
+  "workbench.colorTheme": "Zenburn",
 }
