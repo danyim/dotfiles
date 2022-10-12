@@ -1,8 +1,6 @@
 alias br=broot
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/usr/local/git/bin:/usr/local/sbin:$PATH"
-# For Heroku
-export PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
 # For Rust
 export PATH="$HOME/.cargo/bin:$PATH"
 # For NVM (Node Version Manager)

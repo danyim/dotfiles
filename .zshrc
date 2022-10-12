@@ -2,6 +2,8 @@
 # .zshenv → [.zprofile if login] → [.zshrc if interactive] →
 # [.zlogin if login] → [.zlogout sometimes]
 
+# Set the username for prompts
+export DEFAULT_USER=danyim
 export TERM="screen-256color" # Enables 265 colors in tmux
 export ZSH=$HOME/.oh-my-zsh
 
@@ -29,9 +31,6 @@ function () {
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
-
-# Set the username for prompts
-export DEFAULT_USER=danyim
 
 # The offical Powerline repo suggests running this, but we're seeing script errors
 # when loading
@@ -79,22 +78,10 @@ export CLICOLOR=1
 
 # Set PATH variables are set in .zshenv
 export PATH="/usr/local/git/bin:/usr/local/sbin:$PATH"
-export PATH="/usr/local/heroku/bin:$PATH" # Added by the Heroku Toolbelt
 # More PATH variables set in .zshenv
-
-# Sets pgp key generated on 1/15/2015 as the default key
-export GPGKEY=1988FBC9
 
 export LANG=en_US.UTF-8
 export SSH_KEY_PATH=$HOME/.ssh/id_rsa
-
-# For Python tab completions
-export PYTHONSTARTUP=$HOME/.pythonrc.py
-
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PATH="/usr/local/bin:$PATH"
-eval "$(pyenv init -)"
 
 ###############################################################################
 # Aliases                                                                     #
@@ -253,19 +240,19 @@ alias top="sudo htop"
 alias du="ncdu --color dark -rr -x --exclude .git --exclude node_modules"
 
 # Docker
-alias dkrkill="docker kill $(docker ps -q)"
+#alias dkrkill="docker kill $(docker ps -q)"
 
-function dkrclean {
-  echo -n "Remove all images and reset Docker? [Y/n]: "
-  read input
-  if [[ $input == "Y" || $input == "y" ]]; then
-    echo "Cleaning all Docker images..."
-    docker system prune -f
-    docker rmi -f $(docker images -q)
-    docker rm $(docker ps -aq)
-    rm ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
-  fi
-}
+#function dkrclean {
+#  echo -n "Remove all images and reset Docker? [Y/n]: "
+#  read input
+#  if [[ $input == "Y" || $input == "y" ]]; then
+#    echo "Cleaning all Docker images..."
+#    docker system prune -f
+#    docker rmi -f $(docker images -q)
+#    docker rm $(docker ps -aq)
+#    rm ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/Docker.qcow2
+#  fi
+#}
 alias ld="lazydocker"
 
 # Kubernetes
@@ -274,14 +261,9 @@ alias kcns=kubens
 alias kctx=kubectx
 alias kce=kubectx exec -it
 alias kcp=kc get pods  --sort-by=.metadata.creationTimestamp
-alias kclg=kc logs -f $(kc get pods | grep gateway | cut -d' ' -f-1)
 
 # Apple services
 alias restart_audio=sudo killall -9 coreaudiod
-
-# Chrome (load with WebRTC testing profile)
-alias chrome-test="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --console --no-first-run --user-data-dir=$HOME/.config/chrome-test --use-fake-device-for-media-stream --enable-logging --v=1 --vmodule=*third_party/libjingle/*=3,*=0"
-alias chrome-test-clean="rm -rf $HOME/.config/chrome-test"
 
 # Fuzzy searching tmux panes
 function ftpane {
@@ -345,11 +327,3 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 # Load local-only configurations
 source "$HOME/.localrc"
-
-if command -v pyenv 1>/dev/null 2>&1; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
-fi
-
