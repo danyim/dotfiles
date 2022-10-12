@@ -36,6 +36,8 @@ COMPLETION_WAITING_DOTS="true"
 export NVM_LAZY_LOAD=true
 export NVM_COMPLETION=true
 
+export PATH="$HOME/.rbenv/bin:$PATH"
+
 # The offical Powerline repo suggests running this, but we're seeing script errors
 # when loading
 #. $HOME/Library/Python/3.6/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
@@ -68,6 +70,9 @@ antigen theme romkatv/powerlevel10k
 antigen apply
 
 source $ZSH/oh-my-zsh.sh
+
+_evalcache rbenv init -
+_evalcache direnv hook zsh
 
 ###############################################################################
 # Environment variables                                                       #
