@@ -1,1 +1,7 @@
+*~
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+gin-bin
 *.code-workspace
+.vscode/
