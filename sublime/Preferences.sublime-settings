@@ -64,6 +64,7 @@
 	"hot_exit": false,
 	"ignored_packages":
 	[
+		"JsPrettier",
 		"SublimeLinter-contrib-standard",
 		"Vintage",
 	],
