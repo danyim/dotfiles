@@ -53,7 +53,7 @@ antigen bundle lukechilds/zsh-nvm
 antigen bundle mroth/evalcache
 antigen bundle npm
 antigen bundle ssh-agent
-antigen bundle z-shell/F-Sy-H --branch=main
+antigen bundle zdharma/fast-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 if ! (( ${+functions[_zsh_highlight]} )); then
