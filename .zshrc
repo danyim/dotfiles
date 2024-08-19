@@ -18,7 +18,7 @@ export UPDATE_ZSH_DAYS=25
 DISABLE_AUTO_TITLE="true"
 # "tt [title]" will title the iTerm2 tab if outside of tmux. If inside of tmux,
 # it will rename the tmux window
-function () {
+function tt {
   if [ -z $TMUX ] ; then
     echo -e "\033];$@\007"
   else
