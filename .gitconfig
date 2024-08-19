@@ -24,11 +24,12 @@
 	ff = false
 [push]
 	default = current
+	autoSetupRemote = true
 [pull]
 	ff = true
 	rebase = true
 [commit]
-	gpgsign = false
+	gpgsign = true
 [alias]
 	# Diff previous commit to its parent
 	dhh = diff HEAD^ HEAD

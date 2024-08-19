@@ -30,6 +30,14 @@
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true
   },
+  "[feature]": {
+    "editor.defaultFormatter": "alexkrechik.cucumberautocomplete",
+    "editor.formatOnSave": true
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
+  },
   "editor.fontFamily": "Inconsolata for Powerline, Inconsolata, Consolas, monospace",
   "editor.fontSize": 15,
   "editor.formatOnPaste": false,
@@ -41,19 +49,14 @@
   "json.schemas": [],
   "editor.rulers": [100],
   "editor.tabSize": 2,
+  "editor.minimap.maxColumn": 50,
+  "editor.minimap.scale": 1,
   "explorer.confirmDelete": false,
-  "extensions.autoUpdate": true,
   "gitlens.codeLens.enabled": false,
   "gitlens.hovers.avatars": false,
   "gitlens.hovers.currentLine.changes": false,
   "gitlens.statusBar.enabled": false,
-  "gitweblinks.defaultBranch": "develop",
-  "gitweblinks.gitHubEnterprise": [
-    {
-      "http": "https://github.robot.car",
-      "ssh": "git@github.robot.car"
-    }
-  ],
+  "gitweblinks.defaultBranch": "main",
   "gitweblinks.linkType": "defaultBranch",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "telemetry.telemetryLevel": "off",
@@ -64,4 +67,20 @@
     "list.inactiveSelectionBackground": "#1F2320"
   },
   "workbench.colorTheme": "Zenburn",
+  "workbench.startupEditor": "none",
+  "update.showReleaseNotes": false,
+  "window.zoomLevel": 1,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[handlebars]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "github.copilot.chat.welcomeMessage": "never",
+  "python.languageServer": "Pylance",
+  "[dockercompose]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "security.workspace.trust.untrustedFiles": "open",
+  "go.toolsManagement.autoUpdate": true,
 }

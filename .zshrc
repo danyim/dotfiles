@@ -53,11 +53,11 @@ antigen bundle lukechilds/zsh-nvm
 antigen bundle mroth/evalcache
 antigen bundle npm
 antigen bundle ssh-agent
-antigen bundle zdharma/fast-syntax-highlighting
+antigen bundle zdharma-continuum/fast-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 if ! (( ${+functions[_zsh_highlight]} )); then
-    . $HOME/.antigen/bundles/zdharma/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+    . $HOME/.antigen/bundles/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 fi
 
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(user dir vcs)
@@ -71,7 +71,6 @@ antigen apply
 
 source $ZSH/oh-my-zsh.sh
 
-_evalcache rbenv init -
 _evalcache direnv hook zsh
 
 ###############################################################################
@@ -171,6 +170,14 @@ function clc {
   echo "$LAST_COMMIT_SHA" | tr -d '\n' | pbcopy
   echo "Copied ${COLOR_GREEN}${LAST_COMMIT_SHA} ${COLOR_RESET}from ${BRANCH}."
 }
+# ccb "Copy current branch": Copies the current branch into the pasteboard
+alias ccb="git rev-parse --abbrev-ref HEAD | pbcopy"
+# Formats the current branch name to a PR title (Sirona-specific)
+function fmt_branch {
+  # Converts feat/VX-1234-foo-bar -> feat(VX-1234): Title
+  BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+  echo "${BRANCH_NAME/\//(}" | sed -E "s/(VX-[0-9]{3,4})/\1):/" | sed -E "s/\:(.+)/: PR Title/"
+}
 alias gs='git stash'
 alias gitsl='git sl'
 alias gaa='git add -A'
@@ -182,10 +189,12 @@ alias gpn='git push --no-verify'
 alias gpnf='git push --no-verify -f'
 alias gpt='git push --tags'
 alias gcd='git checkout develop'
-alias gcm='git checkout master'
-alias grm='git rebase master'
+alias gcm='git checkout main'
+alias gcms='git checkout master'
+alias grm='git rebase main'
 alias grd='git rebase develop'
-alias gmm='git merge master --no-ff'
+alias gmm='git merge main --no-ff'
+alias gmms='git merge master --no-ff'
 alias gcd='git checkout develop'
 alias gmd='git merge develop --no-ff'
 alias grsh='git reset --soft HEAD^'
@@ -194,8 +203,10 @@ alias gpp='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias gwc='git whatchanged -p --abbrev-commit --pretty=medium'
 alias gcmd='git commend' # Commit amend
 alias gcmdnv='git commend --no-verify' # Commit amend and bypass hooks
-alias mkpr='hub pull-request --base develop --head $(git rev-parse --abbrev-ref HEAD) -d -o'
-alias mkprm='hub pull-request --base master --head $(git rev-parse --abbrev-ref HEAD) -d -o'
+alias mkpr='gh pr create --web --title "$(fmt_branch)"'
+#alias mkpr='hub pull-request --base develop --head $(git rev-parse --abbrev-ref HEAD) -d -o'
+alias mkprm='gh pr create --web --base master --head $(git rev-parse --abbrev-ref HEAD)'
+#alias mkprm='hub pull-request --base master --head $(git rev-parse --abbrev-ref HEAD) -d -o'
 # "git diff stats"
 function gds { git diff --stat --color "$@" | cat }
 function gdsc { git diff --stat --cached --color "$@" | cat }

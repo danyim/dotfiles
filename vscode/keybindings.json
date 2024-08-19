@@ -93,5 +93,18 @@
     "key": "cmd+shift+e",
     "command": "editor.action.marker.prevInFiles",
     "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+l",
+    "command": "-expandLineSelection",
+    "when": "textInputFocus"
+  },
+  {
+    "key": "cmd+l",
+    "command": "workbench.files.action.showActiveFileInExplorer"
+  },
+  {
+    "key": "cmd+f1",
+    "command": "github.copilot.interactiveEditor.generate"
   }
 ]
