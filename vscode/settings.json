@@ -76,11 +76,23 @@
   "[handlebars]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "github.copilot.chat.welcomeMessage": "never",
   "python.languageServer": "Pylance",
   "[dockercompose]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   },
   "security.workspace.trust.untrustedFiles": "open",
   "go.toolsManagement.autoUpdate": true,
+  "makefile.configureOnOpen": true,
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "html.autoClosingTags": false,
+  "typescript.autoClosingTags": false,
+  "javascript.autoClosingTags": false,
+  "editor.codeActionsOnSave": {
+    "source.sortImports": "never",
+    "source.fixAll.eslint": "never"
+  },
+  "typescript.tsserver.log": "verbose"
 }
