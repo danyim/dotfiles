@@ -407,7 +407,7 @@ vnoremap <silent> <leader>r :call VisualSelection('replace')<CR>
 map <leader>cc :botright cope<cr>
 map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
 map <leader>n :cn<cr>
-map <leader>p :cp<cr>
+map <leader>cp :cp<cr>
 
 " Allows searching for visually selected text
 vnoremap // y/\V<C-R>"<CR>
@@ -423,7 +423,7 @@ noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 map <leader>q :e ~/buffer<cr>
 
 " Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr>
+map <leader>p :setlocal paste!<cr>
 
 " Quickly reload a file
 nnoremap <leader>r :e!<CR>
