@@ -1,6 +1,8 @@
 {
   "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -17,6 +19,11 @@
   },
   "[rust]": {
     "editor.defaultFormatter": "statiolake.vscode-rustfmt",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true
+  },
+  "[sql]": {
+    "editor.defaultFormatter": "trunk.io",
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true
   },
