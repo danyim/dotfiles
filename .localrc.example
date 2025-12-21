@@ -1,0 +1,12 @@
+# .localrc.example
+# 
+# Copy this file to ~/.localrc and customize it with your local machine-specific
+# settings. The .localrc file is sourced at the end of .zshrc and should NOT be
+# committed to version control (add it to .gitignore).
+#
+# This is useful for:
+# - Machine-specific environment variables
+# - Work-specific configurations
+# - Private API keys and tokens
+# - Local PATH modifications
+# - Anything you don't want in your public dotfiles
