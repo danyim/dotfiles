@@ -1,4 +1,9 @@
 " Install plugins
+
+" Set leader key BEFORE loading plugins
+let mapleader = ","
+let g:mapleader = ","
+
 call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -46,9 +51,6 @@ set autoread
 " Automatically write the contents of the file when calling :make or :GoBuild
 set autowrite
 
-" With a map leader it's possible to do extra key combinations
-let mapleader = ","
-let g:mapleader = ","
 " Fast saving
 nmap <leader>w :w!<cr>
 " Make Vim more useful
