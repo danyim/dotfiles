@@ -64,6 +64,17 @@ cargo install exa
 echo "Installing nvm..."
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 
+# Install tmux
+echo "Installing tmux..."
+if is_macos; then
+  brew install tmux
+elif is_linux; then
+  sudo apt-get update && sudo apt-get install -y tmux
+else
+  echo "Unsupported platform for tmux installation"
+  exit 1
+fi
+
 # Install TPM
 echo "Installing TPM (tmux plugin manager)..."
 git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
