@@ -95,6 +95,16 @@
     "when": "editorTextFocus"
   },
   {
+    "key": "cmd+u",
+    "command": "cline.addToChat",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+shift+u",
+    "command": "claude-dev.SidebarProvider.focus",
+    "when": "editorTextFocus"
+  },
+  {
     "key": "cmd+l",
     "command": "-expandLineSelection",
     "when": "textInputFocus"
@@ -107,9 +117,4 @@
     "key": "cmd+f1",
     "command": "github.copilot.interactiveEditor.generate"
   },
-  {
-    "key": "cmd+u",
-    "command": "cline.addToChat",
-    "when": "editorTextFocus"
-  }
 ]
