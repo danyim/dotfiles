@@ -1,11 +1,22 @@
 #!/bin/bash
 # Loads the configuration from the repository
 
-current_dir="$( cd "$( dirname "${bash_source[0]}" )" && pwd )"
+set -euo pipefail
+
+current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$current_dir/lib/helpers.sh"
 
-UTCTIME=`date -u +%s`
-BACKUP_DIR=$HOME/.dotfiles.backup/$UTCTIME
+UTCTIME=$(date -u +%s)
+BACKUP_DIR="$HOME/.dotfiles.backup/$UTCTIME"
+
+# Parse command line arguments first
+PARSE_BREWS=0
+while getopts "b" opt; do
+  case "$opt" in
+    b)  PARSE_BREWS=1
+    ;;
+  esac
+done
 
 echo "Loading dotfile configuration from the repository..."
 echo "Re-run with the -b switch to install the Brewfile manifest"
@@ -19,16 +30,9 @@ then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
 fi
 
-PARSE_BREWS=0
-while getopts "b" opt; do
-  case "$opt" in
-    b)  PARSE_BREWS=1
-    ;;
-  esac
-done
-
-# Create a backup directory
-mkdir -p $BACKUP_DIR
+# Create backup directory
+echo "Creating backup directory $BACKUP_DIR ..."
+mkdir -p "$BACKUP_DIR"
 
 if is_macos && [ $PARSE_BREWS -eq 1 ]; then
   echo "Parsing Brewfile..."
@@ -38,106 +42,183 @@ if is_macos && [ $PARSE_BREWS -eq 1 ]; then
   brew bundle
 fi
 
-# Make the backup directory
-echo "Creating backup directory $BACKUP_DIR ..."
-mkdir -p $BACKUP_DIR
-
 # Copy zsh configs
-echo "Importing git configuration..."
-backup_if_exists ~/.zshrc $BACKUP_DIR
-cp .zshrc ~/.zshrc
-backup_if_exists ~/.zshenv $BACKUP_DIR
-cp .zshenv ~/.zshenv
+echo "Importing zsh configuration..."
+if [ -f .zshrc ]; then
+  backup_if_exists ~/.zshrc "$BACKUP_DIR/.zshrc"
+  cp .zshrc ~/.zshrc
+fi
+if [ -f .zshenv ]; then
+  backup_if_exists ~/.zshenv "$BACKUP_DIR/.zshenv"
+  cp .zshenv ~/.zshenv
+fi
 touch ~/.localrc # Make sure a ~/.localrc exists
 
 # Git
-echo "importing git settings..."
-backup_if_exists ~/.gitconfig $BACKUP_DIR
-GIT_USERNAME=$(git config --global user.name)
-GIT_EMAIL=$(git config --global user.email)
-cp .gitconfig ~/.gitconfig
-# Replace username & email
-git config --global user.name "$GIT_USERNAME"
-git config --global user.email "$GIT_EMAIL"
-backup_if_exists ~/.gitignore $BACKUP_DIR
-cp .gitignore ~/.gitignore_global
+echo "Importing git settings..."
+if [ -f .gitconfig ]; then
+  backup_if_exists ~/.gitconfig "$BACKUP_DIR/.gitconfig"
+  GIT_USERNAME=$(git config --global user.name || echo "")
+  GIT_EMAIL=$(git config --global user.email || echo "")
+  cp .gitconfig ~/.gitconfig
+  # Replace username & email only if they were previously set
+  if [ -n "$GIT_USERNAME" ]; then
+    git config --global user.name "$GIT_USERNAME"
+  fi
+  if [ -n "$GIT_EMAIL" ]; then
+    git config --global user.email "$GIT_EMAIL"
+  fi
+fi
+if [ -f .gitignore ]; then
+  backup_if_exists ~/.gitignore "$BACKUP_DIR/.gitignore"
+  cp .gitignore ~/.gitignore_global
+fi
 
 # Alacritty
 echo "Importing alacritty settings..."
 mkdir -p ~/.config/alacritty
-backup_if_exists ~/.config/alacritty/alacritty.yml $BACKUP_DIR
+backup_if_exists ~/.config/alacritty/alacritty.yml "$BACKUP_DIR/alacritty.yml"
 if is_macos; then
-  cp alacritty.yml ~/.config/alacritty/alacritty.yml
+  if [ -f alacritty.yml ]; then
+    cp alacritty.yml ~/.config/alacritty/alacritty.yml
+  fi
 else
-  cp alacritty-linux.yml ~/.config/alacritty/alacritty.yml
+  if [ -f alacritty-linux.yml ]; then
+    cp alacritty-linux.yml ~/.config/alacritty/alacritty.yml
+  fi
 fi
 
 # Sublime
 echo "Importing Sublime Text settings..."
-mkdir -p ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/User
-mkdir -p $BACKUP_DIR/sublime
+mkdir -p "$BACKUP_DIR/sublime"
 if is_macos; then
   # Must use double quotes in paths due to the spaces
-  SUBLIME_DIR="$HOME/Library/Application Support/Sublime Text 3/Packages/User"
-  backup_if_exists "$SUBLIME_DIR/Preferences.sublime-settings" $BACKUP_DIR/sublime
-  backup_if_exists "$SUBLIME_DIR/Default (OSX).sublime-keymap" $BACKUP_DIR/sublime
-  backup_if_exists "$SUBLIME_DIR/*.sublime-snippet" $BACKUP_DIR/sublime
-  cp ./sublime/Preferences.sublime-settings "$SUBLIME_DIR"
-  cp ./sublime/"Default (OSX)".sublime-keymap "$SUBLIME_DIR"
-  cp ./sublime/*.sublime-snippet "$SUBLIME_DIR"
-  cp ./sublime/zenburn.tmTheme "$SUBLIME_DIR" 
+  # Try Sublime Text 4 first, fall back to Sublime Text 3
+  if [ -d "$HOME/Library/Application Support/Sublime Text/Packages/User" ]; then
+    SUBLIME_DIR="$HOME/Library/Application Support/Sublime Text/Packages/User"
+  elif [ -d "$HOME/Library/Application Support/Sublime Text 3/Packages/User" ]; then
+    SUBLIME_DIR="$HOME/Library/Application Support/Sublime Text 3/Packages/User"
+  else
+    SUBLIME_DIR="$HOME/Library/Application Support/Sublime Text 3/Packages/User"
+  fi
+  mkdir -p "$SUBLIME_DIR"
+  
+  backup_if_exists "$SUBLIME_DIR/Preferences.sublime-settings" "$BACKUP_DIR/sublime/Preferences.sublime-settings"
+  backup_if_exists "$SUBLIME_DIR/Default (OSX).sublime-keymap" "$BACKUP_DIR/sublime/Default (OSX).sublime-keymap"
+  
+  # Backup snippet files individually
+  for snippet in "$SUBLIME_DIR"/*.sublime-snippet; do
+    if [ -f "$snippet" ]; then
+      backup_if_exists "$snippet" "$BACKUP_DIR/sublime/$(basename "$snippet")"
+    fi
+  done
+  
+  if [ -f ./sublime/Preferences.sublime-settings ]; then
+    cp ./sublime/Preferences.sublime-settings "$SUBLIME_DIR/"
+  fi
+  if [ -f ./sublime/"Default (OSX).sublime-keymap" ]; then
+    cp ./sublime/"Default (OSX).sublime-keymap" "$SUBLIME_DIR/"
+  fi
+  if [ -f ./sublime/zenburn.tmTheme ]; then
+    cp ./sublime/zenburn.tmTheme "$SUBLIME_DIR/"
+  fi
+  # Copy snippet files
+  for snippet in ./sublime/*.sublime-snippet; do
+    if [ -f "$snippet" ]; then
+      cp "$snippet" "$SUBLIME_DIR/"
+    fi
+  done
 else
-  # TODO: Find out the settings directory on Linux
-  SUBLIME_DIR="$HOME/.config/sublime-text-3/Packages/User"
-  backup_if_exists "$SUBLIME_DIR/Preferences.sublime-settings" $BACKUP_DIR/sublime
-  backup_if_exists "$SUBLIME_DIR/Default\ \(Linux\).sublime-keymap" $BACKUP_DIR/sublime
-  backup_if_exists "$SUBLIME_DIR/*.sublime-snippet" $BACKUP_DIR/sublime
-  cp sublime/Preferences.sublime-settings $SUBLIME_DIR 
-  cp sublime/Default\ \(Linux\).sublime-keymap $SUBLIME_DIR
-  cp sublime/*.sublime-snippet $SUBLIME_DIR
-  cp sublime/zenburn.tmTheme $SUBLIME_DIR 
+  # Try Sublime Text 4 first, fall back to Sublime Text 3
+  if [ -d "$HOME/.config/sublime-text/Packages/User" ]; then
+    SUBLIME_DIR="$HOME/.config/sublime-text/Packages/User"
+  else
+    SUBLIME_DIR="$HOME/.config/sublime-text-3/Packages/User"
+  fi
+  mkdir -p "$SUBLIME_DIR"
+  
+  backup_if_exists "$SUBLIME_DIR/Preferences.sublime-settings" "$BACKUP_DIR/sublime/Preferences.sublime-settings"
+  backup_if_exists "$SUBLIME_DIR/Default (Linux).sublime-keymap" "$BACKUP_DIR/sublime/Default (Linux).sublime-keymap"
+  
+  # Backup snippet files individually
+  for snippet in "$SUBLIME_DIR"/*.sublime-snippet; do
+    if [ -f "$snippet" ]; then
+      backup_if_exists "$snippet" "$BACKUP_DIR/sublime/$(basename "$snippet")"
+    fi
+  done
+  
+  if [ -f sublime/Preferences.sublime-settings ]; then
+    cp sublime/Preferences.sublime-settings "$SUBLIME_DIR/"
+  fi
+  if [ -f "sublime/Default (Linux).sublime-keymap" ]; then
+    cp "sublime/Default (Linux).sublime-keymap" "$SUBLIME_DIR/"
+  fi
+  if [ -f sublime/zenburn.tmTheme ]; then
+    cp sublime/zenburn.tmTheme "$SUBLIME_DIR/"
+  fi
+  # Copy snippet files
+  for snippet in sublime/*.sublime-snippet; do
+    if [ -f "$snippet" ]; then
+      cp "$snippet" "$SUBLIME_DIR/"
+    fi
+  done
 fi
 
 # VSCode
 echo "Importing VSCode settings..."
-VSCODE_DIR="$HOME/Library/Application Support/Code/User"
-mkdir -p "$VSCODE_DIR"
-mkdir -p $BACKUP_DIR/vscode
+mkdir -p "$BACKUP_DIR/vscode"
 if is_macos; then
-  backup_if_exists "$VSCODE_DIR/keybindings.json" $BACKUP_DIR/vscode
-  cp ./vscode/*.json "$VSCODE_DIR"
+  VSCODE_DIR="$HOME/Library/Application Support/Code/User"
+else
+  VSCODE_DIR="$HOME/.config/Code/User"
 fi
+mkdir -p "$VSCODE_DIR"
 
+backup_if_exists "$VSCODE_DIR/keybindings.json" "$BACKUP_DIR/vscode/keybindings.json"
+backup_if_exists "$VSCODE_DIR/settings.json" "$BACKUP_DIR/vscode/settings.json"
+
+# Copy VSCode settings files
+for json_file in ./vscode/*.json; do
+  if [ -f "$json_file" ]; then
+    cp "$json_file" "$VSCODE_DIR/"
+  fi
+done
 
 # Copy key fonts (-n option prevents overwrites)
 if is_macos; then
-  FONT_DIR=$HOME/Library/Fonts
+  FONT_DIR="$HOME/Library/Fonts"
 else  
-  FONT_DIR=$HOME/.fonts
+  FONT_DIR="$HOME/.fonts"
 fi
 echo "Installing fonts to $FONT_DIR ..."
-mkdir -p $FONT_DIR
-cp -n fonts/Inconsolata-Regular.ttf $FONT_DIR
-cp -n fonts/Inconsolata-Bold.ttf $FONT_DIR
-cp -n fonts/Inconsolata\ for\ Powerline.otf $FONT_DIR
-cp -n fonts/Inconsolata\ Bold\ for\ Powerline.ttf $FONT_DIR
-cp -n fonts/Inconsolata-dz\ for\ Powerline.otf $FONT_DIR
-cp -n fonts/Inconsolata-g\ for\ Powerline.otf $FONT_DIR
-cp -n fonts/Inconsolata.otf $FONT_DIR
-cp -n fonts/SourceCodeVariable*.ttf $FONT_DIR
+mkdir -p "$FONT_DIR"
+cp -n fonts/Inconsolata-Regular.ttf "$FONT_DIR/" 2>/dev/null || true
+cp -n fonts/Inconsolata-Bold.ttf "$FONT_DIR/" 2>/dev/null || true
+cp -n "fonts/Inconsolata for Powerline.otf" "$FONT_DIR/" 2>/dev/null || true
+cp -n "fonts/Inconsolata Bold for Powerline.ttf" "$FONT_DIR/" 2>/dev/null || true
+cp -n "fonts/Inconsolata-dz for Powerline.otf" "$FONT_DIR/" 2>/dev/null || true
+cp -n "fonts/Inconsolata-g for Powerline.otf" "$FONT_DIR/" 2>/dev/null || true
+cp -n fonts/Inconsolata.otf "$FONT_DIR/" 2>/dev/null || true
+cp -n fonts/SourceCodeVariable*.ttf "$FONT_DIR/" 2>/dev/null || true
 
 # tmux
 echo "Importing tmux settings..."
-backup_if_exists ~/.tmux.conf $BACKUP_DIR
-cp .tmux.conf ~/.tmux.conf
+if [ -f .tmux.conf ]; then
+  backup_if_exists ~/.tmux.conf "$BACKUP_DIR/.tmux.conf"
+  cp .tmux.conf ~/.tmux.conf
+fi
 
 # vim
 echo "Importing vim settings..."
-backup_if_exists ~/.vimrc $BACKUP_DIR
-cp .vimrc ~/.vimrc
-backup_if_exists ~/.vim/colors/zenburn.vim $BACKUP_DIR
-mkdir -p ~/.vim/colors
-cp zenburn/zenburn.vim ~/.vim/colors/zenburn.vim
+if [ -f .vimrc ]; then
+  backup_if_exists ~/.vimrc "$BACKUP_DIR/.vimrc"
+  cp .vimrc ~/.vimrc
+fi
+if [ -f zenburn/zenburn.vim ]; then
+  backup_if_exists ~/.vim/colors/zenburn.vim "$BACKUP_DIR/zenburn.vim"
+  mkdir -p ~/.vim/colors
+  cp zenburn/zenburn.vim ~/.vim/colors/zenburn.vim
+fi
 
 if is_macos; then
   echo "Running macOS settings script..."
