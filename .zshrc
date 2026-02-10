@@ -4,7 +4,8 @@
 
 # Set the username for prompts
 export DEFAULT_USER=danyim
-export TERM="screen-256color" # Enables 265 colors in tmux
+# Don't override TERM — let Alacritty/SSH set it correctly; tmux sets its own via default-terminal
+# export TERM="screen-256color"
 export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load
