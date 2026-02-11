@@ -543,6 +543,16 @@ key = "Left"
 mods = "Alt"
 
 [[keyboard.bindings]]
+chars = "\u001B[1;11D"
+key = "Left"
+mods = "Command|Alt"
+
+[[keyboard.bindings]]
+chars = "\u001B[1;11C"
+key = "Right"
+mods = "Command|Alt"
+
+[[keyboard.bindings]]
 chars = "\u001Bf"
 key = "Right"
 mods = "Alt"
