@@ -25,6 +25,57 @@ UTCTIME=$(date -u +%s)
 BACKUP_DIR="$HOME/.dotfiles.backup/$UTCTIME"
 BACKUP_CREATED=0
 
+# .syncignore patterns (loaded at runtime)
+declare -a SYNCIGNORE_PATTERNS=()
+
+# Load patterns from .syncignore (one regex per line, # for comments)
+load_syncignore() {
+  local syncignore_path="$current_dir/.syncignore"
+  if [ ! -f "$syncignore_path" ]; then
+    return
+  fi
+
+  while IFS= read -r line; do
+    # Skip empty lines and comments
+    [[ -z "$line" || "$line" =~ ^# ]] && continue
+    SYNCIGNORE_PATTERNS+=("$line")
+  done < "$syncignore_path"
+
+  if [ ${#SYNCIGNORE_PATTERNS[@]} -gt 0 ]; then
+    echo -e "${CYAN}Loaded ${#SYNCIGNORE_PATTERNS[@]} pattern(s) from .syncignore${NC}"
+  fi
+}
+
+# Check if a hunk matches any .syncignore pattern
+# Returns 0 (true) if matched, 1 (false) if not
+# Sets MATCHED_PATTERN to the first matching pattern
+hunk_matches_syncignore() {
+  local hunk="$1"
+  MATCHED_PATTERN=""
+
+  if [ ${#SYNCIGNORE_PATTERNS[@]} -eq 0 ]; then
+    return 1
+  fi
+
+  # Extract content lines from hunk (strip diff +/- /space prefixes)
+  local content=""
+  while IFS= read -r line; do
+    # Skip @@ headers
+    [[ "$line" =~ ^@@ ]] && continue
+    # Strip the leading diff character (+, -, or space)
+    content+="${line:1}"$'\n'
+  done <<< "$hunk"
+
+  for pattern in "${SYNCIGNORE_PATTERNS[@]}"; do
+    if printf '%s' "$content" | grep -qE "$pattern" 2>/dev/null; then
+      MATCHED_PATTERN="$pattern"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
 usage() {
   echo "Usage: sync.sh [OPTIONS]"
   echo ""
@@ -44,6 +95,10 @@ usage() {
   echo "  [e] Edit: open both files in vimdiff"
   echo "  [q] Quit: exit without further changes"
   echo "  [?] Help: show available actions"
+  echo ""
+  echo "Syncignore:"
+  echo "  Place a .syncignore file in the repo root (one regex per line)."
+  echo "  Hunks matching any pattern are automatically skipped."
 }
 
 # Parse arguments
@@ -353,6 +408,12 @@ review_file_hunks() {
       continue
     fi
 
+    # Check .syncignore patterns
+    if hunk_matches_syncignore "$hunk"; then
+      echo -e "${CYAN}($i/$total) Skipped — matches .syncignore pattern: ${BOLD}$MATCHED_PATTERN${NC}"
+      continue
+    fi
+
     # Display the hunk with colors
     while IFS= read -r line; do
       if [[ "$line" =~ ^@@ ]]; then
@@ -452,6 +513,7 @@ review_file_hunks() {
 # Main sync logic
 main() {
   build_file_mappings
+  load_syncignore
 
   echo -e "${BOLD}Dotfiles Sync${NC}"
   echo "Comparing ${#FILE_MAPPINGS[@]} file mappings..."
