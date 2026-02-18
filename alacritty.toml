@@ -541,11 +541,11 @@ chars = "\u001Bb"
 key = "Left"
 mods = "Alt"
 
-# Cmd+P: tmux-fzf window switcher (tilde format to avoid tmux CSI u parser)
+# Cmd+Shift+P: tmux-fzf window switcher (tilde format to avoid tmux CSI u parser)
 [[keyboard.bindings]]
 chars = "\u001B[80;9~"
 key = "P"
-mods = "Command"
+mods = "Command|Shift"
 
 [[keyboard.bindings]]
 chars = "\u001B[1;11D"
