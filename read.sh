@@ -38,12 +38,8 @@ cp ~/.zshenv .
 cp ~/.gitconfig .
 cp ~/.gitignore .gitignore_global
 
-# Alacritty configs
-if is_macos; then # macOS
-  cp ~/.config/alacritty/alacritty.yml .
-else 
-  cp ~/.config/alacritty/alacritty.yml alacritty-linux.yml
-fi
+# Alacritty config
+cp ~/.config/alacritty/alacritty.toml .
 
 # Sublime
 if is_macos; then # macOS

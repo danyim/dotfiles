@@ -175,12 +175,8 @@ build_file_mappings() {
     ".vimrc:$HOME/.vimrc"
   )
 
-  # Alacritty (platform-specific)
-  if is_macos; then
-    FILE_MAPPINGS+=("alacritty.yml:$HOME/.config/alacritty/alacritty.yml")
-  else
-    FILE_MAPPINGS+=("alacritty-linux.yml:$HOME/.config/alacritty/alacritty.yml")
-  fi
+  # Alacritty
+  FILE_MAPPINGS+=("alacritty.toml:$HOME/.config/alacritty/alacritty.toml")
 
   # Kitty
   FILE_MAPPINGS+=("kitty.conf:$HOME/.config/kitty/kitty.conf")

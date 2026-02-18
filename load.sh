@@ -77,15 +77,9 @@ fi
 # Alacritty
 echo "Importing alacritty settings..."
 mkdir -p ~/.config/alacritty
-backup_if_exists ~/.config/alacritty/alacritty.yml "$BACKUP_DIR/alacritty.yml"
-if is_macos; then
-  if [ -f alacritty.yml ]; then
-    cp alacritty.yml ~/.config/alacritty/alacritty.yml
-  fi
-else
-  if [ -f alacritty-linux.yml ]; then
-    cp alacritty-linux.yml ~/.config/alacritty/alacritty.yml
-  fi
+backup_if_exists ~/.config/alacritty/alacritty.toml "$BACKUP_DIR/alacritty.toml"
+if [ -f alacritty.toml ]; then
+  cp alacritty.toml ~/.config/alacritty/alacritty.toml
 fi
 
 # Sublime
