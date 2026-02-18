@@ -542,9 +542,9 @@ chars = "\u001Bb"
 key = "Left"
 mods = "Alt"
 
-# Cmd+P: tmux-fzf window switcher (CSI u encoding: 112='p', 9=Super)
+# Cmd+P: tmux-fzf window switcher (tilde format to avoid tmux CSI u parser)
 [[keyboard.bindings]]
-chars = "\u001B[112;9u"
+chars = "\u001B[80;9~"
 key = "P"
 mods = "Command"
 
