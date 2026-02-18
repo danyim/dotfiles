@@ -19,6 +19,7 @@ NC='\033[0m' # No Color
 # Options
 DRY_RUN=0
 SHOW_ALL=0
+FILTER=""
 
 # Backup directory
 UTCTIME=$(date -u +%s)
@@ -77,9 +78,12 @@ hunk_matches_syncignore() {
 }
 
 usage() {
-  echo "Usage: sync.sh [OPTIONS]"
+  echo "Usage: sync.sh [OPTIONS] [FILTER]"
   echo ""
   echo "Interactive sync for dotfiles between repo and system."
+  echo ""
+  echo "Filter:"
+  echo "  Optional positional arg to match files by substring (e.g. 'alac' for alacritty)"
   echo ""
   echo "Options:"
   echo "  -n, --dry-run    Show what would change without applying"
@@ -116,10 +120,14 @@ while [[ $# -gt 0 ]]; do
       usage
       exit 0
       ;;
-    *)
+    -*)
       echo "Unknown option: $1"
       usage
       exit 1
+      ;;
+    *)
+      FILTER="$1"
+      shift
       ;;
   esac
 done
@@ -512,6 +520,9 @@ main() {
   load_syncignore
 
   echo -e "${BOLD}Dotfiles Sync${NC}"
+  if [ -n "$FILTER" ]; then
+    echo -e "Filter: ${CYAN}$FILTER${NC}"
+  fi
   echo "Comparing ${#FILE_MAPPINGS[@]} file mappings..."
   echo ""
 
@@ -525,6 +536,12 @@ main() {
   for mapping in "${FILE_MAPPINGS[@]}"; do
     local repo_path="${mapping%%:*}"
     local system_path="${mapping#*:}"
+
+    # Apply filter if provided
+    if [ -n "$FILTER" ] && [[ "$repo_path" != *"$FILTER"* ]] && [[ "$system_path" != *"$FILTER"* ]]; then
+      continue
+    fi
+
     local status
     status=$(compare_files "$repo_path" "$system_path")
 
