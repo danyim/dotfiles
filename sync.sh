@@ -299,9 +299,10 @@ apply_to_system() {
   parent_dir=$(dirname "$system_path")
   mkdir -p "$parent_dir"
 
-  # Backup existing file
+  # Backup existing file (use repo_path with slashes→dashes to avoid collisions)
   if [ -f "$system_path" ]; then
-    local backup_path="$BACKUP_DIR/$(basename "$system_path")"
+    local backup_name="${repo_path//\//-}"
+    local backup_path="$BACKUP_DIR/$backup_name"
     cp "$system_path" "$backup_path"
     echo -e "${CYAN}Backed up: $system_path → $backup_path${NC}"
   fi
@@ -323,9 +324,10 @@ apply_to_repo() {
 
   ensure_backup_dir
 
-  # Backup existing repo file
+  # Backup existing repo file (use repo_path with slashes→dashes to avoid collisions)
   if [ -f "$current_dir/$repo_path" ]; then
-    local backup_path="$BACKUP_DIR/repo-$(basename "$repo_path")"
+    local backup_name="repo-${repo_path//\//-}"
+    local backup_path="$BACKUP_DIR/$backup_name"
     cp "$current_dir/$repo_path" "$backup_path"
     echo -e "${CYAN}Backed up: $repo_path → $backup_path${NC}"
   fi
@@ -407,14 +409,14 @@ review_file_hunks() {
   for hunk in "${hunks[@]}"; do
     i=$((i + 1))
 
-    if [ $apply_remaining -eq 1 ]; then
-      selected_indices+=($((i - 1)))
+    # Check .syncignore patterns (always, even with apply_remaining)
+    if hunk_matches_syncignore "$hunk"; then
+      echo -e "${CYAN}($i/$total) Skipped — matches .syncignore pattern: ${BOLD}$MATCHED_PATTERN${NC}"
       continue
     fi
 
-    # Check .syncignore patterns
-    if hunk_matches_syncignore "$hunk"; then
-      echo -e "${CYAN}($i/$total) Skipped — matches .syncignore pattern: ${BOLD}$MATCHED_PATTERN${NC}"
+    if [ $apply_remaining -eq 1 ]; then
+      selected_indices+=($((i - 1)))
       continue
     fi
 
@@ -495,6 +497,12 @@ review_file_hunks() {
   fi
 
   # Build partial patch from selected hunks
+  if ! command_exists patch; then
+    echo -e "${RED}Cannot apply partial hunks: 'patch' command not found.${NC}"
+    echo -e "${RED}Install it or use vimdiff [e] instead.${NC}"
+    return 1
+  fi
+
   local patch_content="$diff_header"
   for idx in "${selected_indices[@]}"; do
     patch_content+="${hunks[$idx]}"$'\n'
@@ -502,7 +510,8 @@ review_file_hunks() {
 
   ensure_backup_dir
   if [ -f "$system_path" ]; then
-    local backup_path="$BACKUP_DIR/$(basename "$system_path")"
+    local backup_name="${repo_path//\//-}"
+    local backup_path="$BACKUP_DIR/$backup_name"
     cp "$system_path" "$backup_path"
     echo -e "${CYAN}Backed up: $system_path → $backup_path${NC}"
   fi
