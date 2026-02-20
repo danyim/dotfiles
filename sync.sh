@@ -610,7 +610,21 @@ main() {
         continue
       fi
 
+      # Preserve git identity when syncing .gitconfig
+      local saved_git_name="" saved_git_email=""
+      if [[ "$repo_path" == ".gitconfig" ]]; then
+        saved_git_name=$(git config --global user.name 2>/dev/null || true)
+        saved_git_email=$(git config --global user.email 2>/dev/null || true)
+      fi
+
       review_file_hunks "$repo_path" "$system_path"
+
+      # Restore git identity after syncing .gitconfig
+      if [[ "$repo_path" == ".gitconfig" ]] && { [ -n "$saved_git_name" ] || [ -n "$saved_git_email" ]; }; then
+        [ -n "$saved_git_name" ] && git config --global user.name "$saved_git_name"
+        [ -n "$saved_git_email" ] && git config --global user.email "$saved_git_email"
+        echo -e "${CYAN}Preserved git user.name and user.email${NC}"
+      fi
     done
   fi
 
