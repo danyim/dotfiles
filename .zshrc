@@ -323,6 +323,10 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 bindkey "^X\x7f" backward-kill-line
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
+bindkey "\e[H" beginning-of-line
+bindkey "\e[F" end-of-line
+bindkey "\e[1~" beginning-of-line
+bindkey "\e[4~" end-of-line
 # Undo/redo still in progress
 #bindkey "^[undo" undo
 #bindkey "^[redo" redo 
