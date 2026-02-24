@@ -624,7 +624,7 @@ mouse = "Middle"
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
-[shell]
+[terminal.shell]
 program = "/bin/zsh"
 
 [window]
@@ -641,4 +641,4 @@ lines = 0
 x = 2
 y = 2
 
-live_config_reload = true
+[terminal]

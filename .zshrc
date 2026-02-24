@@ -110,10 +110,10 @@ alias ohmyzsh="$EDITOR $HOME/.oh-my-zsh"
 alias t='tree -L 2 -C --dirsfirst --filelimit 20 -F'
 
 # Set helpful ls shortcuts
-alias ls='eza'
-alias lsl='eza -l'
-alias l='eza -lr'
-alias ll='eza -lra'
+alias ls='exa'
+alias lsl='exa -l'
+alias l='exa -lr'
+alias ll='exa -lra'
 
 # Helpful commands
 function mkcd {
