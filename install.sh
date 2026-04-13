@@ -75,9 +75,21 @@ else
   exit 1
 fi
 
+# Resolve the invoking user's home (install.sh re-execs itself under sudo, so
+# $HOME here is root's). Without this, tmux config + TPM land in /root.
+TARGET_USER="${SUDO_USER:-$USER}"
+TARGET_HOME="$(getent passwd "$TARGET_USER" | cut -d: -f6)"
+
+# Install tmux config
+echo "Installing tmux configuration to $TARGET_HOME/.tmux.conf ..."
+if [ -f "$current_dir/.tmux.conf" ]; then
+  cp "$current_dir/.tmux.conf" "$TARGET_HOME/.tmux.conf"
+  chown "$TARGET_USER:$TARGET_USER" "$TARGET_HOME/.tmux.conf"
+fi
+
 # Install TPM
 echo "Installing TPM (tmux plugin manager)..."
-git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+sudo -u "$TARGET_USER" git clone --depth 1 https://github.com/tmux-plugins/tpm "$TARGET_HOME/.tmux/plugins/tpm"
 
 # Install kubectl
 echo "Installing kubectl..."
