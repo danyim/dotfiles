@@ -1,3 +1,5 @@
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/danyim/.zsh/completions:"* ]]; then export FPATH="/Users/danyim/.zsh/completions:$FPATH"; fi
 # Config order:
 # .zshenv → [.zprofile if login] → [.zshrc if interactive] →
 # [.zlogin if login] → [.zlogout sometimes]
@@ -35,15 +37,15 @@ COMPLETION_WAITING_DOTS="true"
 
 # Lazy load NVM since it can contribute to a slower shell startup time
 export NVM_LAZY_LOAD=true
-export NVM_COMPLETION=true
+export NVM_COMPLETION=false
+export NVM_NO_USE=true  # Skip nvm use default on load; arm64 node resolved via PATH shim in .zshenv
 
-export PATH="$HOME/.rbenv/bin:$PATH"
 
 # The offical Powerline repo suggests running this, but we're seeing script errors
 # when loading
 #. $HOME/Library/Python/3.6/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
 
-source /usr/local/share/antigen/antigen.zsh
+source $HOME/.antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen bundle colorize
 antigen bundle git

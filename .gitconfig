@@ -64,5 +64,6 @@
 	autosetuprebase = always
 [hub]
 	host = github.robot.car
+	protocol = ssh
 [init]
 	defaultBranch = main
