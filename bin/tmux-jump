@@ -5,16 +5,24 @@
 # ~/.tmux.conf). Windows never visited this server lifetime sort last, in
 # index order. The current window is omitted so the default selection (Enter)
 # jumps straight to the previously-used window.
+# A leading icon reflects each window's Claude Code state: working / ready /
+# waiting. The icon glyph itself is rendered by tmux via the @claude_state_icon
+# format (defined in ~/.tmux.conf) so no emoji literal lives in this script —
+# macOS's bash 3.2 mis-parses multibyte literals in case patterns.
 # Requires: fzf, tmux >= 3.2 (display-popup)
 
 current=$(tmux display-message -p "#{session_name}:#{window_index}")
 
+# The icon is emitted LAST: with IFS=$'\t', an empty value at the end is read
+# as an empty trailing field, whereas an empty middle field would collapse.
 result=$(
   tmux list-windows -a \
-    -F "#{?@last_access,#{@last_access},0}	#{session_name}:#{window_index}	#{window_name}" \
+    -F "#{?@last_access,#{@last_access},0}	#{session_name}:#{window_index}	#{window_name}	#{E:@claude_state_icon}" \
   | sort -t "$(printf '\t')" -k1,1nr \
-  | while IFS=$'\t' read -r _access target wname; do
+  | while IFS=$'\t' read -r _access target wname icon; do
       [ "$target" = "$current" ] && continue
+      icon="${icon% }"     # drop the trailing space @claude_state_icon adds
+      icon="${icon:- }"    # space (not empty) when no state, keeps columns aligned
       branches=$(
         tmux list-panes -t "$target" -F "#{pane_current_path}" 2>/dev/null \
         | sort -u \
@@ -24,7 +32,8 @@ result=$(
         | sort -u \
         | paste -sd ',' -
       )
-      printf "%s\t%s\t%s\n" "$target" "$wname" "${branches:--}"
+      # target stays column 1 so the awk selection-parse below still works.
+      printf "%s\t%s\t%s\t%s\n" "$target" "$icon" "$wname" "${branches:--}"
   done \
   | column -t -s $'\t' \
   | fzf --prompt="  window> " \
