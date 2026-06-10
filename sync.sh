@@ -189,6 +189,12 @@ build_file_mappings() {
   # Kitty
   FILE_MAPPINGS+=("kitty.conf:$HOME/.config/kitty/kitty.conf")
 
+  # tmux helper scripts
+  FILE_MAPPINGS+=("bin/tmux-jump:$HOME/.local/bin/tmux-jump")
+
+  # Claude Code
+  FILE_MAPPINGS+=("claude/statusline-command.sh:$HOME/.claude/statusline-command.sh")
+
   # VSCode
   FILE_MAPPINGS+=(
     "vscode/settings.json:$vscode_dir/settings.json"

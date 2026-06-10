@@ -83,10 +83,60 @@ action = "Quit"
 key = "Q"
 mods = "Command"
 
+# Cmd+0 → ESC[48;9~ (User19) → tmux: select last (highest-index) window.
+# Repurposed from ResetFontSize. Tilde format avoids tmux's CSI u parser.
 [[keyboard.bindings]]
-action = "ResetFontSize"
+chars = "\u001B[48;9~"
 key = "Key0"
 mods = "Command"
+
+# Cmd+1..Cmd+9 → ESC[<ascii>;9~ (User10..User18) → tmux: select
+# window by index 1..9. Tilde format avoids tmux's CSI u parser.
+[[keyboard.bindings]]
+chars = "\u001B[49;9~"
+key = "Key1"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[50;9~"
+key = "Key2"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[51;9~"
+key = "Key3"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[52;9~"
+key = "Key4"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[53;9~"
+key = "Key5"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[54;9~"
+key = "Key6"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[55;9~"
+key = "Key7"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[56;9~"
+key = "Key8"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[57;9~"
+key = "Key9"
+mods = "Command"
+
 
 [[keyboard.bindings]]
 action = "IncreaseFontSize"
@@ -541,10 +591,15 @@ chars = "\u001Bb"
 key = "Left"
 mods = "Alt"
 
-# Cmd+Shift+P: tmux-fzf window switcher (tilde format to avoid tmux CSI u parser)
+# Cmd+Shift+P / Cmd+Shift+A: tmux-fzf window switcher (tilde format to avoid tmux CSI u parser)
 [[keyboard.bindings]]
 chars = "\u001B[80;9~"
 key = "P"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+chars = "\u001B[65;9~"
+key = "A"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
@@ -565,6 +620,16 @@ mods = "Command|Alt"
 [[keyboard.bindings]]
 chars = "\u001B[11;4~"
 key = "Down"
+mods = "Command|Alt"
+
+[[keyboard.bindings]]
+chars = "\u001B[11;5~"
+key = "Home"
+mods = "Command|Alt"
+
+[[keyboard.bindings]]
+chars = "\u001B[11;6~"
+key = "End"
 mods = "Command|Alt"
 
 [[keyboard.bindings]]
@@ -616,6 +681,12 @@ mods = "Command"
 [keyboard.bindings.command]
 args = ["-c", "open ~/.config/alacritty/alacritty.yml"]
 program = "sh"
+
+# Cmd+P → ESC+p (M-p) → tmux-jump popup (no prefix needed)
+[[keyboard.bindings]]
+key = "P"
+mods = "Command"
+chars = "\u001bp"
 
 [[mouse.bindings]]
 action = "PasteSelection"

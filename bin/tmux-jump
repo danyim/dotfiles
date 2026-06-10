@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Fuzzy-jump to a tmux window by name or git branch.
+# Windows are listed most-recently-used first (by the @last_access epoch that
+# the session-window-changed / client-session-changed hooks stamp in
+# ~/.tmux.conf). Windows never visited this server lifetime sort last, in
+# index order. The current window is omitted so the default selection (Enter)
+# jumps straight to the previously-used window.
+# Requires: fzf, tmux >= 3.2 (display-popup)
+
+current=$(tmux display-message -p "#{session_name}:#{window_index}")
+
+result=$(
+  tmux list-windows -a \
+    -F "#{?@last_access,#{@last_access},0}	#{session_name}:#{window_index}	#{window_name}" \
+  | sort -t "$(printf '\t')" -k1,1nr \
+  | while IFS=$'\t' read -r _access target wname; do
+      [ "$target" = "$current" ] && continue
+      branches=$(
+        tmux list-panes -t "$target" -F "#{pane_current_path}" 2>/dev/null \
+        | sort -u \
+        | while read -r ppath; do
+            git -C "$ppath" rev-parse --abbrev-ref HEAD 2>/dev/null
+          done \
+        | sort -u \
+        | paste -sd ',' -
+      )
+      printf "%s\t%s\t%s\n" "$target" "$wname" "${branches:--}"
+  done \
+  | column -t -s $'\t' \
+  | fzf --prompt="  window> " \
+        --height=100% \
+        --border=rounded \
+        --reverse \
+        --no-info
+)
+
+target=$(awk '{print $1}' <<< "$result")
+[ -n "$target" ] && tmux switch-client -t "$target"

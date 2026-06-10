@@ -113,6 +113,16 @@ echo "Reading vim colorscheme..."
 echo "Reading tmux settings..."
 [ -f ~/.tmux.conf ] && cp ~/.tmux.conf .
 
+# tmux helper scripts
+echo "Reading custom bin scripts..."
+mkdir -p bin
+[ -f ~/.local/bin/tmux-jump ] && cp ~/.local/bin/tmux-jump bin/
+
+# Claude Code
+echo "Reading Claude Code status line..."
+mkdir -p claude
+[ -f ~/.claude/statusline-command.sh ] && cp ~/.claude/statusline-command.sh claude/
+
 # vim
 echo "Reading vim settings..."
 [ -f ~/.vimrc ] && cp ~/.vimrc .

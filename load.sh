@@ -202,6 +202,23 @@ if [ -f .tmux.conf ]; then
   cp .tmux.conf ~/.tmux.conf
 fi
 
+# tmux helper scripts
+echo "Importing custom bin scripts..."
+if [ -f bin/tmux-jump ]; then
+  mkdir -p ~/.local/bin
+  backup_if_exists ~/.local/bin/tmux-jump "$BACKUP_DIR/tmux-jump"
+  cp bin/tmux-jump ~/.local/bin/tmux-jump
+  chmod +x ~/.local/bin/tmux-jump
+fi
+
+# Claude Code
+echo "Importing Claude Code status line..."
+if [ -f claude/statusline-command.sh ]; then
+  mkdir -p ~/.claude
+  backup_if_exists ~/.claude/statusline-command.sh "$BACKUP_DIR/statusline-command.sh"
+  cp claude/statusline-command.sh ~/.claude/statusline-command.sh
+fi
+
 # vim
 echo "Importing vim settings..."
 if [ -f .vimrc ]; then
