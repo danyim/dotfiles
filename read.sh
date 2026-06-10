@@ -119,9 +119,19 @@ mkdir -p bin
 [ -f ~/.local/bin/tmux-jump ] && cp ~/.local/bin/tmux-jump bin/
 
 # Claude Code
-echo "Reading Claude Code status line..."
+echo "Reading Claude Code config..."
 mkdir -p claude
 [ -f ~/.claude/statusline-command.sh ] && cp ~/.claude/statusline-command.sh claude/
+# settings.json can accumulate inline secrets in its permission allowlist
+# (e.g. an approved curl command with an API token). This repo is public, so
+# skip the copy if an obvious token pattern is present rather than leak it.
+if [ -f ~/.claude/settings.json ]; then
+  if grep -qE 'ATATT[A-Za-z0-9_=-]{10,}|API_TOKEN|Bearer [A-Za-z0-9._-]+' ~/.claude/settings.json; then
+    echo "  WARNING: ~/.claude/settings.json looks like it contains a secret; skipping. Sanitize it first."
+  else
+    cp ~/.claude/settings.json claude/
+  fi
+fi
 
 # vim
 echo "Reading vim settings..."

@@ -194,6 +194,7 @@ build_file_mappings() {
 
   # Claude Code
   FILE_MAPPINGS+=("claude/statusline-command.sh:$HOME/.claude/statusline-command.sh")
+  FILE_MAPPINGS+=("claude/settings.json:$HOME/.claude/settings.json")
 
   # VSCode
   FILE_MAPPINGS+=(

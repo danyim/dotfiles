@@ -212,11 +212,15 @@ if [ -f bin/tmux-jump ]; then
 fi
 
 # Claude Code
-echo "Importing Claude Code status line..."
+echo "Importing Claude Code config..."
+mkdir -p ~/.claude
 if [ -f claude/statusline-command.sh ]; then
-  mkdir -p ~/.claude
   backup_if_exists ~/.claude/statusline-command.sh "$BACKUP_DIR/statusline-command.sh"
   cp claude/statusline-command.sh ~/.claude/statusline-command.sh
+fi
+if [ -f claude/settings.json ]; then
+  backup_if_exists ~/.claude/settings.json "$BACKUP_DIR/settings.json"
+  cp claude/settings.json ~/.claude/settings.json
 fi
 
 # vim
