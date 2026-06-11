@@ -224,7 +224,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @claude_state waiting || true"
+            "command": "input=$(cat); case \"$input\" in *\"waiting for your input\"*) ;; *) [ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @claude_state waiting ;; esac; true"
           }
         ]
       }
