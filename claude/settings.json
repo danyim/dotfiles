@@ -228,6 +228,16 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set -wu -t \"$TMUX_PANE\" @claude_state || true"
+          }
+        ]
+      }
     ]
   }
 }
