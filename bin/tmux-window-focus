@@ -1,0 +1,32 @@
+#!/bin/sh
+# Invoked (backgrounded) by tmux's session-window-changed / client-session-changed
+# hooks with the newly-focused window as $1 ("session:index"). Two jobs:
+#
+#   1. Stamp @last_access immediately so tmux-jump (Cmd+P) can order windows
+#      most-recently-used first.
+#   2. Mark-as-read: clear a sticky Claude "ready" (🟢 = finished, not yet
+#      reviewed) badge — but only after the window has stayed focused for a dwell
+#      period, so fast tab-cycling (e.g. holding cmd+opt+right) passes over green
+#      windows without wiping their unreviewed badges.
+#
+# Dwell seconds default to 10; override with TMUX_READ_DELAY (used by tests).
+
+W="$1"
+[ -n "$W" ] || exit 0
+
+# (1) Immediate MRU stamp — always, regardless of Claude state.
+tmux set -w -t "$W" @last_access "$(date +%s)" 2>/dev/null
+
+# (2) Only arm the dwell timer if this window is actually showing a 🟢 badge.
+[ "$(tmux show -wqv -t "$W" @claude_state 2>/dev/null)" = ready ] || exit 0
+
+sleep "${TMUX_READ_DELAY:-10}"
+
+# Clear only if, after the dwell, the window is STILL ready and STILL on screen
+# (active in its session and that session still has a client attached). If the
+# user cycled away, window_active is 0 and the badge is preserved.
+[ "$(tmux show -wqv -t "$W" @claude_state 2>/dev/null)" = ready ] || exit 0
+[ "$(tmux display-message -p -t "$W" '#{window_active}' 2>/dev/null)" = 1 ] || exit 0
+[ "$(tmux display-message -p -t "$W" '#{session_attached}' 2>/dev/null)" != 0 ] || exit 0
+tmux set -wu -t "$W" @claude_state 2>/dev/null
+exit 0

@@ -204,11 +204,16 @@ fi
 
 # tmux helper scripts
 echo "Importing custom bin scripts..."
+mkdir -p ~/.local/bin
 if [ -f bin/tmux-jump ]; then
-  mkdir -p ~/.local/bin
   backup_if_exists ~/.local/bin/tmux-jump "$BACKUP_DIR/tmux-jump"
   cp bin/tmux-jump ~/.local/bin/tmux-jump
   chmod +x ~/.local/bin/tmux-jump
+fi
+if [ -f bin/tmux-window-focus ]; then
+  backup_if_exists ~/.local/bin/tmux-window-focus "$BACKUP_DIR/tmux-window-focus"
+  cp bin/tmux-window-focus ~/.local/bin/tmux-window-focus
+  chmod +x ~/.local/bin/tmux-window-focus
 fi
 
 # Claude Code
