@@ -215,6 +215,11 @@ if [ -f bin/tmux-window-focus ]; then
   cp bin/tmux-window-focus ~/.local/bin/tmux-window-focus
   chmod +x ~/.local/bin/tmux-window-focus
 fi
+if [ -f bin/tmux-mark-read ]; then
+  backup_if_exists ~/.local/bin/tmux-mark-read "$BACKUP_DIR/tmux-mark-read"
+  cp bin/tmux-mark-read ~/.local/bin/tmux-mark-read
+  chmod +x ~/.local/bin/tmux-mark-read
+fi
 
 # Claude Code
 echo "Importing Claude Code config..."

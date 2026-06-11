@@ -214,7 +214,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @claude_state ready || true"
+            "command": "[ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @claude_state ready && tmux run-shell -b \"$HOME/.local/bin/tmux-mark-read $TMUX_PANE\" || true"
           }
         ]
       }

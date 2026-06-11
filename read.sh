@@ -118,6 +118,7 @@ echo "Reading custom bin scripts..."
 mkdir -p bin
 [ -f ~/.local/bin/tmux-jump ] && cp ~/.local/bin/tmux-jump bin/
 [ -f ~/.local/bin/tmux-window-focus ] && cp ~/.local/bin/tmux-window-focus bin/
+[ -f ~/.local/bin/tmux-mark-read ] && cp ~/.local/bin/tmux-mark-read bin/
 
 # Claude Code
 echo "Reading Claude Code config..."

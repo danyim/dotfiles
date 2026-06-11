@@ -1,0 +1,23 @@
+#!/bin/sh
+# Dwell-clear of a Claude "ready" (🟢) badge for tmux window/pane target $1.
+# After a dwell, clears @claude_state ONLY if the window is still ready AND still
+# on screen (active in its session, session still attached) — so a badge clears
+# only once you've genuinely lingered on the window, not while cycling past it.
+#
+# Armed from two places (see ~/.tmux.conf and the Claude Stop hook in
+# ~/.claude/settings.json):
+#   - on window focus, if the focused window is already 🟢 (tmux-window-focus)
+#   - when Claude finishes a turn (Stop), covering "it went 🟢 while I was
+#     already looking at it" — the case a focus event never catches.
+# Dwell seconds default to 10; override with TMUX_READ_DELAY (used by tests).
+
+T="$1"
+[ -n "$T" ] || exit 0
+
+sleep "${TMUX_READ_DELAY:-10}"
+
+[ "$(tmux show -wqv -t "$T" @claude_state 2>/dev/null)" = ready ] || exit 0
+[ "$(tmux display-message -p -t "$T" '#{window_active}' 2>/dev/null)" = 1 ] || exit 0
+[ "$(tmux display-message -p -t "$T" '#{session_attached}' 2>/dev/null)" != 0 ] || exit 0
+tmux set -wu -t "$T" @claude_state 2>/dev/null
+exit 0

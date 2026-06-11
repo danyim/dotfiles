@@ -192,6 +192,7 @@ build_file_mappings() {
   # tmux helper scripts
   FILE_MAPPINGS+=("bin/tmux-jump:$HOME/.local/bin/tmux-jump")
   FILE_MAPPINGS+=("bin/tmux-window-focus:$HOME/.local/bin/tmux-window-focus")
+  FILE_MAPPINGS+=("bin/tmux-mark-read:$HOME/.local/bin/tmux-mark-read")
 
   # Claude Code
   FILE_MAPPINGS+=("claude/statusline-command.sh:$HOME/.claude/statusline-command.sh")
