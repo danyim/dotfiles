@@ -157,47 +157,10 @@
       "/Users/danyim/Obsidian/Sirona/Research",
       "/Users/danyim",
       "/tmp"
-    ]
+    ],
+    "defaultMode": "bypassPermissions"
   },
   "model": "opus[1m]",
-  "statusLine": {
-    "type": "command",
-    "command": "sh /Users/danyim/.claude/statusline-command.sh"
-  },
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
-    "dev-tools@sirona": true,
-    "datadog@claude-plugins-official": true,
-    "jira@dy-claude-plugins": true,
-    "dy@dy-claude-plugins": true,
-    "sirona@dy-claude-plugins": true
-  },
-  "extraKnownMarketplaces": {
-    "sirona": {
-      "source": {
-        "source": "github",
-        "repo": "SironaMedical/claude-plugins"
-      },
-      "autoUpdate": true
-    },
-    "dy-claude-plugins": {
-      "source": {
-        "source": "github",
-        "repo": "danyim/dy-claude-plugins"
-      }
-    }
-  },
-  "effortLevel": "xhigh",
-  "skipDangerousModePermissionPrompt": true,
-  "theme": "dark-daltonized",
-  "mcpServers": {
-    "figma-desktop": {
-      "url": "http://127.0.0.1:3845/mcp",
-      "type": "http"
-    }
-  },
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -239,5 +202,43 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "sh /Users/danyim/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "dev-tools@sirona": true,
+    "datadog@claude-plugins-official": true,
+    "jira@dy-claude-plugins": true,
+    "dy@dy-claude-plugins": true,
+    "sirona@dy-claude-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "sirona": {
+      "source": {
+        "source": "github",
+        "repo": "SironaMedical/claude-plugins"
+      },
+      "autoUpdate": true
+    },
+    "dy-claude-plugins": {
+      "source": {
+        "source": "github",
+        "repo": "danyim/dy-claude-plugins"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark-daltonized",
+  "mcpServers": {
+    "figma-desktop": {
+      "url": "http://127.0.0.1:3845/mcp",
+      "type": "http"
+    }
   }
 }
