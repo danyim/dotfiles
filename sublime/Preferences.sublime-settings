@@ -91,4 +91,5 @@
 	"trim_trailing_white_space_on_save": true,
 	"wide_caret": true,
 	"index_files": true,
+	"atomic_save": false,
 }

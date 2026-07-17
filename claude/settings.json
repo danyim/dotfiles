@@ -1,6 +1,7 @@
 {
   "env": {
-    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1"
+    "CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING": "1",
+    "DD_MCP_DOMAIN": "app.datadoghq.com"
   },
   "permissions": {
     "allow": [
@@ -101,7 +102,6 @@
       "Bash(grep -l \"injectStep\\\\|createStep\\\\|captureUpdate\\\\|StepConfig\" /Users/danyim/Dev/local-development/repos/services-frontend/testsuite/e2e/**/*.ts)",
       "WebFetch(domain:docs.google.com)",
       "mcp__claude_ai_Atlassian__getJiraIssue",
-      "mcp__context-mode__execute",
       "Bash(pkill -f \"playwright.*stepped-hp\")",
       "Bash(pkill -f \"test:local.*Prior Series\")",
       "Bash(ls -lt /Users/danyim/Dev/services-frontend/testsuite/e2e/test-results/*.html)",
@@ -111,12 +111,8 @@
       "mcp__claude_ai_Atlassian__jiraWrite",
       "Bash(grep -r \"comment\\\\|PR\\\\|deployment\" /Users/danyim/Dev/services-frontend4/.github/workflows/*.yml)",
       "Bash(unzip -p /Users/danyim/Dev/services-frontend-experiment/.yarn/cache/@tippyjs-react-npm-4.2.3-d740d34f90-8240624f0e.zip \"*/index.d.ts\")",
-      "mcp__context-mode__batch_execute",
-      "mcp__context-mode__execute_file",
       "Bash(ls -la testsuite/e2e/*.html)",
-      "mcp__context-mode__ctx_execute",
       "Bash(lsof -i :3000)",
-      "mcp__context-mode__ctx_batch_execute",
       "Bash(grep -r hang/ --include=*.ts --include=*.tsx graphql/src frontend/src)",
       "Bash(grep -r '\\\\[object Object\\\\]' /Users/danyim/Dev/backend-api --include=*.py)",
       "Bash(viewports for multiple study-indexes.\" Use ''current'' sentinel for null:*)",
@@ -146,6 +142,7 @@
       "Bash(ls frontend/src/domains/viewer/Viewer/Viewport/EmptyState.test.*)",
       "Bash(../../node_modules/.bin/tsc --noEmit)"
     ],
+    "defaultMode": "auto",
     "additionalDirectories": [
       "/Users/danyim/.claude",
       "/Users/danyim/.claude/memory",
@@ -157,10 +154,9 @@
       "/Users/danyim/Obsidian/Sirona/Research",
       "/Users/danyim",
       "/tmp"
-    ],
-    "defaultMode": "auto"
+    ]
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -229,10 +225,12 @@
       "source": {
         "source": "github",
         "repo": "danyim/dy-claude-plugins"
-      }
+      },
+      "autoUpdate": true
     }
   },
   "effortLevel": "high",
+  "tui": "default",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark-daltonized",
   "mcpServers": {

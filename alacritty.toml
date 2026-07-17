@@ -137,6 +137,19 @@ chars = "\u001B[57;9~"
 key = "Key9"
 mods = "Command"
 
+# Cmd+[ / Cmd+] -> ESC[91;9~ / ESC[93;9~ (User20/User21) -> tmux: back/forward
+# through MRU window history. ASCII of '[' (91) and ']' (93); tilde format
+# avoids tmux's CSI u parser.
+[[keyboard.bindings]]
+chars = "\u001B[91;9~"
+key = "LBracket"
+mods = "Command"
+
+[[keyboard.bindings]]
+chars = "\u001B[93;9~"
+key = "RBracket"
+mods = "Command"
+
 
 [[keyboard.bindings]]
 action = "IncreaseFontSize"

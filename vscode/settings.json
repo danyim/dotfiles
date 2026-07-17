@@ -1,8 +1,6 @@
 {
   "[css]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnPaste": false,
-    "editor.formatOnSave": true
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -19,11 +17,6 @@
   },
   "[rust]": {
     "editor.defaultFormatter": "statiolake.vscode-rustfmt",
-    "editor.formatOnPaste": false,
-    "editor.formatOnSave": true
-  },
-  "[sql]": {
-    "editor.defaultFormatter": "trunk.io",
     "editor.formatOnPaste": false,
     "editor.formatOnSave": true
   },
@@ -48,7 +41,6 @@
   "editor.fontFamily": "Inconsolata for Powerline, Inconsolata, Consolas, monospace",
   "editor.fontSize": 15,
   "editor.formatOnPaste": false,
-  "editor.inlineSuggest.enabled": true,
   "editor.quickSuggestions": {
     "comments": false,
     "other": true,
@@ -60,12 +52,8 @@
   "editor.minimap.maxColumn": 50,
   "editor.minimap.scale": 1,
   "explorer.confirmDelete": false,
-  "extensions.autoUpdate": true,
-  "files.trimTrailingWhitespace": true,
-  "gitlens.codeLens.enabled": false,
   "gitlens.hovers.avatars": false,
   "gitlens.hovers.currentLine.changes": false,
-  "gitlens.statusBar.enabled": false,
   "gitweblinks.defaultBranch": "main",
   "gitweblinks.linkType": "defaultBranch",
   "javascript.updateImportsOnFileMove.enabled": "always",
@@ -104,5 +92,50 @@
     "source.sortImports": "never",
     "source.fixAll.eslint": "never"
   },
-  "typescript.tsserver.log": "verbose"
+  "typescript.tsserver.log": "verbose",
+  "yaml.schemas": {
+    "file:///Users/danyim/.vscode/extensions/atlassian.atlascode-4.0.4/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+  },
+  "atlascode.bitbucket.enabled": false,
+  "docker.extension.enableComposeLanguageServer": false,
+  "docker.extension.dockerEngineAvailabilityPrompt": false,
+  "terminal.integrated.defaultProfile.osx": "bash",
+  "atlascode.jira.explorer.monitorEnabled": false,
+  "atlascode.jira.lastCreateSiteAndProject": {
+    "siteId": "9446901b-eb7c-471f-9568-30831b3dd3f2",
+    "projectKey": "AIE"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "gitlens.codeLens.enabled": false,
+  "claudeCode.preferredLocation": "panel",
+  "claudeCode.selectedModel": "default",
+  "workbench.editorAssociations": {
+    "git-rebase-todo": "default"
+  },
+  "claude-code.environmentVariables": [
+    {"name": "AWS_PROFILE", "value": "sirona-dev"},
+    {"name": "AWS_REGION", "value": "us-west-2"},
+    {"name": "BEDROCK_MODEL_ID", "value": "us.anthropic.claude-opus-4-5-20251101-v1:0"},
+    {"name": "CLAUDE_CODE_USE_BEDROCK", "value": "1"}
+  ],
+  "claudeCode.allowDangerouslySkipPermissions": true,
+  "chat.mcp.gallery.enabled": true,
+  "git.blame.editorDecoration.enabled": true,
+  "files.associations": {
+    "*.json5": "json5"
+  },
+  "yaml.disableSchemaDetection": [
+    "**/.github/workflows/*.yml",
+    "**/.github/workflows/*.yaml",
+    "**/.gitea/workflows/*.yml",
+    "**/.gitea/workflows/*.yaml",
+    "**/.forgejo/workflows/*.yml",
+    "**/.forgejo/workflows/*.yaml"
+  ]
 }

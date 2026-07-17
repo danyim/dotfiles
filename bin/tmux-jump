@@ -8,40 +8,128 @@
 # A leading icon reflects each window's Claude Code state: working / ready /
 # waiting. The icon glyph itself is rendered by tmux via the @claude_state_icon
 # format (defined in ~/.tmux.conf) so no emoji literal lives in this script —
-# macOS's bash 3.2 mis-parses multibyte literals in case patterns.
-# Requires: fzf, tmux >= 3.2 (display-popup)
+# macOS's bash 3.2 mis-parses multibyte literals in case patterns. (Confirmed:
+# /usr/bin/env bash here is 3.2.57, so this script must stay bash-3.2 clean —
+# no associative arrays; all the path->branch / window joins are done in awk.)
+# Requires: fzf >= 0.36 (start:reload), tmux >= 3.2 (display-popup)
+#
+# Startup latency + the "type + Enter before the prompt appears closes the
+# popup" race:
+#   The slow part is `git rev-parse` over every pane's path (some are huge
+#   repos that are slow cold) — that's what made the panel sit empty for 3-4s.
+#   The list is built by `start:reload` calling `--render`, and the fzf finder
+#   runs with `--sync`: fzf will NOT launch the finder (and will NOT process any
+#   keys you typed ahead) until the reload has finished and the list is fully
+#   loaded. So "Cmd+P, type, Enter" fired before the prompt is visible is held,
+#   then applied to the complete list — it selects the best match, or, if your
+#   query matches nothing, fzf returns empty and the popup just closes. Without
+#   --sync, fzf would consume that buffered Enter against a still-empty list and
+#   close doing nothing (the bug this fixes).
+#
+#   The wait is kept short by deduping the git lookups across windows and
+#   running them in parallel (xargs -P), so a full render is ~0.4s, not 3-4s.
+#
+#   Note: an "optimistic" instant paint (show a cached list immediately, then
+#   refresh) is intentionally NOT used here — it is fundamentally incompatible
+#   with the type-ahead guarantee above, because showing a list early means fzf
+#   must also accept Enter early, against data that may not be loaded yet.
+#
+# Modes:
+#   tmux-jump            interactive launcher (fzf --sync -> switch-client)
+#   tmux-jump --render   print the freshly-computed list to stdout AND refresh
+#                        the cache file (the cache is not used by the launcher;
+#                        it is kept so a hook can pre-warm / inspect the list).
 
-current=$(tmux display-message -p "#{session_name}:#{window_index}")
+set -o pipefail
 
-# The icon is emitted LAST: with IFS=$'\t', an empty value at the end is read
-# as an empty trailing field, whereas an empty middle field would collapse.
-result=$(
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/tmux-jump"
+CACHE="$CACHE_DIR/windows"
+
+# Absolute path to this script so fzf's reload (run via `sh -c`) can re-invoke
+# it regardless of PATH. command -v resolves to the install dir when on PATH.
+SELF=$(command -v tmux-jump 2>/dev/null) || SELF=$0
+
+# ── render: emit the column-formatted window list (and refresh the cache) ────
+render() {
+  local current tmpdir windows panes branches wbranch
+  current=$(tmux display-message -p "#{session_name}:#{window_index}")
+
+  tmpdir=$(mktemp -d "${TMPDIR:-/tmp}/tmux-jump.XXXXXX") || return 1
+  windows="$tmpdir/windows"   # access \t target \t name \t icon
+  panes="$tmpdir/panes"       # target \t pane_current_path
+  branches="$tmpdir/branches" # path   \t branch
+  wbranch="$tmpdir/wbranch"   # target \t comma-joined branches
+
   tmux list-windows -a \
     -F "#{?@last_access,#{@last_access},0}	#{session_name}:#{window_index}	#{window_name}	#{E:@claude_state_icon}" \
-  | sort -t "$(printf '\t')" -k1,1nr \
-  | while IFS=$'\t' read -r _access target wname icon; do
-      [ "$target" = "$current" ] && continue
-      icon="${icon% }"     # drop the trailing space @claude_state_icon adds
-      icon="${icon:- }"    # space (not empty) when no state, keeps columns aligned
-      branches=$(
-        tmux list-panes -t "$target" -F "#{pane_current_path}" 2>/dev/null \
-        | sort -u \
-        | while read -r ppath; do
-            git -C "$ppath" rev-parse --abbrev-ref HEAD 2>/dev/null
-          done \
-        | sort -u \
-        | paste -sd ',' -
-      )
-      # target stays column 1 so the awk selection-parse below still works.
-      printf "%s\t%s\t%s\t%s\n" "$target" "$icon" "$wname" "${branches:--}"
-  done \
-  | column -t -s $'\t' \
-  | fzf --prompt="  window> " \
-        --height=100% \
-        --border=rounded \
-        --reverse \
-        --no-info
-)
+    > "$windows"
+  tmux list-panes -a -F "#{session_name}:#{window_index}	#{pane_current_path}" > "$panes"
 
-target=$(awk '{print $1}' <<< "$result")
-[ -n "$target" ] && tmux switch-client -t "$target"
+  # Resolve each *unique* pane path's git branch in parallel. NUL-delimited and
+  # passed as "$1" (not interpolated) so paths with spaces are safe.
+  cut -f2 "$panes" | sort -u | tr '\n' '\0' \
+    | xargs -0 -P 8 -I {} sh -c \
+        'printf "%s\t%s\n" "$1" "$(git -C "$1" rev-parse --abbrev-ref HEAD 2>/dev/null)"' _ {} \
+    > "$branches"
+
+  # target -> comma-joined, de-duplicated branch list (skip paths with no branch).
+  awk -F'\t' '
+    FNR==NR { b[$1]=$2; next }                       # branches: path \t branch
+    {
+      v = b[$2]
+      if (v != "" && !((($1) SUBSEP v) in seen)) {
+        seen[($1) SUBSEP v] = 1
+        list[$1] = (list[$1] == "" ? v : list[$1] "," v)
+      }
+    }
+    END { for (t in list) print t "\t" list[t] }
+  ' "$branches" "$panes" > "$wbranch"
+
+  # Join windows with their branches, MRU-first, drop the current window, and
+  # column-align. target stays column 1 so the selection parse below still works.
+  awk -F'\t' -v current="$current" '
+    FNR==NR { wb[$1]=$2; next }                      # wbranch: target \t branches
+    {
+      access=$1; target=$2; name=$3; icon=$4
+      if (target == current) next
+      sub(/ $/, "", icon)                            # drop trailing space @claude_state_icon adds
+      if (icon == "") icon = " "                     # keep columns aligned when no state
+      br = wb[target]; if (br == "") br = "-"
+      printf "%s\t%s\t%s\t%s\t%s\n", access, target, icon, name, br
+    }
+  ' "$wbranch" "$windows" \
+    | sort -t "$(printf '\t')" -k1,1nr \
+    | cut -f2- \
+    | column -t -s "$(printf '\t')"
+
+  rm -rf "$tmpdir"
+}
+
+mkdir -p "$CACHE_DIR"
+
+case "$1" in
+  --render)
+    # Write atomically, then echo so the caller (fzf reload / a hook) sees it too.
+    out=$(render)
+    printf '%s\n' "$out" > "$CACHE.tmp" && mv "$CACHE.tmp" "$CACHE"
+    printf '%s\n' "$out"
+    ;;
+  *)
+    # --sync: hold the finder (and any typed-ahead keys) until start:reload has
+    # produced the full list, so an early "type + Enter" lands on real content.
+    # The list comes entirely from the reload, so stdin is /dev/null.
+    result=$(
+      fzf --prompt="  window> " \
+          --height=100% \
+          --border=rounded \
+          --reverse \
+          --no-info \
+          --sync \
+          --bind "start:reload($SELF --render)" \
+          < /dev/null
+    )
+
+    target=$(awk '{print $1}' <<< "$result")
+    [ -n "$target" ] && tmux switch-client -t "$target"
+    ;;
+esac
