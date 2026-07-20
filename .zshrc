@@ -362,3 +362,7 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 # Load local-only configurations
 source "$HOME/.localrc"
+# Route `claude` through claude-sess so each tmux pane gets a pinned --session-id <uuid> that tmux-resurrect can save and
+# resume per-pane (instead of every pane collapsing onto the most-recent session via --continue). The alias shadows the
+# zsh-nvm `claude` shim at the command word; claude-sess re-execs the real binary with `command`. See ~/.local/bin/claude-sess.
+alias claude='claude-sess'
