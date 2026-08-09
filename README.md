@@ -24,3 +24,9 @@ The theme I'm using for my editor and terminal is the [Zenburn color scheme](htt
 
 ### Updating dotfiles
 - Run `./read.sh` in the repository's directory to copy all of the system's settings.
+
+### Restoring a backup
+- Run `./restore.sh` to interactively restore a file from `~/.dotfiles.backup/<UTC epoch>/`.
+    - Lists every backed-up file across all snapshots; type a substring to filter (uses `fzf` if installed, otherwise a numbered menu).
+    - Pick a file to restore it to its original location. The current version is backed up first, so the restore is reversible.
+    - Use `--dry-run` to preview without writing.

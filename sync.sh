@@ -6,6 +6,7 @@ set -euo pipefail
 
 current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$current_dir/lib/helpers.sh"
+source "$current_dir/lib/mappings.sh"
 
 # Colors
 RED='\033[0;31m'
@@ -132,91 +133,9 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Determine paths based on platform
-get_sublime_dir() {
-  if is_macos; then
-    if [ -d "$HOME/Library/Application Support/Sublime Text/Packages/User" ]; then
-      echo "$HOME/Library/Application Support/Sublime Text/Packages/User"
-    else
-      echo "$HOME/Library/Application Support/Sublime Text 3/Packages/User"
-    fi
-  else
-    if [ -d "$HOME/.config/sublime-text/Packages/User" ]; then
-      echo "$HOME/.config/sublime-text/Packages/User"
-    else
-      echo "$HOME/.config/sublime-text-3/Packages/User"
-    fi
-  fi
-}
-
-get_vscode_dir() {
-  if is_macos; then
-    echo "$HOME/Library/Application Support/Code/User"
-  else
-    echo "$HOME/.config/Code/User"
-  fi
-}
-
-get_font_dir() {
-  if is_macos; then
-    echo "$HOME/Library/Fonts"
-  else
-    echo "$HOME/.fonts"
-  fi
-}
-
-# Build file mapping array: "repo_path:system_path"
-declare -a FILE_MAPPINGS=()
-
-build_file_mappings() {
-  local sublime_dir vscode_dir
-  sublime_dir=$(get_sublime_dir)
-  vscode_dir=$(get_vscode_dir)
-
-  # Core dotfiles
-  FILE_MAPPINGS+=(
-    ".zshrc:$HOME/.zshrc"
-    ".zshenv:$HOME/.zshenv"
-    ".gitconfig:$HOME/.gitconfig"
-    ".gitignore_global:$HOME/.gitignore_global"
-    ".tmux.conf:$HOME/.tmux.conf"
-    ".vimrc:$HOME/.vimrc"
-  )
-
-  # Alacritty
-  FILE_MAPPINGS+=("alacritty.toml:$HOME/.config/alacritty/alacritty.toml")
-
-  # Kitty
-  FILE_MAPPINGS+=("kitty.conf:$HOME/.config/kitty/kitty.conf")
-
-  # tmux helper scripts
-  FILE_MAPPINGS+=("bin/tmux-jump:$HOME/.local/bin/tmux-jump")
-  FILE_MAPPINGS+=("bin/tmux-window-focus:$HOME/.local/bin/tmux-window-focus")
-  FILE_MAPPINGS+=("bin/tmux-mark-read:$HOME/.local/bin/tmux-mark-read")
-
-  # Claude Code
-  FILE_MAPPINGS+=("claude/statusline-command.sh:$HOME/.claude/statusline-command.sh")
-  FILE_MAPPINGS+=("claude/settings.json:$HOME/.claude/settings.json")
-
-  # VSCode
-  FILE_MAPPINGS+=(
-    "vscode/settings.json:$vscode_dir/settings.json"
-    "vscode/keybindings.json:$vscode_dir/keybindings.json"
-  )
-
-  # Sublime
-  FILE_MAPPINGS+=(
-    "sublime/Preferences.sublime-settings:$sublime_dir/Preferences.sublime-settings"
-  )
-  if is_macos; then
-    FILE_MAPPINGS+=("sublime/Default (OSX).sublime-keymap:$sublime_dir/Default (OSX).sublime-keymap")
-  else
-    FILE_MAPPINGS+=("sublime/Default (Linux).sublime-keymap:$sublime_dir/Default (Linux).sublime-keymap")
-  fi
-
-  # Vim colorscheme
-  FILE_MAPPINGS+=("zenburn/zenburn.vim:$HOME/.vim/colors/zenburn.vim")
-}
+# Platform path helpers (get_sublime_dir, get_vscode_dir, get_font_dir) and the
+# canonical FILE_MAPPINGS table live in lib/mappings.sh (sourced above), shared
+# with restore.sh so backups can be mapped back to their original locations.
 
 # Compare two files and return status
 # Returns: "identical", "modified", "missing_system", "missing_repo"
