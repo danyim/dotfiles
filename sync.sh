@@ -27,32 +27,61 @@ UTCTIME=$(date -u +%s)
 BACKUP_DIR="$HOME/.dotfiles.backup/$UTCTIME"
 BACKUP_CREATED=0
 
-# .syncignore patterns (loaded at runtime)
+# .syncignore patterns (loaded at runtime). Parallel arrays: each entry i is
+# scope[i] (a substring the repo_path must contain) + regex[i] (matched
+# against hunk content). scope[i] is "" only for legacy unscoped lines.
+declare -a SYNCIGNORE_SCOPES=()
 declare -a SYNCIGNORE_PATTERNS=()
 
-# Load patterns from .syncignore (one regex per line, # for comments)
-load_syncignore() {
-  local syncignore_path="$current_dir/.syncignore"
-  if [ ! -f "$syncignore_path" ]; then
+# Load entries from a syncignore file into the parallel scope/pattern arrays.
+# Format: "<path-substring>:<regex>" — one per line, # for comments.
+# A bare regex with no ":" is accepted for backwards compatibility but applies
+# to every file being synced, which is almost always broader than intended.
+load_syncignore_file() {
+  local path="$1"
+  local label="$2"
+  local count=0
+
+  if [ ! -f "$path" ]; then
     return
   fi
 
   while IFS= read -r line; do
     # Skip empty lines and comments
     [[ -z "$line" || "$line" =~ ^# ]] && continue
-    SYNCIGNORE_PATTERNS+=("$line")
-  done < "$syncignore_path"
 
-  if [ ${#SYNCIGNORE_PATTERNS[@]} -gt 0 ]; then
-    echo -e "${CYAN}Loaded ${#SYNCIGNORE_PATTERNS[@]} pattern(s) from .syncignore${NC}"
+    if [[ "$line" == *:* ]]; then
+      SYNCIGNORE_SCOPES+=("${line%%:*}")
+      SYNCIGNORE_PATTERNS+=("${line#*:}")
+    else
+      echo -e "${YELLOW}Warning: unscoped syncignore entry in $label: \"$line\" (applies to ALL files — prefer \"path-substring:$line\")${NC}"
+      SYNCIGNORE_SCOPES+=("")
+      SYNCIGNORE_PATTERNS+=("$line")
+    fi
+    count=$((count + 1))
+  done < "$path"
+
+  if [ $count -gt 0 ]; then
+    echo -e "${CYAN}Loaded $count pattern(s) from $label${NC}"
   fi
 }
 
-# Check if a hunk matches any .syncignore pattern
+# .syncignore is committed and shared by every machine that clones this repo.
+# .syncignore.local is gitignored — declare machine-specific "never apply
+# this line here" preferences (e.g. a work git identity, a font size you
+# tweak locally) without them leaking into the repo or other machines.
+load_syncignore() {
+  load_syncignore_file "$current_dir/.syncignore" ".syncignore"
+  load_syncignore_file "$current_dir/.syncignore.local" ".syncignore.local"
+}
+
+# Check if a hunk (for the given repo_path) matches any .syncignore entry
+# whose scope substring is contained in repo_path (or is unscoped).
 # Returns 0 (true) if matched, 1 (false) if not
-# Sets MATCHED_PATTERN to the first matching pattern
+# Sets MATCHED_PATTERN to the first matching "scope:regex" for display
 hunk_matches_syncignore() {
   local hunk="$1"
+  local repo_path="$2"
   MATCHED_PATTERN=""
 
   if [ ${#SYNCIGNORE_PATTERNS[@]} -eq 0 ]; then
@@ -68,9 +97,16 @@ hunk_matches_syncignore() {
     content+="${line:1}"$'\n'
   done <<< "$hunk"
 
-  for pattern in "${SYNCIGNORE_PATTERNS[@]}"; do
+  local i
+  for i in "${!SYNCIGNORE_PATTERNS[@]}"; do
+    local scope="${SYNCIGNORE_SCOPES[$i]}"
+    local pattern="${SYNCIGNORE_PATTERNS[$i]}"
+
+    # Scoped entries only apply to files whose repo_path contains the substring
+    [ -n "$scope" ] && [[ "$repo_path" != *"$scope"* ]] && continue
+
     if printf '%s' "$content" | grep -qE "$pattern" 2>/dev/null; then
-      MATCHED_PATTERN="$pattern"
+      MATCHED_PATTERN="${scope:+$scope:}$pattern"
       return 0
     fi
   done
@@ -102,8 +138,11 @@ usage() {
   echo "  [?] Help: show available actions"
   echo ""
   echo "Syncignore:"
-  echo "  Place a .syncignore file in the repo root (one regex per line)."
-  echo "  Hunks matching any pattern are automatically skipped."
+  echo "  .syncignore       Committed, shared by every machine."
+  echo "  .syncignore.local Gitignored, this machine only. Same format."
+  echo "  Each line: <path-substring>:<regex>  (e.g. '.gitconfig:email =')."
+  echo "  Only hunks for a repo_path containing that substring are checked"
+  echo "  against the regex; matches are skipped automatically."
 }
 
 # Parse arguments
@@ -338,7 +377,7 @@ review_file_hunks() {
     i=$((i + 1))
 
     # Check .syncignore patterns (always, even with apply_remaining)
-    if hunk_matches_syncignore "$hunk"; then
+    if hunk_matches_syncignore "$hunk" "$repo_path"; then
       echo -e "${CYAN}($i/$total) Skipped — matches .syncignore pattern: ${BOLD}$MATCHED_PATTERN${NC}"
       continue
     fi
