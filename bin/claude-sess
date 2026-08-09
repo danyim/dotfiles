@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# claude-sess — give every tmux Claude Code pane a stable, per-pane session id so tmux-resurrect can resume each pane to
+# ITS OWN session, instead of every pane in a directory collapsing onto the most-recent session via `claude --continue`.
+#
+# tmux-resurrect saves the launcher argv it sees via `ps` (e.g. `claude --continue`), not the resolved `--resume <uuid>`
+# child that Claude re-execs into — so the real session id never reaches the save file. This wrapper puts the id into the
+# argv at launch (where resurrect can capture it), then converts it back to `--resume <uuid>` on restore.
+#
+# Two modes, selected by the leading sentinel:
+#   • Launch  — invoked as `claude` (via the zsh alias). For a bare/fresh start it injects `--session-id <uuid>` so the id
+#               lands in the saved argv. Explicit --resume/--continue/--session-id and -p/--print are passed through as-is.
+#   • Restore — invoked by tmux-resurrect with a leading `--resurrect-restore --` sentinel (see ~/.tmux.conf). It rewrites
+#               the saved `--session-id <uuid>` into `--resume <uuid>`. Legacy panes saved without an id fall back to
+#               `--continue` (the old behavior), and panes already carrying --resume/--continue pass through unchanged.
+
+set -eo pipefail
+
+CLAUDE_BIN="${CLAUDE_SESS_BIN:-claude}"   # resolved via PATH; the `command` builtin skips this wrapper's alias/function
+
+gen_uuid() { uuidgen | tr 'A-Z' 'a-z'; }
+
+# ── Restore mode ─────────────────────────────────────────────────────────────────────────────────────────────────────
+if [ "${1:-}" = "--resurrect-restore" ]; then
+  shift
+  [ "${1:-}" = "--" ] && shift
+  sid=""
+  passthrough=()
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --session-id)   sid="${2:-}"; shift 2 ;;
+      --session-id=*) sid="${1#*=}"; shift ;;
+      *)              passthrough+=("$1"); shift ;;
+    esac
+  done
+  if [ -n "$sid" ]; then
+    exec command "$CLAUDE_BIN" --resume "$sid" "${passthrough[@]}"
+  fi
+  # No captured id: if the saved command already resumes/continues, honor it verbatim; otherwise fall back to --continue.
+  for a in "${passthrough[@]}"; do
+    case "$a" in --resume|-r|--continue|-c) exec command "$CLAUDE_BIN" "${passthrough[@]}" ;; esac
+  done
+  exec command "$CLAUDE_BIN" --continue "${passthrough[@]}"
+fi
+
+# ── Launch mode ──────────────────────────────────────────────────────────────────────────────────────────────────────
+# Don't pin an id when the user explicitly chose a session, or for one-shot print runs — pass those straight through.
+for a in "$@"; do
+  case "$a" in
+    --resume|-r|--continue|-c|--session-id|--session-id=*|-p|--print)
+      exec command "$CLAUDE_BIN" "$@" ;;
+  esac
+done
+exec command "$CLAUDE_BIN" --session-id "$(gen_uuid)" "$@"

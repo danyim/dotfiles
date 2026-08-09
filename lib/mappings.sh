@@ -71,6 +71,8 @@ build_file_mappings() {
   FILE_MAPPINGS+=("bin/tmux-jump:$HOME/.local/bin/tmux-jump")
   FILE_MAPPINGS+=("bin/tmux-window-focus:$HOME/.local/bin/tmux-window-focus")
   FILE_MAPPINGS+=("bin/tmux-mark-read:$HOME/.local/bin/tmux-mark-read")
+  FILE_MAPPINGS+=("bin/claude-sess:$HOME/.local/bin/claude-sess")
+  FILE_MAPPINGS+=("bin/claude-reload-skill:$HOME/.local/bin/claude-reload-skill")
 
   # Claude Code
   FILE_MAPPINGS+=("claude/statusline-command.sh:$HOME/.claude/statusline-command.sh")

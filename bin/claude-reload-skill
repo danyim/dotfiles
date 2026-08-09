@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# claude-reload-skill — find every tmux pane running an active Claude Code session and send it
+# `/reload-skills`.
+#
+# Detection walks the process tree instead of trusting `pane_current_command`: Claude Code panes
+# in this setup run `<shell> -> /bin/sh -> claude ...` (the middle hop comes from how the `claude`
+# launcher/alias spawns it), so tmux reports the pane's foreground command as `sh`/`bash`/`zsh`,
+# never `claude`. Instead, for each pane we take `pane_pid` and search its full descendant subtree
+# for a process whose `comm` is exactly `claude` (this is the resolved image name even when the
+# pane went through the claude-sess wrapper in ~/.local/bin/claude-sess, since that wrapper execs
+# into the real `claude` binary rather than forking).
+#
+# Usage: claude-reload-skill [-n|--dry-run]
+#   -n, --dry-run   Print which panes would receive the command, but don't send anything.
+
+set -euo pipefail
+
+DRY_RUN=0
+for arg in "$@"; do
+  case "$arg" in
+    -n|--dry-run) DRY_RUN=1 ;;
+    -h|--help)
+      grep '^#' "$0" | sed 's/^# \{0,1\}//; 1d' | sed -n '1,/^Usage:/!p; /^Usage:/,$p' >&2
+      exit 0
+      ;;
+  esac
+done
+
+command -v tmux >/dev/null 2>&1 || { echo "claude-reload-skill: tmux not found" >&2; exit 1; }
+
+# Snapshot the whole process table once; awk walks it per pane rather than re-shelling out to `ps`
+# for every pane (there can be dozens).
+PS_SNAPSHOT="$(ps -A -o pid=,ppid=,comm=)"
+
+pane_has_claude() {
+  local start_pid="$1"
+  awk -v start="$start_pid" '
+    { ppid[$1] = $2; comm[$1] = $3; children[$2] = children[$2] " " $1 }
+    END {
+      queue = start
+      while (length(queue) > 0) {
+        split(queue, q, " ")
+        queue = ""
+        for (i in q) {
+          pid = q[i]
+          if (pid == "" || seen[pid]++) continue
+          if (comm[pid] == "claude") { print "found"; exit }
+          queue = queue " " children[pid]
+        }
+      }
+    }
+  ' <<< "$PS_SNAPSHOT"
+}
+
+sent=0
+while IFS=' ' read -r pane_id pane_pid pane_label; do
+  [ -n "$pane_pid" ] || continue
+  if [ "$(pane_has_claude "$pane_pid")" = "found" ]; then
+    if [ "$DRY_RUN" -eq 1 ]; then
+      echo "would send to $pane_id ($pane_label)"
+    else
+      echo "sending to $pane_id ($pane_label)"
+      tmux send-keys -t "$pane_id" -l '/reload-skills'
+      tmux send-keys -t "$pane_id" Enter
+    fi
+    sent=$((sent + 1))
+  fi
+done < <(tmux list-panes -a -F '#{pane_id} #{pane_pid} #{session_name}:#{window_index}.#{pane_index}')
+
+if [ "$sent" -eq 0 ]; then
+  echo "claude-reload-skill: no active Claude Code panes found" >&2
+  exit 1
+fi

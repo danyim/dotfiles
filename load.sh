@@ -220,6 +220,16 @@ if [ -f bin/tmux-mark-read ]; then
   cp bin/tmux-mark-read ~/.local/bin/tmux-mark-read
   chmod +x ~/.local/bin/tmux-mark-read
 fi
+if [ -f bin/claude-sess ]; then
+  backup_if_exists ~/.local/bin/claude-sess "$BACKUP_DIR/claude-sess"
+  cp bin/claude-sess ~/.local/bin/claude-sess
+  chmod +x ~/.local/bin/claude-sess
+fi
+if [ -f bin/claude-reload-skill ]; then
+  backup_if_exists ~/.local/bin/claude-reload-skill "$BACKUP_DIR/claude-reload-skill"
+  cp bin/claude-reload-skill ~/.local/bin/claude-reload-skill
+  chmod +x ~/.local/bin/claude-reload-skill
+fi
 
 # Claude Code
 echo "Importing Claude Code config..."
