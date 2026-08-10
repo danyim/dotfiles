@@ -1,0 +1,245 @@
+#!/usr/bin/env bash
+#
+# twp (tmux window swap) -- swap the current tmux window with another,
+# exchanging their positions AND renaming each one so its numbered prefix
+# still matches the slot it now lives in.
+#
+# USAGE
+#   twp [-y] <target>
+#   twp [-y]              interactive: pick the target window with fzf
+#   twp -h | --help        show this help
+#
+# ARGUMENTS
+#   <target>   Either a bare number ("10") or a full "<letters><digits>"
+#              prefix ("fe10"). A bare number reuses the current window's own
+#              letters, so from inside "fe6:foo" you can just say "twp 10"
+#              to mean "fe10". A full window name ("fe10:nav-guard") is also
+#              accepted -- only the part before ':' is used to find it.
+#   -y         skip the "Proceed? [y/N]" confirmation prompt.
+#
+# With no target given at all (after any -y), twp opens an fzf picker listing
+# every other tmux window across every session; pick one and it's used as the
+# target, no prefix typing needed. Requires fzf on PATH for that mode only.
+#
+# NAMING CONVENTION
+#   A window is named "<letters><digits>:<slug>" (e.g. "fe6:stress-harness")
+#   or just the bare "<letters><digits>" with no slug. This is the same
+#   prefix:slug convention the dy tm-update/tm-clear Claude Code skills use.
+#
+# WHAT IT DOES
+#   `tmux swap-window -s A -t B` exchanges the two windows' *contents* (panes)
+#   between index slots A and B, but each window's *name* travels with the
+#   window object, not the slot -- so right after the swap both names are
+#   stale (each still carries its old prefix, now sitting in the other slot).
+#   twp renames both afterward: each keeps its own slug, but takes on the
+#   prefix of the slot it now occupies.
+#
+# EXAMPLE
+#   From inside window "fe6:stress-harness":
+#     twp fe10          (or: twp 10)
+#   If "fe10:nav-guard" is the match, twp swaps their positions and renames:
+#     fe6  slot -> fe6:nav-guard
+#     fe10 slot -> fe10:stress-harness
+set -euo pipefail
+
+usage() {
+  # Print everything from the "USAGE" header comment above down to the first
+  # blank line after "set -euo pipefail" -- i.e. the whole comment block.
+  awk '/^#!/{next} /^set -euo/{exit} {sub(/^# ?/,""); print}' "$0"
+}
+
+CONFIRM=1
+TARGET_ARG=""
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -y)
+      CONFIRM=0
+      shift
+      ;;
+    *)
+      TARGET_ARG="$1"
+      shift
+      ;;
+  esac
+done
+
+PANE="${TMUX_PANE:?not in a tmux pane; nothing to swap}"
+
+# win_prefix/win_slug: "letters+digits" prefix (no colon) and the part after
+# the colon, for a window name. Deliberately two separate single-value
+# functions rather than one that returns "prefix\tslug" for `read` to split --
+# tab is an "IFS whitespace" character, so `IFS=$'\t' read -r a b` COLLAPSES a
+# leading empty field instead of preserving it (e.g. "\tzsh" reads back as
+# a="zsh" b="", not a="" b="zsh"). A bare, prefix-less window name like "zsh"
+# has exactly that empty-leading-field shape, so that round-trip silently
+# corrupted the prefix/slug split for every such window. Two plain
+# single-value command substitutions have no field-splitting to get wrong.
+win_prefix() {
+  local name="$1"
+  if [[ "$name" == *:* ]]; then
+    printf '%s' "${name%%:*}"
+  elif [[ "$name" =~ ^[A-Za-z]+[0-9]+$ ]]; then
+    printf '%s' "$name"
+  fi
+}
+
+win_slug() {
+  local name="$1"
+  if [[ "$name" == *:* ]]; then
+    printf '%s' "${name#*:}"
+  elif [[ "$name" =~ ^[A-Za-z]+[0-9]+$ ]]; then
+    :
+  else
+    printf '%s' "$name"
+  fi
+}
+
+cur_winref=$(tmux display-message -t "$PANE" -p '#{session_name}:#{window_index}')
+cur_name=$(tmux display-message -t "$PANE" -p '#W')
+cur_prefix=$(win_prefix "$cur_name")
+cur_slug=$(win_slug "$cur_name")
+
+if [[ -z "$cur_prefix" ]]; then
+  echo "twp: current window '${cur_name}' has no numbered prefix (expected e.g. fe6[:slug]); nothing to swap" >&2
+  exit 1
+fi
+if [[ ! "$cur_prefix" =~ ^([A-Za-z]+)([0-9]+)$ ]]; then
+  echo "twp: current window prefix '${cur_prefix}' doesn't look like letters+digits" >&2
+  exit 1
+fi
+cur_letters="${BASH_REMATCH[1]}"
+
+target_winref=""
+target_name=""
+
+if [[ -z "$TARGET_ARG" ]]; then
+  # No target given: pick one interactively via fzf, from every other window.
+  if ! command -v fzf >/dev/null 2>&1; then
+    echo "twp: no target given and fzf isn't on PATH; pass a target explicitly (see -h)" >&2
+    exit 1
+  fi
+  picked=$(
+    tmux list-windows -a -F '#{session_name}:#{window_index}	#{window_name}' \
+      | awk -F'\t' -v cur="$cur_winref" '$1 != cur' \
+      | column -t -s "$(printf '\t')" \
+      | fzf --prompt="swap with> " --height=40% --reverse --border=rounded
+  ) || true
+  if [[ -z "$picked" ]]; then
+    echo "twp: no window selected, aborting" >&2
+    exit 1
+  fi
+  target_winref=$(awk '{print $1}' <<<"$picked")
+  target_name=$(tmux display-message -t "$target_winref" -p '#W')
+  target_prefix=$(win_prefix "$target_name")
+  target_slug=$(win_slug "$target_name")
+else
+  # Resolve the target arg to a bare "<letters><digits>" prefix string.
+  target_raw="${TARGET_ARG%%:*}" # tolerate a full "fe10:nav-guard" being passed
+  if [[ "$target_raw" =~ ^[0-9]+$ ]]; then
+    target_prefix="${cur_letters}${target_raw}"
+  elif [[ "$target_raw" =~ ^[A-Za-z]+[0-9]+$ ]]; then
+    target_prefix="$target_raw"
+  else
+    echo "twp: target '${TARGET_ARG}' isn't a bare number or a <letters><digits> prefix" >&2
+    exit 1
+  fi
+
+  # Find the one window across all sessions whose prefix matches target_prefix.
+  # The trailing "|| true" matters: if the LAST window tmux enumerates happens
+  # not to match, the while loop's (and thus this whole pipeline's) exit
+  # status is 1, and under `set -e` a bare "var=$(...)" assignment does NOT
+  # get the usual &&/|| exemption -- it would silently kill the script right
+  # here, before the proper "no match" message below ever runs.
+  matches=$(tmux list-windows -a -F '#{session_name}:#{window_index}	#{window_name}' | \
+    while IFS=$'\t' read -r winref name; do
+      if [[ "$(win_prefix "$name")" == "$target_prefix" ]]; then
+        printf '%s\t%s\n' "$winref" "$name"
+      fi
+    done) || true
+
+  count=$(printf '%s\n' "$matches" | grep -c . || true)
+  if [[ "$count" -eq 0 ]]; then
+    echo "twp: no window found with prefix '${target_prefix}'" >&2
+    exit 1
+  elif [[ "$count" -gt 1 ]]; then
+    echo "twp: '${target_prefix}' matches more than one window (shouldn't happen):" >&2
+    printf '%s\n' "$matches" >&2
+    exit 1
+  fi
+
+  target_winref="${matches%%$'\t'*}"
+  target_name="${matches#*$'\t'}"
+  target_slug=$(win_slug "$target_name")
+fi
+
+if [[ "$target_winref" == "$cur_winref" ]]; then
+  echo "twp: target is the current window; nothing to do" >&2
+  exit 1
+fi
+
+# The whole point is trading numbered prefixes -- a target with none (common:
+# most windows in a real fleet aren't part of the prefix:slug convention, and
+# the fzf picker above lists all of them indiscriminately) would otherwise
+# produce a malformed ":slug" name with no prefix at all.
+if [[ -z "$target_prefix" ]]; then
+  echo "twp: target window '${target_name}' has no numbered prefix (expected e.g. fe6[:slug]); nothing to swap into" >&2
+  exit 1
+fi
+if [[ ! "$target_prefix" =~ ^[A-Za-z]+[0-9]+$ ]]; then
+  echo "twp: target window prefix '${target_prefix}' doesn't look like letters+digits" >&2
+  exit 1
+fi
+
+# `tmux swap-window -s cur_winref -t target_winref` moves each window OBJECT
+# (its pane content and its current name) whole to the other slot -- the name
+# does not stay pinned to the slot/index. So by the time the rename-window
+# calls below run, "$cur_winref" resolves to whatever now OCCUPIES that slot,
+# which is the object that used to be at "$target_winref" (and vice versa).
+# Each slot keeps ITS OWN numbered prefix, but the slug that now belongs there
+# is the OTHER window's original slug, since that's the content that moved
+# in. Confirmed by tracking #{pane_pid} across a real swap-window call --
+# don't "simplify" this back to pairing cur_prefix with cur_slug, that's the
+# bug this fixes.
+new_cur_slot_name="$cur_prefix"
+if [[ -n "$target_slug" ]]; then
+  new_cur_slot_name="${cur_prefix}:${target_slug}"
+fi
+new_target_slot_name="$target_prefix"
+if [[ -n "$cur_slug" ]]; then
+  new_target_slot_name="${target_prefix}:${cur_slug}"
+fi
+
+# Color-code by ORIGINAL window identity (not by slot) so the swap is visible
+# at a glance: whichever color cur_name/target_name print in up front is the
+# same color that content carries with it into its new slot below.
+if [[ -t 1 ]]; then
+  COLOR_CUR=$'\033[36m'    # cyan
+  COLOR_TARGET=$'\033[35m' # magenta
+  COLOR_RESET=$'\033[0m'
+else
+  COLOR_CUR=""
+  COLOR_TARGET=""
+  COLOR_RESET=""
+fi
+
+echo "swap ${cur_winref} (${COLOR_CUR}${cur_name}${COLOR_RESET}) <-> ${target_winref} (${COLOR_TARGET}${target_name}${COLOR_RESET})"
+echo "  ${cur_winref} will become ${COLOR_TARGET}${new_cur_slot_name}${COLOR_RESET}"
+echo "  ${target_winref} will become ${COLOR_CUR}${new_target_slot_name}${COLOR_RESET}"
+
+if [[ "$CONFIRM" -eq 1 ]]; then
+  read -r -p "Proceed? [y/N] " reply
+  case "$reply" in
+    y|Y|yes|YES) ;;
+    *) echo "twp: aborted"; exit 1 ;;
+  esac
+fi
+
+tmux swap-window -s "$cur_winref" -t "$target_winref"
+tmux rename-window -t "$cur_winref" "$new_cur_slot_name"
+tmux rename-window -t "$target_winref" "$new_target_slot_name"
+
+echo "done: ${cur_winref} -> ${COLOR_TARGET}${new_cur_slot_name}${COLOR_RESET}, ${target_winref} -> ${COLOR_CUR}${new_target_slot_name}${COLOR_RESET}"

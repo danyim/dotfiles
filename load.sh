@@ -230,6 +230,11 @@ if [ -f bin/claude-reload-skill ]; then
   cp bin/claude-reload-skill ~/.local/bin/claude-reload-skill
   chmod +x ~/.local/bin/claude-reload-skill
 fi
+if [ -f bin/twp ]; then
+  backup_if_exists ~/.local/bin/twp "$BACKUP_DIR/twp"
+  cp bin/twp ~/.local/bin/twp
+  chmod +x ~/.local/bin/twp
+fi
 
 # Claude Code
 echo "Importing Claude Code config..."
