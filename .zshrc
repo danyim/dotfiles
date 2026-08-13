@@ -1,5 +1,3 @@
-# Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/danyim/.zsh/completions:"* ]]; then export FPATH="/Users/danyim/.zsh/completions:$FPATH"; fi
 # Config order:
 # .zshenv → [.zprofile if login] → [.zshrc if interactive] →
 # [.zlogin if login] → [.zlogout sometimes]
@@ -35,17 +33,24 @@ function tt {
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-# Lazy load NVM since it can contribute to a slower shell startup time
-export NVM_LAZY_LOAD=true
-export NVM_COMPLETION=false
-export NVM_NO_USE=true  # Skip nvm use default on load; arm64 node resolved via PATH shim in .zshenv
+# Lazy-loading is disabled: .zshenv already sources nvm.sh unconditionally for
+# every shell (interactive or not), so the lazy stub functions bought nothing
+# here -- they only added risk, since Claude Code's Bash tool runs off a
+# snapshot of interactive shell functions that doesn't include the
+# underscore-prefixed `_zsh_nvm_load` helper the stubs (corepack, npm, node,
+# ...) call, breaking those commands there ("command not found:
+# _zsh_nvm_load"). Eager loading makes those real PATH binaries again, no
+# stub layer to break.
+export NVM_LAZY_LOAD=false
+export NVM_COMPLETION=true
 
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 # The offical Powerline repo suggests running this, but we're seeing script errors
 # when loading
 #. $HOME/Library/Python/3.6/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
 
-source $HOME/.antigen/antigen.zsh
+source /usr/local/share/antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen bundle colorize
 antigen bundle git
@@ -351,8 +356,6 @@ setopt +o nomatch
 
 # For fuzzy search
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
 # --hidden: Search hidden files and folders
@@ -362,6 +365,24 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 # Load local-only configurations
 source "$HOME/.localrc"
+
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+export PATH="$HOME/.local/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/danyim/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/danyim/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/danyim/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/danyim/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+# bun completions
+[ -s "/Users/danyim/.bun/_bun" ] && source "/Users/danyim/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 # Route `claude` through claude-sess so each tmux pane gets a pinned --session-id <uuid> that tmux-resurrect can save and
 # resume per-pane (instead of every pane collapsing onto the most-recent session via --continue). The alias shadows the
 # zsh-nvm `claude` shim at the command word; claude-sess re-execs the real binary with `command`. See ~/.local/bin/claude-sess.
