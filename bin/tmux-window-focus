@@ -1,14 +1,31 @@
 #!/bin/sh
 # Invoked (backgrounded) by tmux's session-window-changed / client-session-changed
-# hooks with the newly-focused window as $1 ("session:index"). Two jobs:
+# hooks with the newly-focused window as $1 ("session:index"). Three jobs:
 #
 #   1. Stamp @last_access immediately so tmux-jump (Cmd+P) can order windows
 #      most-recently-used first.
-#   2. If the focused window is already showing a Claude "ready" (🟢) badge, arm
-#      the dwell-clear (tmux-mark-read) so the badge clears once you've lingered.
+#   2. Self-heal a stale "working" (🟡) badge: no Claude Code hook fires when a
+#      turn is interrupted with Esc, so @claude_state can get stuck on
+#      "working" forever after an interrupt even though Claude is sitting idle.
+#      Claude Code itself writes the pane title independent of hooks -- "✳ "
+#      when idle -- so if we see that glyph while @claude_state says
+#      "working", the hook-reported state is stale; correct it to "ready" (not
+#      just clear it) so the normal dwell-clear flow below still applies and
+#      you get the usual "finished, unreviewed" treatment.
+#      Deliberately scoped to "working" only, not "waiting": a blocked/
+#      permission-prompt window may also show the idle title glyph while still
+#      genuinely awaiting your decision, and wrongly clearing that hides a
+#      real pending approval -- worse than a stale badge.
+#   3. If the window is (now) showing a Claude "ready" (🟢) badge, arm the
+#      dwell-clear (tmux-mark-read) so the badge clears once you've lingered.
 #      Fast tab-cycling passes through before the dwell elapses, leaving badges
 #      intact. (The "it went 🟢 while I was already here" case is armed instead
 #      by the Claude Stop hook — a focus event never fires for it.)
+#
+# This only self-heals the window you actually focus -- other stuck windows
+# elsewhere in the status line stay stale until you visit them. A periodic
+# poll across every window would catch those too, but at recurring cost across
+# a large fleet; this stays event-driven like the rest of this setup.
 
 W="$1"
 [ -n "$W" ] || exit 0
@@ -16,6 +33,19 @@ W="$1"
 # (1) Immediate MRU stamp — always, regardless of Claude state.
 tmux set -w -t "$W" @last_access "$(date +%s)" 2>/dev/null
 
-# (2) Arm the dwell-clear only if this window is already 🟢.
-[ "$(tmux show -wqv -t "$W" @claude_state 2>/dev/null)" = ready ] || exit 0
+# (2) Self-heal: "working" + idle title glyph means a hook-missed transition
+# (most commonly an Esc interrupt) left the badge stale.
+state="$(tmux show -wqv -t "$W" @claude_state 2>/dev/null)"
+if [ "$state" = working ]; then
+  title="$(tmux display-message -p -t "$W" '#{pane_title}' 2>/dev/null)"
+  case "$title" in
+    "✳"*)
+      tmux set -w -t "$W" @claude_state ready 2>/dev/null
+      state=ready
+      ;;
+  esac
+fi
+
+# (3) Arm the dwell-clear only if this window is (now) 🟢.
+[ "$state" = ready ] || exit 0
 exec "$HOME/.local/bin/tmux-mark-read" "$W"

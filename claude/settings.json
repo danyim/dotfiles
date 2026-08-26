@@ -183,7 +183,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "input=$(cat); case \"$input\" in *\"waiting for your input\"*) ;; *) [ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @claude_state waiting ;; esac; true"
+            "command": "input=$(cat); ntype=$(printf %s \"$input\" | python3 -c 'import json,sys; print(json.load(sys.stdin).get(\"notification_type\",\"\"))' 2>/dev/null); case \"$ntype\" in permission_prompt|agent_needs_input|elicitation_dialog|elicitation_url_dialog) [ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @claude_state blocked ;; idle_prompt|elicitation_complete|elicitation_response|agent_completed|auth_success|quota_auto_resume_fired|quota_auto_resume_stale|quota_auto_resume_disabled) ;; *) [ -n \"$TMUX_PANE\" ] && tmux set -w -t \"$TMUX_PANE\" @claude_state waiting ;; esac; true"
           }
         ]
       }
