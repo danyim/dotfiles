@@ -47,6 +47,11 @@ echo "Reading git settings..."
 echo "Reading alacritty settings..."
 [ -f ~/.config/alacritty/alacritty.toml ] && cp ~/.config/alacritty/alacritty.toml .
 
+# Kitty config
+echo "Reading kitty settings..."
+[ -f ~/.config/kitty/kitty.conf ] && cp ~/.config/kitty/kitty.conf .
+[ -f ~/.config/kitty/kitty.app.png ] && cp ~/.config/kitty/kitty.app.png .
+
 # Sublime Text
 echo "Reading Sublime Text settings..."
 if is_macos; then

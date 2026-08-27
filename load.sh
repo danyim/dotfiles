@@ -82,6 +82,18 @@ if [ -f alacritty.toml ]; then
   cp alacritty.toml ~/.config/alacritty/alacritty.toml
 fi
 
+# Kitty
+echo "Importing kitty settings..."
+mkdir -p ~/.config/kitty
+backup_if_exists ~/.config/kitty/kitty.conf "$BACKUP_DIR/kitty.conf"
+if [ -f kitty.conf ]; then
+  cp kitty.conf ~/.config/kitty/kitty.conf
+fi
+backup_if_exists ~/.config/kitty/kitty.app.png "$BACKUP_DIR/kitty.app.png"
+if [ -f kitty.app.png ]; then
+  cp kitty.app.png ~/.config/kitty/kitty.app.png
+fi
+
 # Sublime
 echo "Importing Sublime Text settings..."
 mkdir -p "$BACKUP_DIR/sublime"
