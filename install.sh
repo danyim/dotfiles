@@ -65,6 +65,17 @@ echo "Installing vim-plug..."
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+# Install a C toolchain (needed by cargo to link crates with build scripts, e.g. broot, exa)
+echo "Installing C toolchain..."
+if is_macos; then
+  xcode-select --install 2>/dev/null || true
+elif is_linux; then
+  sudo apt-get update && sudo apt-get install -y build-essential
+else
+  echo "Unsupported platform for C toolchain installation"
+  exit 1
+fi
+
 # Install Rust (non-interactive)
 echo "Installing Rust..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
