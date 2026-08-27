@@ -94,6 +94,15 @@ if [ -f kitty.app.png ]; then
   cp kitty.app.png ~/.config/kitty/kitty.app.png
 fi
 
+# Herdr (herdr-config.toml here -> config.toml there; renamed in-repo since
+# "config.toml" alone is ambiguous at the repo root)
+echo "Importing herdr settings..."
+mkdir -p ~/.config/herdr
+backup_if_exists ~/.config/herdr/config.toml "$BACKUP_DIR/herdr-config.toml"
+if [ -f herdr-config.toml ]; then
+  cp herdr-config.toml ~/.config/herdr/config.toml
+fi
+
 # Sublime
 echo "Importing Sublime Text settings..."
 mkdir -p "$BACKUP_DIR/sublime"

@@ -1,0 +1,36 @@
+[keys]
+prefix = "ctrl+a"
+next_tab = ["prefix+n", "cmd+alt+right"]
+previous_tab = ["prefix+p", "cmd+alt+left"]
+next_workspace = "cmd+alt+down"
+previous_workspace = "cmd+alt+up"
+
+# Cycle through detected agents. Up = previous (back up the list), down = next.
+previous_agent = "ctrl+cmd+up"
+next_agent = "ctrl+cmd+down"
+
+# tmux muscle memory: prefix+, renames (tmux default is also rename-window on
+# prefix+,), kept alongside herdr's own default (prefix+shift+t) rather than
+# replacing it.
+rename_tab = ["prefix+shift+t", "prefix+comma"]
+
+# tmux muscle memory: `\` split-window -h in tmux (side-by-side panes, a
+# vertical divider line) is the same visual result as herdr's split_vertical
+# -- the two tools name the same layout by opposite conventions (tmux names
+# splits by pane arrangement, herdr by divider-line orientation).
+split_vertical = ["prefix+v", "prefix+backslash"]
+# split_horizontal's herdr default (prefix+minus) already matches tmux's `-`
+# binding (split-window -v) -- no override needed.
+
+# tmux muscle memory: bare prefix+r reloads config (herdr's own default is
+# prefix+shift+r; kept both).
+reload_config = ["prefix+shift+r", "prefix+r"]
+
+# tmux muscle memory: bare Cmd+1..9 (no prefix) selects window by index.
+# herdr's own default (prefix+1..9) is kept alongside it.
+switch_tab = ["prefix+1..9", "cmd+1..9"]
+
+# herdr's own default is prefix+g; cmd+p also works here since kitty.conf
+# unmaps its default cmd+p>* kitten-hints chains so the bare keypress reaches
+# herdr instead of being swallowed as a chain prefix.
+goto = ["prefix+g", "cmd+p"]

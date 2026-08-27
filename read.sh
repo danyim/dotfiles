@@ -52,6 +52,10 @@ echo "Reading kitty settings..."
 [ -f ~/.config/kitty/kitty.conf ] && cp ~/.config/kitty/kitty.conf .
 [ -f ~/.config/kitty/kitty.app.png ] && cp ~/.config/kitty/kitty.app.png .
 
+# Herdr config
+echo "Reading herdr settings..."
+[ -f ~/.config/herdr/config.toml ] && cp ~/.config/herdr/config.toml herdr-config.toml
+
 # Sublime Text
 echo "Reading Sublime Text settings..."
 if is_macos; then
