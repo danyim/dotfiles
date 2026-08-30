@@ -67,6 +67,9 @@ build_file_mappings() {
   # Kitty
   FILE_MAPPINGS+=("kitty.conf:$HOME/.config/kitty/kitty.conf")
 
+  # Herdr
+  FILE_MAPPINGS+=("herdr-config.toml:$HOME/.config/herdr/config.toml")
+
   # tmux helper scripts
   FILE_MAPPINGS+=("bin/tmux-jump:$HOME/.local/bin/tmux-jump")
   FILE_MAPPINGS+=("bin/tmux-window-focus:$HOME/.local/bin/tmux-window-focus")

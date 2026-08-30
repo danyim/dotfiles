@@ -109,6 +109,10 @@ fi
 echo "Installing TPM (tmux plugin manager)..."
 git clone --depth 1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+# Install herdr
+echo "Installing herdr..."
+curl -fsSL https://herdr.dev/install.sh | sh
+
 # Install kubectl
 echo "Installing kubectl..."
 KUBECTL_VERSION="$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)"

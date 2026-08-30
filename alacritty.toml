@@ -611,27 +611,27 @@ key = "P"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
-chars = "\u001B[65;9~"
+chars = "\u001B[97;7u"
 key = "A"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
-chars = "\u001B[11;1~"
+chars = "\u001B[1;7D"
 key = "Left"
 mods = "Command|Alt"
 
 [[keyboard.bindings]]
-chars = "\u001B[11;2~"
+chars = "\u001B[1;7C"
 key = "Right"
 mods = "Command|Alt"
 
 [[keyboard.bindings]]
-chars = "\u001B[11;3~"
+chars = "\u001B[1;7A"
 key = "Up"
 mods = "Command|Alt"
 
 [[keyboard.bindings]]
-chars = "\u001B[11;4~"
+chars = "\u001B[1;7B"
 key = "Down"
 mods = "Command|Alt"
 
