@@ -329,11 +329,12 @@ edit_interactive() {
 review_file_hunks() {
   local repo_path="$1"
   local system_path="$2"
+  local context="${3:-3}"
 
   # Generate unified diff: system (old) → repo (new)
   # Red (-) lines = current system, Green (+) lines = repo version
   local diff_output
-  diff_output=$(diff -u "$system_path" "$current_dir/$repo_path" 2>/dev/null) || true
+  diff_output=$(diff -U"$context" "$system_path" "$current_dir/$repo_path" 2>/dev/null) || true
 
   if [ -z "$diff_output" ]; then
     echo "No differences found."
@@ -403,7 +404,7 @@ review_file_hunks() {
     echo ""
 
     while true; do
-      echo -ne "($i/$total) Apply this hunk? [y,n,a,d,r,e,q,?] "
+      echo -ne "($i/$total) Apply this hunk? [y,n,a,d,r,e,s,q,?] "
       read -n 1 -r
       echo ""
       case "$REPLY" in
@@ -430,6 +431,16 @@ review_file_hunks() {
           edit_interactive "$repo_path" "$system_path"
           return
           ;;
+        s)
+          local new_context=$((context / 2))
+          if [ "$context" -le 0 ]; then
+            echo "Already at minimum context (0 lines)."
+            continue
+          fi
+          echo -e "${CYAN}Shrinking context to $new_context line(s) and re-diffing...${NC}"
+          review_file_hunks "$repo_path" "$system_path" "$new_context"
+          return
+          ;;
         q)
           echo "Quitting."
           exit 0
@@ -441,6 +452,7 @@ review_file_hunks() {
           echo "d - done with this file, skip remaining hunks"
           echo "r - reverse: copy entire system file to repo"
           echo "e - edit interactively in vimdiff"
+          echo "s - shrink: re-diff with less context to split this hunk further"
           echo "q - quit sync"
           echo "? - show this help"
           ;;
