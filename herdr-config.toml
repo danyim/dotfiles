@@ -34,3 +34,10 @@ switch_tab = ["prefix+1..9", "cmd+1..9"]
 # unmaps its default cmd+p>* kitten-hints chains so the bare keypress reaches
 # herdr instead of being swallowed as a chain prefix.
 goto = ["prefix+g", "cmd+p"]
+
+# Arrow-key equivalents of prefix+h/j/k/l pane focus (herdr's defaults),
+# kept alongside them for muscle memory when hjkl isn't convenient.
+focus_pane_left = ["prefix+h", "prefix+left"]
+focus_pane_down = ["prefix+j", "prefix+down"]
+focus_pane_up = ["prefix+k", "prefix+up"]
+focus_pane_right = ["prefix+l", "prefix+right"]
