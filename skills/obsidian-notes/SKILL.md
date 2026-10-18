@@ -70,6 +70,8 @@ Not for: reading notes (just read them), or discussing note contents in chat.
 
 10. **Do not retrofit legacy notes.** The standard governs what gets written now. If you edit an old note, preserve its shape: add the footer if the edit touches it, but do not restructure the body, rewrap old paragraphs, or invent a creation date.
 
+11. **Embellishing an existing note is additive and marked.** When the task is to embellish, enhance, enrich, or expand a note, the bullets you add carry the `& ` marker described below. Existing lines stay as they are, and a marker already in the note is never removed or rewritten.
+
 ## Voice (from the global standing orders)
 
 - **No em dashes.** Use commas, colons, parentheses, or separate sentences.
@@ -77,6 +79,23 @@ Not for: reading notes (just read them), or discussing note contents in chat.
 - **No AI attribution** anywhere in a note: no "generated with", no model names, no session links. Record what was decided, not who typed it.
 - **Absolute dates**, never "last week", because the note outlives the week.
 - **Numbers carry their source.** Any figure that drove a decision gets its query, table, or URL in the body or in `References:`.
+
+## Embellishing an existing note
+
+"Embellish", "enhance", "enrich", "expand", and "flesh out" mean additive editing of a note that already exists. The reader has to be able to tell the note's own content from what the model wrote, so every bullet added in that mode starts with `& `:
+
+```
+- Zengjiayan station (曾家岩, Zēngjiāyán) - monorail views (better than Liziba)
+    - Line 2 runs along the Jialing here, so the river and skyline come to an ordinary platform, without the Liziba crowds
+    - & Line 2 also stops at Niujiaotuo, so this pairs with the Yangtze cable car in one loop
+```
+
+- **Add, do not rewrite.** Existing lines stay byte-identical: no reflow, no reordering, no "improving" a bullet that was already there. New sub-bullets slot in under the bullet they enrich, indented one level to match the note.
+- **`& ` marks model-written text.** It is a marker, not decoration: no marker on a human line, always a marker on an added one. Writing it as `-& text`, `- &text`, or a bare `- &` is an error the linter reports.
+- **Never touch an existing marker.** When you revisit a note that already carries `& ` bullets, leave them where they are, even if you would have phrased them differently.
+- Everything else still holds: no frontmatter, headings and bullets, one line per bullet, footer left alone unless the edit is what adds it.
+
+Use plain additive editing, with no markers, when the request is "append this section" or "add a note about X": that content is the note's own going forward. The marker is for the embellish pass.
 
 ## Where notes go
 

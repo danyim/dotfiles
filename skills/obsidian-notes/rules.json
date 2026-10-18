@@ -132,5 +132,10 @@
       "Open questions"
     ],
     "note": "obsidian-lint --new builds this shape from the vault template: H1, section bullets, template footer, no frontmatter."
+  },
+  "embellish": {
+    "marker": "&",
+    "note": "When embellishing an existing note, only the bullets the model adds carry the marker, written '- & text' and indented under the bullet they enrich. Existing lines are never touched.",
+    "require_space_after_marker": true
   }
 }

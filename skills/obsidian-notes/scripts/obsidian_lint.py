@@ -349,6 +349,24 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
                 if max_words:
                     warnings.extend(long_paragraphs(body, max_words))
 
+    # --- embellishment markers ------------------------------------------
+    marker = rules.get("embellish", {}).get("marker")
+    if marker:
+        for ln in body.split("\n"):
+            m = re.match(r"^(\s*)([-*+]|\d+[.)])(\s*)(.*)$", ln)
+            if not m:
+                continue
+            gap, content = m.group(3), m.group(4)
+            if not content.startswith(marker):
+                continue
+            rest = content[len(marker):]
+            if not gap:
+                errors.append("bullet needs a space before the marker: write '- & <text>'")
+            elif not rest.strip():
+                errors.append("empty embellishment bullet: write '- & <text>', not the marker alone")
+            elif not rest.startswith(" "):
+                errors.append("embellishment marker needs a space: write '- & <text>'")
+
     # --- prose voice (warnings only) ------------------------------------
     prose_rules = rules.get("prose", {})
     marker = prose_rules.get("skip_marker")

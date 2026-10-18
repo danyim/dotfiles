@@ -18,6 +18,7 @@ skills/obsidian-notes/
 - Headings and bullets carry the structure; prose is the exception, under about 120 words per paragraph.
 - One paragraph per line, never hard-wrapped.
 - Status markers are `#index`, `#sapling`, `#evergreen`, `#tree`, `#needs-deduping`; tags are wikilinks.
+- Embellishing an existing note is additive: bullets you add start with `& ` (`- & text`), nested under the bullet they enrich, and existing lines stay untouched.
 
 ## Install on a device
 
