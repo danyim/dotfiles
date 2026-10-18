@@ -386,6 +386,12 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
             if vault is not None and name not in have_files:
                 warnings.append(f"image not found in the vault: {name}")
 
+        for line in embed_text.split("\n"):
+            if line[:1] in (" ", "\t") and re.search(r"!\[\[[^\]]+\]\]", line):
+                msg = ("image embed is nested under a bullet; put it at root bullet level "
+                       "('- ![[name.jpg|400]]')")
+                (warnings if lenient else errors).append(msg)
+
     # --- embellishment markers ------------------------------------------
     marker = rules.get("embellish", {}).get("marker")
     if marker:

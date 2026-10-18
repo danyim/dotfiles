@@ -72,7 +72,7 @@ Not for: reading notes (just read them), or discussing note contents in chat.
 
 11. **Embellishing an existing note is additive and marked.** When the task is to embellish, enhance, enrich, or expand a note, the bullets you add carry the `& ` marker described below. Existing lines stay as they are, and a marker already in the note is never removed or rewritten.
 
-12. **Photos live in the vault, named short, embedded at a width.** Save the file into the vault with a short meaningful name, embed it as `![[name.jpg|400]]`, and never let an image exceed 600px wide. No external image URLs, no `Pasted image ...` names, no full-width embeds.
+12. **Photos live in the vault, named short, embedded at a width, at root bullet level.** Save the file into the vault with a short meaningful name, embed it as `- ![[name.jpg|400]]` on its own top-level bullet (never nested under the text it illustrates, and `- & ![[...]]` during an embellish pass), and never let an image exceed 600px wide. No external image URLs, no `Pasted image ...` names, no full-width embeds.
 
 ## Voice (from the global standing orders)
 
@@ -107,14 +107,16 @@ When asked to insert a photo:
 
 ```
 - Zengjiayan station platform
-    - ![[zengjiayan-monorail.jpg|400]]
-    - & Best view of the Jialing from an ordinary Line 2 platform
+    - Line 2 runs along the Jialing here, so the river comes to an ordinary platform
+- ![[zengjiayan-monorail.jpg|400]]
 ```
 
+- **Root bullet level, never a sub-bullet.** The embed sits at the top level of the list, on its own bullet: `- ![[name.jpg|400]]`, and `- & ![[name.jpg|400]]` when the image is added during an embellish pass. Indented under the text it illustrates, the picture disappears into a nested sub-list.
+- **Place it after the bullet it illustrates**, or at the end of that section, so it reads next to its subject while still starting at column zero.
 - **Name it for what it shows**: `zengjiayan-monorail.jpg`, not `Pasted image 20240316130305.png`, `IMG_4821.HEIC`, or a hash. Lowercase, hyphenated, two to four words, real extension kept.
 - **Save it into the vault** at the attachments location (the vault root today, where the existing 63 images live; `images.folder` in `rules.json` if that ever moves). An image URL in the body is not an attachment, so fetch the file first.
 - **Size it in the note**: `![[name.jpg|400]]` is the default and never more than 600 wide. A full-width image pushes the text off the screen, and the linter rejects a new note's embed with no width at all.
-- **Caption in a bullet** under the embed when the photo needs context, and put the source in `References:` when it came from somewhere else.
+- **Caption in a root bullet** under the embed when the photo needs context, and put the source in `References:` when it came from somewhere else.
 - Re-encoding is fine when the original is huge: a 6 MB phone photo can become a 300 KB JPEG at 1600px wide with no visible change.
 
 ## Where notes go
