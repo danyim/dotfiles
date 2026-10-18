@@ -17,11 +17,14 @@ source "$current_dir/lib/helpers.sh"
 
 DRY_RUN=0
 UNINSTALL=0
+PUBLISH=1
 for arg in "$@"; do
   case "$arg" in
     --dry-run) DRY_RUN=1 ;;
     --uninstall) UNINSTALL=1 ;;
-    -h|--help) sed -n '2,15p' "$0"; exit 0 ;;
+    --no-publish) PUBLISH=0 ;;
+    --publish) PUBLISH=1 ;;
+    -h|--help) sed -n '2,16p' "$0"; exit 0 ;;
     *) echo "unknown argument: $arg" >&2; exit 2 ;;
   esac
 done
@@ -142,6 +145,17 @@ for ctx in "${CONTEXT_FILES[@]}"; do
     sync_context_block "$ctx"
   fi
 done
+
+# The vault copy is a rendered mirror for reading in Obsidian. Publishing here keeps it current
+# on every install; missing vaults are skipped, so a work-only machine stays untouched.
+if [ "$PUBLISH" -eq 1 ]; then
+  echo "Publishing the standard into the configured vaults..."
+  if [ "$DRY_RUN" -eq 1 ]; then
+    echo "  would run: publish_standard.py --all-vaults"
+  else
+    python3 "$SKILL_SRC/scripts/publish_standard.py" --all-vaults || echo "  (publish skipped)"
+  fi
+fi
 
 echo
 echo "Verify with: obsidian-lint --new \"Test\" --folder . ; obsidian-lint <that path>"

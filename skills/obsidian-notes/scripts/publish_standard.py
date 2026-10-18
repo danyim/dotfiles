@@ -24,7 +24,7 @@ NOTE_DIR = "Indices"
 NOTE_NAME = "Obsidian Note Standard.md"
 
 
-def render(now: str) -> str:
+def render(now: str, vault: Path | None = None) -> str:
     skill = SKILL.read_text(encoding="utf-8")
     body = skill.split("---\n", 2)[-1].strip() if skill.startswith("---") else skill.strip()
     # demote the H1 so the vault note keeps its own title
@@ -38,6 +38,8 @@ updated: {now}
 
 <!-- generated: obsidian-standard -->
 # Obsidian Note Standard
+
+Published for: `{vault.name if vault else 'unknown vault'}`. The folder map below describes the personal vault; in any other vault, follow that vault's existing folders and templates.
 
 Generated from `~/dev/dotfiles/skills/obsidian-notes/`: edit the SKILL.md and rules.json there, then run `publish_standard.py --vault <vault>`. Anything changed in this note is overwritten on the next publish, and the agents never read this copy. They read the skill and its linter.
 
@@ -62,24 +64,32 @@ References:
 """
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--vault", default=os.environ.get("OBSIDIAN_VAULT_PATH"))
-    ap.add_argument("--check", action="store_true")
-    args = ap.parse_args()
-    if not args.vault or not Path(args.vault).is_dir():
-        raise SystemExit("need --vault or $OBSIDIAN_VAULT_PATH")
-    vault = Path(args.vault).expanduser()
+def targets(rules_path: Path) -> list[Path]:
+    """Every vault this standard should be published into, resolved and filtered to what exists."""
+    spec = json.loads(RULES.read_text(encoding="utf-8")).get("vault", {}).get("publish_targets", [])
+    found: list[Path] = []
+    for entry in spec:
+        raw = os.environ.get(entry.get("env", ""), entry.get("default", ""))
+        path = Path(raw).expanduser() if raw else None
+        if path and path.is_dir() and (path / ".obsidian").exists():
+            found.append(path)
+        elif path:
+            print(f"skip {entry.get('label', path.name)}: not found at {path}")
+    return found
+
+
+def publish_one(vault: Path, check: bool) -> int:
     target = vault / NOTE_DIR / NOTE_NAME
-    if args.check:
+    if check:
         if not target.exists():
             print(f"missing: {target}")
             return 1
         existing = target.read_text(encoding="utf-8")
-        # compare bodies, ignoring the date lines
+
         def body(t: str) -> str:
             return "\n".join(l for l in t.splitlines() if not l.startswith(("created:", "updated:")))
-        if body(existing) != body(render("X")):
+
+        if body(existing) != body(render("X", vault)):
             print(f"stale: {target}")
             return 1
         print(f"current: {target}")
@@ -88,13 +98,36 @@ def main() -> int:
     if target.exists():
         old = target.read_text(encoding="utf-8")
         created = next((l for l in old.splitlines() if l.startswith("created: ")), f"created: {now}")
-        text = render(now).replace(f"created: {now}", created, 1)
+        text = render(now, vault).replace(f"created: {now}", created, 1)
     else:
-        text = render(now)
+        text = render(now, vault)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(text, encoding="utf-8")
     print(str(target))
     return 0
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--vault", default=os.environ.get("OBSIDIAN_VAULT_PATH"))
+    ap.add_argument("--all-vaults", action="store_true", help="publish into every configured vault that exists")
+    ap.add_argument("--check", action="store_true")
+    args = ap.parse_args()
+
+    if args.all_vaults:
+        vaults = targets(RULES)
+        if not vaults:
+            raise SystemExit("no configured vault found (see vault.publish_targets in rules.json)")
+        worst = 0
+        for vault in vaults:
+            worst |= publish_one(vault, args.check)
+        return worst
+
+    if not args.vault or not Path(args.vault).is_dir():
+        raise SystemExit("need --vault or $OBSIDIAN_VAULT_PATH")
+    if not args.vault:
+        raise SystemExit("need --vault, --all-vaults, or $OBSIDIAN_VAULT_PATH")
+    return publish_one(Path(args.vault).expanduser(), args.check)
 
 
 if __name__ == "__main__":

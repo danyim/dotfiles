@@ -28,7 +28,10 @@ Skills only (no prompts, no other dotfile touched, safe to re-run):
 cd ~/dev/dotfiles && git pull && ./skills.sh
 ./skills.sh --dry-run      # show what would change
 ./skills.sh --uninstall    # remove the links, the bin scripts, and the pointer blocks
+./skills.sh --no-publish   # skip the vault copy
 ```
+
+Install also publishes the standard into every configured vault that exists (`vault.publish_targets` in `rules.json`: the personal vault from `OBSIDIAN_VAULT_PATH`, and the Sirona vault from `SIRONA_VAULT_PATH`, defaulting to `~/Obsidian/Sirona`). Missing vaults are skipped.
 
 That links `skills/obsidian-notes` into `~/.claude/skills`, `~/.codex/skills`, `~/.cursor/skills`, `~/.config/opencode/skills` and `~/.hermes/skills`; installs `obsidian-lint` and `obsidian-guard` into `~/.local/bin`; links the Hermes plugin into `~/.hermes/plugins/obsidian-standard`; and syncs the pointer block into `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`.
 

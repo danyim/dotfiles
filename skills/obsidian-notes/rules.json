@@ -4,6 +4,18 @@
     "env": "OBSIDIAN_VAULT_PATH",
     "markers": [
       ".obsidian"
+    ],
+    "publish_targets": [
+      {
+        "env": "OBSIDIAN_VAULT_PATH",
+        "default": "~/Documents/Obsidian Vault",
+        "label": "personal"
+      },
+      {
+        "env": "SIRONA_VAULT_PATH",
+        "default": "~/Obsidian/Sirona",
+        "label": "sirona"
+      }
     ]
   },
   "paths": {
