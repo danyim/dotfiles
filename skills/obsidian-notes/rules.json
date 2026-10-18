@@ -18,6 +18,13 @@
       "_Archive",
       "_Templates",
       "_PublishMeta"
+    ],
+    "exempt_title_prefixes": [
+      "Daily Journals/",
+      "Indices/",
+      "_Templates/",
+      "_PublishMeta/",
+      "_Archive/"
     ]
   },
   "filename": {
@@ -34,18 +41,32 @@
       "\u0000"
     ],
     "forbid_trailing_space_or_dot": true,
-    "forbid_leading_space": true
+    "forbid_leading_space": true,
+    "title_pattern": "^\\d{4}-\\d{2} .+\\.md$",
+    "title_pattern_note": "New notes are titled 'YYYY-MM Title.md': month stamp, then a short title. Daily journals, indices and templates keep their own convention.",
+    "max_title_words": 10
   },
   "frontmatter": {
-    "required": true,
-    "required_keys": [
-      "created",
-      "updated"
-    ],
+    "required": false,
+    "required_keys": [],
     "patterns": {
       "created": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$",
       "updated": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$"
-    }
+    },
+    "allowed_keys": [
+      "created",
+      "updated",
+      "source",
+      "publish",
+      "private",
+      "locations",
+      "account",
+      "reel posted",
+      "place type",
+      "continent",
+      "country"
+    ],
+    "note": "Off by default. Add a key only when a Dataview query or a template needs it; do not stamp created/updated on every note, since the title carries the month."
   },
   "body": {
     "h1_required": true,
@@ -60,7 +81,10 @@
       "Links:",
       "References:"
     ],
-    "scan_last_lines": 25
+    "scan_last_lines": 25,
+    "expect_template_rule": true,
+    "template_path": "_Templates/Note.template.md",
+    "note": "New notes end with the vault's Note template footer: a #### line, a --- rule, then Status/Tags/Links/References."
   },
   "status": {
     "free_text": false,
@@ -91,11 +115,22 @@
       "it's worth noting",
       "delve"
     ],
-    "note": "Voice rules from the global standing orders. Warnings, never blocks: existing notes contain em dashes.",
+    "note": "Keep prose minimal: headings and bullets carry the structure, a paragraph only when a list would lose the reasoning.",
     "skip_marker": "<!-- generated: obsidian-standard -->",
     "no_manual_wrap": {
       "enabled": true,
       "note": "A paragraph or list item is one physical line. Breaks are only for real structure."
-    }
+    },
+    "max_paragraph_words": 120,
+    "prefer_headings_and_bullets": true
+  },
+  "scaffold": {
+    "title_prefix": "%Y-%m",
+    "sections": [
+      "Summary",
+      "Details",
+      "Open questions"
+    ],
+    "note": "obsidian-lint --new builds this shape from the vault template: H1, section bullets, template footer, no frontmatter."
   }
 }

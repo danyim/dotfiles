@@ -10,6 +10,15 @@ skills/obsidian-notes/
   scripts/publish_standard.py  # mirror the standard into the vault for humans
 ```
 
+## What the standard says, in one screen
+
+- New notes start from `_Templates/Note.template.md`: `# H1`, body, then `####` / `---` / `Status:` / `Tags:` / `Links:` / `References:`.
+- Title is `YYYY-MM Title`: month stamp, then a short title (`2026-10 Grok Cost Comparison.md`).
+- No frontmatter unless a query or template reads it. No `created:`/`updated:` stamps.
+- Headings and bullets carry the structure; prose is the exception, under about 120 words per paragraph.
+- One paragraph per line, never hard-wrapped.
+- Status markers are `#index`, `#sapling`, `#evergreen`, `#tree`, `#needs-deduping`; tags are wikilinks.
+
 ## Install on a device
 
 Skills only (no prompts, no other dotfile touched, safe to re-run):
@@ -20,7 +29,7 @@ cd ~/dev/dotfiles && git pull && ./skills.sh
 ./skills.sh --uninstall    # remove the links, the bin scripts, and the pointer blocks
 ```
 
-That links `skills/obsidian-notes` into `~/.claude/skills`, `~/.codex/skills`, `~/.cursor/skills`, `~/.config/opencode/skills` and `~/.hermes/skills`; installs `obsidian-lint` and `obsidian-guard` into `~/.local/bin`; links the Hermes plugin into `~/.hermes/plugins/obsidian-standard`; and appends the pointer block to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`.
+That links `skills/obsidian-notes` into `~/.claude/skills`, `~/.codex/skills`, `~/.cursor/skills`, `~/.config/opencode/skills` and `~/.hermes/skills`; installs `obsidian-lint` and `obsidian-guard` into `~/.local/bin`; links the Hermes plugin into `~/.hermes/plugins/obsidian-standard`; and syncs the pointer block into `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`.
 
 A full dotfiles run does the same thing, since `load.sh` calls this script. `./load.sh --skills-only` runs only this part and exits.
 
@@ -37,7 +46,7 @@ Claude Code gets its gate from the PreToolUse hook in `claude/settings.json`, wh
 ```
 obsidian-lint path/to/Note.md                                 # lint one note
 obsidian-lint --all --vault "$OBSIDIAN_VAULT_PATH" --quiet    # corpus report, lenient on old notes
-obsidian-lint --new "Title" --folder LLMs --tags "AI,LLMs"    # scaffold a compliant note
+obsidian-lint --new "Grok Cost Check" --folder LLMs --tags "AI,LLMs"   # 2026-10 Grok Cost Check.md
 ```
 
 ## Editing the standard
@@ -49,6 +58,6 @@ obsidian-lint --new "Title" --folder LLMs --tags "AI,LLMs"    # scaffold a compl
 
 ## Notes
 
-- Legacy notes lint leniently: missing frontmatter, H1, footer, managed-path location, and hand-wrapped paragraphs are warnings there, because the standard governs what gets written now.
+- Existing notes lint leniently: missing frontmatter, H1, footer, managed-path location, hand wraps, and the title pattern are warnings there, because the standard governs what gets written now.
 - `OBSIDIAN_GUARD_DISABLE=1` disables the Hermes gate for a session.
 - The guard never rewrites anything. It refuses, and hands the model the list of violations.

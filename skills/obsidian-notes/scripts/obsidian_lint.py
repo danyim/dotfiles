@@ -133,6 +133,33 @@ def find_manual_wraps(body: str) -> list[str]:
     return hits
 
 
+def long_paragraphs(body: str, max_words: int) -> list[str]:
+    """Paragraphs long enough that a heading or a list would serve the reader better."""
+    text = re.sub(r"```.*?```", "", body, flags=re.S)
+    footer = re.search(r"(?m)^---\s*$\n(?:\s*\n)*Status:", text)
+    if footer:
+        text = text[: footer.start()]
+    hits: list[str] = []
+    run: list[str] = []
+
+    def flush() -> None:
+        if not run:
+            return
+        words = len(" ".join(run).split())
+        if words > max_words:
+            hits.append(f"paragraph of {words} words; use headings and bullets instead")
+        run.clear()
+
+    for raw in text.split("\n"):
+        stripped = raw.strip()
+        if not stripped or STRUCTURAL_RE.match(raw):
+            flush()
+            continue
+        run.append(stripped)
+    flush()
+    return hits
+
+
 def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], strict_links: bool,
                text: str | None = None, lenient: bool = False):
     errors: list[str] = []
@@ -153,6 +180,21 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
         errors.append("filename ends with a dot or space")
     if fname_rules.get("forbid_leading_space") and path.name.startswith(" "):
         errors.append("filename starts with a space")
+
+    title_pattern = fname_rules.get("title_pattern")
+    if title_pattern and not lenient and vault is not None:
+        rel = path.relative_to(vault).as_posix()
+        exempt = any(rel.startswith(p) for p in rules.get("paths", {}).get("exempt_title_prefixes", []))
+        if not exempt and not path.name.endswith(".template.md") and not re.match(title_pattern, path.name):
+            errors.append(
+                "title must be 'YYYY-MM Title.md' (month stamp, then a short title); "
+                f"got {path.name!r}"
+            )
+        else:
+            max_words = fname_rules.get("max_title_words")
+            m = re.match(r"^\d{4}-\d{2} (.+)\.md$", path.name)
+            if max_words and m and len(m.group(1).split()) > max_words:
+                warnings.append(f"title is longer than {max_words} words; keep it short")
 
     # --- location -------------------------------------------------------
     if vault is not None:
@@ -184,6 +226,11 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
                 continue
             k, v = line.split(":", 1)
             fields[k.strip()] = v.strip().strip('"').strip("'")
+        allowed = rules.get("frontmatter", {}).get("allowed_keys")
+        if allowed:
+            extra = [k for k in fields if k not in allowed]
+            if extra:
+                warnings.append(f"frontmatter has {len(extra)} non-standard key(s): {', '.join(extra[:4])}")
         for key in rules.get("frontmatter", {}).get("required_keys", []):
             if key not in fields:
                 errors.append(f"frontmatter missing key {key!r}")
@@ -228,6 +275,13 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
                     ferr.append(f"footer missing {label}")
             if pos != sorted(pos):
                 ferr.append("footer labels out of order (Status, Tags, Links, References)")
+            if footer_rules.get("expect_template_rule", True):
+                abs_start = len(lines) - len(tail) + start
+                before = lines[abs_start - 1].strip() if abs_start > 0 else ""
+                if before != "####":
+                    ferr.append(
+                        "footer does not follow the Note template (a '####' line, then '---', then the labels)"
+                    )
 
             # status value check
             if "Status:" in found:
@@ -291,6 +345,9 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
             marker_now = rules.get("prose", {}).get("skip_marker")
             if not (marker_now and marker_now in text):
                 (warnings if lenient else errors).extend(find_manual_wraps(body))
+                max_words = rules.get("prose", {}).get("max_paragraph_words")
+                if max_words:
+                    warnings.extend(long_paragraphs(body, max_words))
 
     # --- prose voice (warnings only) ------------------------------------
     prose_rules = rules.get("prose", {})
@@ -306,6 +363,7 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
 
 
 def scaffold(vault: Path, args, rules: dict) -> Path:
+    """Build a note the way the vault's Note template plus the title rule say to."""
     title = args.new.strip()
     if not title:
         raise SystemExit("--new needs a title")
@@ -313,21 +371,32 @@ def scaffold(vault: Path, args, rules: dict) -> Path:
     dest_dir = vault / folder if folder else vault
     if not dest_dir.is_dir():
         raise SystemExit(f"folder does not exist: {dest_dir}")
-    rel = (Path(folder) if folder else Path()) / f"{title}.md"
-    if rel.as_posix() in rules.get("paths", {}).get("forbidden_exact", []):
-        raise SystemExit(f"refusing to write into managed path {rel}")
 
-    now = args.now
+    # 'YYYY-MM <short title>', unless the caller already supplied the stamp.
+    prefix = args.prefix or args.now[:7]
+    if args.prefix:
+        stem = f"{prefix} {title}"
+    elif re.match(r"^\d{4}-\d{2} ", title):
+        stem = title
+    else:
+        stem = f"{prefix} {title}"
+
+    if (Path(folder) / f"{stem}.md").as_posix() in rules.get("paths", {}).get("forbidden_exact", []):
+        raise SystemExit(f"refusing to write into managed path {folder}")
+
     tags = " ".join(f"[[{t.strip()}]]" for t in (args.tags or "").split(",") if t.strip())
-    body = f"""---
-created: {now}
-updated: {now}
----
+    heading = re.sub(r"^\d{4}-\d{2} ", "", stem)
+    sections = rules.get("scaffold", {}).get("sections", ["Summary", "Details", "Open questions"])
+    if args.body:
+        body_text = args.body.strip()
+    else:
+        body_text = "\n\n".join(f"## {name}\n- " for name in sections)
 
-# {title}
+    body = f"""# {heading}
 
-{args.body or 'TODO: what this is, why it matters, what was decided, what is still open.'}
+{body_text}
 
+####
 ---
 Status:
 {args.status or ''}
@@ -337,7 +406,7 @@ Links:
 
 References:
 """
-    path = dest_dir / f"{title}.md"
+    path = dest_dir / f"{stem}.md"
     if path.exists() and not args.force:
         raise SystemExit(f"refusing to overwrite existing note: {path}")
     path.write_text(body, encoding="utf-8")
@@ -353,7 +422,8 @@ def main() -> int:
     ap.add_argument("--tags", help="comma-separated tag notes for --new")
     ap.add_argument("--status", help="status marker for --new")
     ap.add_argument("--body", help="body text for --new")
-    ap.add_argument("--now", default=None, help="override created/updated timestamp")
+    ap.add_argument("--now", default=None, help="override today's date (used for the YYYY-MM stamp)")
+    ap.add_argument("--prefix", default=None, help="explicit YYYY-MM stamp for --new")
     ap.add_argument("--force", action="store_true", help="allow --new to overwrite")
     ap.add_argument("--vault", help="vault root (else $OBSIDIAN_VAULT_PATH or discovery)")
     ap.add_argument("--json", action="store_true", help="JSON output")

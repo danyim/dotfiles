@@ -1,7 +1,7 @@
 ---
 name: obsidian-notes
-description: "Use when writing or editing notes in the Obsidian vault. Enforces the vault's note anatomy, folder routing, wikilinks, footer block, and prose voice."
-version: 1.2.0
+description: "Use when writing or editing notes in the Obsidian vault. Enforces the vault's note anatomy, title format, folder routing, wikilinks, footer block, and prose voice."
+version: 1.3.0
 author: danyim
 license: MIT
 platforms: [linux, macos]
@@ -20,14 +20,14 @@ Before writing anything into the vault, run the linter on what you wrote:
 ```
 obsidian-lint <path-to-note>
 obsidian-lint --all --vault <vault>          # corpus report, legacy notes lint leniently
-obsidian-lint --new "Title" --folder LLMs --tags "AI,LLMs"   # scaffold a compliant note
+obsidian-lint --new "Title" --folder LLMs --tags "AI,LLMs"   # scaffold a note in the required shape
 ```
 
 ## When to Use
 
 - Any write or edit to a note under the Obsidian vault.
 - Creating a note, index entry, spec, journal entry, or research note.
-- Deciding where a note belongs, what the footer should say, or whether to add frontmatter.
+- Deciding where a note belongs, how it should be titled, or what the footer should say.
 
 Not for: reading notes (just read them), or discussing note contents in chat.
 
@@ -35,22 +35,15 @@ Not for: reading notes (just read them), or discussing note contents in chat.
 
 1. **Vault only, real folders.** Write inside the vault root. Never write into `_Archive/`, `_Templates/`, `_PublishMeta/`, `.obsidian/`, or `.trash/`; those are managed surfaces. A note that belongs in `_Archive` is a note that should not be created.
 
-2. **Frontmatter on every new note.** Exactly two dates, unquoted, `YYYY-MM-DDTHH:MM`:
+2. **Start from the vault's Note template**, `_Templates/Note.template.md` (in Obsidian: `obsidian://open?vault=MainVault&file=_Templates%2FNote.template`), or from `obsidian-lint --new`, which builds the same shape. The template is the skeleton: an `# H1`, the body, then the footer block (`####`, a `---` rule, `Status:`, `Tags:`, `Links:`, `References:`). Do not invent a different skeleton; follow the convention of the notes already in the vault.
 
    ```
-   ---
-   created: 2026-10-18T14:52
-   updated: 2026-10-18T14:52
-   ---
-   ```
+   # Title
 
-   `created` is set once and never moves; `updated` moves on every content edit. Add other keys (`source:`, `locations:`, `private:`) only when the note type calls for them.
+   ## Section
+   - point
 
-3. **An H1 as the first body line**, naming the note's subject. Not the filename repeated blindly, but close enough that a search hit and a heading read the same.
-
-4. **The footer block, last thing in the file**, in this shape:
-
-   ```
+   ####
    ---
    Status:
 
@@ -61,15 +54,21 @@ Not for: reading notes (just read them), or discussing note contents in chat.
    References:
    ```
 
-   `Status:` holds a marker, not prose, and only from the allowed set: `#index`, `#sapling`, `#evergreen`, `#tree`, `#needs-deduping` (or empty). Tags are wikilinks to index notes, never hashtags. `Links:` is the related-note list. `References:` is external URLs, one per line.
+3. **Title every note `YYYY-MM Title`, short and to the point.** The filename carries the month stamp, then a plain title: `2026-10 Grok Cost Comparison.md`, not `Grok cost comparison research notes final.md`. Ten words at most. The H1 is the title without the stamp (`# Grok Cost Comparison`). Daily journals keep `YYYY-MM-DD Ddd.md`; index notes and templates keep their existing names.
 
-5. **One paragraph per line: never hard-wrap prose.** A paragraph is a single long physical line, however wide it gets; the editor and Obsidian wrap it for display. Break lines only for real structure: headings, list items, table rows, code fences, block quotes. Wrapping by hand makes every later edit rewrap the paragraph, turns a one-sentence change into a whole-block diff, and reflows badly at any other window width. If a line you are about to write is just the same sentence carrying on, delete the newline instead.
+4. **No frontmatter by default.** 1,108 of the vault's 1,328 notes have none, and the title already carries the month, so do not stamp `created:` or `updated:` on every note. Add a key only when something reads it: a Dataview query, a template that expects it (`source:`, `locations:`, `private:`, `publish:`), or a note type already using it. Never add free-form keys like `status:` or `mood:`; status lives on the footer's `Status:` line.
 
-6. **Wikilinks resolve.** Every `[[Target]]` matches an existing note basename, or a note you are creating in the same operation. Index notes in `Indices/` carry `#index` in Status and `[[_Index]]` in Links.
+5. **Headings and bullets over prose.** Structure the note with `##` sections and `-` points, and reach for a paragraph only when a list would lose the reasoning: a decision's cause, a sequence of events, a caveat. Keep any single paragraph under about 120 words; past that a heading and a list read better.
 
-7. **Filenames are safe on macOS and Linux.** No `:` `/` `\` `|` `#` `^` `[[` `]]`, no trailing dot or space, under 120 characters. Prefer title case with spaces. Dated notes lead with the date: `2026-10-18 Grok Cost Comparison.md`.
+6. **One paragraph per line: never hard-wrap prose.** A paragraph or a list item is a single long physical line, however wide it gets; the editor and Obsidian wrap it for display. Break lines only for real structure: headings, list items, table rows, code fences, block quotes. A mid-sentence newline turns every later edit into a whole-block diff.
 
-8. **Do not retrofit legacy notes.** 1,108 of 1,328 existing notes have no frontmatter, and that is fine. The standard governs what gets written now. If you edit a legacy note, preserve its shape: add the footer if the edit touches it, but do not restructure the body, rewrap old paragraphs, or invent a creation date.
+7. **The footer closes the note.** `Status:` holds a marker, not prose, from the allowed set: `#index`, `#sapling`, `#evergreen`, `#tree`, `#needs-deduping` (or empty). Tags are wikilinks to index notes, never hashtags. `Links:` is the related-note list, `References:` the external URLs.
+
+8. **Wikilinks resolve.** Every `[[Target]]` matches an existing note basename, or a note you are creating in the same operation. Index notes in `Indices/` carry `#index` in Status and `[[_Index]]` in Links.
+
+9. **Filenames are safe on macOS and Linux.** No `:` `/` `\` `|` `#` `^` `[[` `]]`, no trailing dot or space, under 120 characters.
+
+10. **Do not retrofit legacy notes.** The standard governs what gets written now. If you edit an old note, preserve its shape: add the footer if the edit touches it, but do not restructure the body, rewrap old paragraphs, or invent a creation date.
 
 ## Voice (from the global standing orders)
 
@@ -90,12 +89,12 @@ Not for: reading notes (just read them), or discussing note contents in chat.
 | LLM / AI reference | `LLMs/` | research write-ups; reels in `LLMs/Reels/` |
 | Weekly review | `Weekly Reviews/` | one per week, tagged with that week's journal |
 
-Templates live in `_Templates/` (20 of them). Read the matching template before writing a note of that type: `Note.template.md` is only the bare footer, `Product Research.template.md` carries the research shape. Start from the template, fill it in, delete the placeholder bullets.
+Templates live in `_Templates/`. Read the matching template before writing a note of that type: `Note.template.md` is the skeleton for anything without a shape of its own, `Product Research.template.md` carries the research shape, `Daily Journals.template.md` the journal shape. Fill it in and delete the placeholder bullets.
 
 ## Judgment calls (not enforced)
 
 - **Search before creating.** A near-duplicate note is worse than a section in the existing one. Check the topic's index note and the vault for the title first.
-- **Write for the reader in six months**: what this is, why it matters, what was decided, what is still open. Prose, not bullet confetti. Structure a long note with `##` sections.
+- **Write for the reader in six months**: what this is, why it matters, what was decided, what is still open.
 - **Wikilinks over URLs** for anything that lives in the vault. URLs belong in `References:`.
 - **A note about a task is not a task.** Open work goes to the task system; the note records the decision and its reasoning.
 - **Do not restructure a note you were asked to append to.** Append, or edit the specific section. Reorganizing a note is a separate, asked-for job.
@@ -104,8 +103,8 @@ Templates live in `_Templates/` (20 of them). Read the matching template before 
 
 1. Resolve the vault (`OBSIDIAN_VAULT_PATH`, else walk up to the directory holding `.obsidian`).
 2. Search for an existing note on the subject; extend it if it exists.
-3. Pick folder and template from the table above.
-4. Write: frontmatter, `# Title`, body, footer. Body paragraphs are single lines.
+3. Scaffold with `obsidian-lint --new "<short title>" --folder <folder> --tags "Tag1,Tag2"`, which applies the month stamp, the H1, the section bullets, and the template footer.
+4. Write the body as headings and bullets. No frontmatter unless something reads it.
 5. Run `obsidian-lint <path>`. Fix every error. Warnings on legacy notes can stand.
 6. Report the absolute path you wrote.
 
@@ -113,7 +112,8 @@ Templates live in `_Templates/` (20 of them). Read the matching template before 
 
 - Notes with no footer, so they never appear in the index queries that organize the vault.
 - Hashtags where the vault uses wikilink tags, splitting one tag across two systems.
-- Hand-wrapped paragraphs that reflow into a mess the first time anyone edits a word.
+- Frontmatter sprawl: five keys nobody queries, on a note whose title already says when it was made.
+- Titles like "notes", "misc", or a whole sentence, so the note is unfindable a month later.
+- Walls of prose where three bullets would have done, and hand-wrapped lines that reflow badly on the first edit.
 - Retrofit passes that rewrite twenty old notes and bury the real edit.
-- A `created` date invented at edit time, sorting the note into the wrong year in `Indices/`.
 - Duplicate notes for one subject, because nobody searched first.
