@@ -34,7 +34,7 @@ hermes plugins enable obsidian-standard --no-allow-tool-override
 
 ```
 obsidian-lint path/to/Note.md                                 # lint one note
-obsidian-lint --all --vault "$OBSIDIAN_VAULT_PATH" --quiet    # whole-vault report
+obsidian-lint --all --vault "$OBSIDIAN_VAULT_PATH" --quiet    # corpus report (lenient: legacy notes)
 obsidian-lint --new "Title" --folder LLMs --tags "AI,LLMs"    # scaffold a compliant note
 ```
 

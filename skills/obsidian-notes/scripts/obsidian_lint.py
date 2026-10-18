@@ -115,9 +115,11 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
         rel = path.relative_to(vault).as_posix()
         for pref in rules.get("paths", {}).get("forbidden_prefixes", []):
             if rel.startswith(pref):
-                errors.append(f"note written under managed path {pref}")
+                msg = f"note written under managed path {pref}"
+                (warnings if lenient else errors).append(msg)
         if rel in rules.get("paths", {}).get("forbidden_exact", []):
-            errors.append(f"note written at managed path {rel}")
+            msg = f"note written at managed path {rel}"
+            (warnings if lenient else errors).append(msg)
 
     # --- frontmatter ----------------------------------------------------
     fm = FM_RE.match(text)
@@ -314,6 +316,8 @@ def main() -> int:
     args = ap.parse_args()
 
     rules = load_rules()
+    if args.all and not args.lenient:
+        args.lenient = True  # a corpus report is always a legacy report
     if args.now is None:
         from datetime import datetime
         args.now = datetime.now().strftime("%Y-%m-%dT%H:%M")
