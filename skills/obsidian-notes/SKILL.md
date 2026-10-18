@@ -72,7 +72,7 @@ Not for: reading notes (just read them), or discussing note contents in chat.
 
 11. **Embellishing an existing note is additive and marked.** When the task is to embellish, enhance, enrich, or expand a note, the bullets you add carry the `& ` marker described below. Existing lines stay as they are, and a marker already in the note is never removed or rewritten.
 
-12. **Photos live in the vault, named short, embedded at a width, at root bullet level.** Save the file into the vault with a short meaningful name, embed it as `- ![[name.jpg|400]]` on its own top-level bullet (never nested under the text it illustrates, and `- & ![[...]]` during an embellish pass), and never let an image exceed 600px wide. No external image URLs, no `Pasted image ...` names, no full-width embeds.
+12. **Photos live in the vault, named short, embedded at a width, as a bare indented line.** Save the file into the vault with a short meaningful name, then embed it on its own line at the sub-bullet indent with no bullet marker: `    ![[Chongqing Hongyadong.jpg|600]]`. Never as a bullet, and never wider than 600px. No external image URLs, no `Pasted image ...` names, no full-width embeds.
 
 ## Voice (from the global standing orders)
 
@@ -103,20 +103,20 @@ Use plain additive editing, with no markers, when the request is "append this se
 
 ## Photos and attachments
 
-When asked to insert a photo:
+When asked to insert a photo, the embed goes on its own line, indented to sit with the sub-bullets it belongs to, and carries no bullet marker:
 
 ```
-- Zengjiayan station platform
-    - Line 2 runs along the Jialing here, so the river comes to an ordinary platform
-- ![[zengjiayan-monorail.jpg|400]]
+- Hongyadong (洪崖洞, Hóngyá Dòng) - light up place
+    - 11-storey stilt-house (吊脚楼, diàojiǎolóu) complex built into the cliff above the Jialing, snack stalls and hotpot packed inside
+    - The classic photo is shot from Qiansimen Bridge (千厮门大桥, Qiānsīmén Dàqiáo), not from inside the complex
+    ![[Chongqing Hongyadong.jpg|600]]
 ```
 
-- **Root bullet level, never a sub-bullet.** The embed sits at the top level of the list, on its own bullet: `- ![[name.jpg|400]]`, and `- & ![[name.jpg|400]]` when the image is added during an embellish pass. Indented under the text it illustrates, the picture disappears into a nested sub-list.
-- **Place it after the bullet it illustrates**, or at the end of that section, so it reads next to its subject while still starting at column zero.
-- **Name it for what it shows**: `zengjiayan-monorail.jpg`, not `Pasted image 20240316130305.png`, `IMG_4821.HEIC`, or a hash. Lowercase, hyphenated, two to four words, real extension kept.
+- **No bullet marker on the embed.** Not `- ![[...]]`, not `- & ![[...]]`, and not the image alone at column zero. A bare line at the sub-bullet indent is what puts the picture inside the parent item, under the text it illustrates. The linter errors on a new note that writes the embed as a bullet.
+- **Name it for what it shows**: `Chongqing Hongyadong.jpg` or `zengjiayan-monorail.jpg`, not `Pasted image 20240316130305.png`, `IMG_4821.HEIC`, or a hash. Two to four words, real extension kept.
 - **Save it into the vault** at the attachments location (the vault root today, where the existing 63 images live; `images.folder` in `rules.json` if that ever moves). An image URL in the body is not an attachment, so fetch the file first.
-- **Size it in the note**: `![[name.jpg|400]]` is the default and never more than 600 wide. A full-width image pushes the text off the screen, and the linter rejects a new note's embed with no width at all.
-- **Caption in a root bullet** under the embed when the photo needs context, and put the source in `References:` when it came from somewhere else.
+- **Size it in the note**: `|600` is the ceiling, `|400` the default. A full-width image pushes the text off the screen, and the linter rejects a new note's embed with no width at all.
+- **Contextual text stays above it**: the caption is a sub-bullet in the note's own voice, or a `& ` sub-bullet when you wrote it during an embellish pass. The image line itself carries no prose.
 - Re-encoding is fine when the original is huge: a 6 MB phone photo can become a 300 KB JPEG at 1600px wide with no visible change.
 
 ## Where notes go

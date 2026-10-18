@@ -19,7 +19,7 @@ skills/obsidian-notes/
 - One paragraph per line, never hard-wrapped.
 - Status markers are `#index`, `#sapling`, `#evergreen`, `#tree`, `#needs-deduping`; tags are wikilinks.
 - Embellishing an existing note is additive: bullets you add start with `& ` (`- & text`), nested under the bullet they enrich, and existing lines stay untouched. A `&` bullet the owner wrote is a prompt to the model: act on it, leave it in place, answer underneath.
-- Photos go into the vault with a short meaningful name, embedded as their own root-level bullet, `- ![[name.jpg|400]]`, never nested under the text and never above 600. External image URLs and `Pasted image ...` names are out.
+- Photos go into the vault with a short meaningful name, embedded on a bare line indented with the sub-bullets, `    ![[Chongqing Hongyadong.jpg|600]]`, never as a bullet and never above 600. External image URLs and `Pasted image ...` names are out.
 
 ## Install on a device
 
