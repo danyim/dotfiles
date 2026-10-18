@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "vault": {
+    "env": "OBSIDIAN_VAULT_PATH",
+    "markers": [
+      ".obsidian"
+    ]
+  },
+  "paths": {
+    "forbidden_prefixes": [
+      "_Archive/",
+      "_Templates/",
+      "_PublishMeta/",
+      ".obsidian/",
+      ".trash/"
+    ],
+    "forbidden_exact": [
+      "_Archive",
+      "_Templates",
+      "_PublishMeta"
+    ]
+  },
+  "filename": {
+    "max_length": 120,
+    "forbidden_chars": [
+      ":",
+      "/",
+      "\\",
+      "|",
+      "#",
+      "^",
+      "[",
+      "]",
+      "\u0000"
+    ],
+    "forbid_trailing_space_or_dot": true,
+    "forbid_leading_space": true
+  },
+  "frontmatter": {
+    "required": true,
+    "required_keys": [
+      "created",
+      "updated"
+    ],
+    "patterns": {
+      "created": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$",
+      "updated": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}$"
+    }
+  },
+  "body": {
+    "h1_required": true,
+    "h1_must_be_first_line": true
+  },
+  "footer": {
+    "required": true,
+    "rule_before": true,
+    "labels": [
+      "Status:",
+      "Tags:",
+      "Links:",
+      "References:"
+    ],
+    "scan_last_lines": 25
+  },
+  "status": {
+    "free_text": false,
+    "allowed_markers": [
+      "#index",
+      "#sapling",
+      "#evergreen",
+      "#tree",
+      "#needs-deduping"
+    ]
+  },
+  "tags": {
+    "style": "wikilink",
+    "must_resolve": false,
+    "note": "95% of existing tag wikilinks resolve (1273/1343); the rest are aspirational index notes. Style is enforced, existence is a warning."
+  },
+  "wikilinks": {
+    "must_resolve": "warn"
+  },
+  "legacy": {
+    "mode": "report",
+    "note": "Notes created before the standard are reported, never rewritten automatically."
+  },
+  "prose": {
+    "warn_phrases": [
+      "—",
+      "load-bearing",
+      "it's worth noting",
+      "delve"
+    ],
+    "note": "Voice rules from the global standing orders. Warnings, never blocks: existing notes contain em dashes.",
+    "skip_marker": "<!-- generated: obsidian-standard -->"
+  }
+}

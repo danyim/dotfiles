@@ -158,6 +158,17 @@
   },
   "model": "opus",
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/dev/dotfiles/bin/obsidian-guard\" --claude-hook"
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "hooks": [

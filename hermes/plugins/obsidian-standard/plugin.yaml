@@ -1,0 +1,10 @@
+name: obsidian-standard
+version: 1.0.0
+description: >-
+  Enforces the Obsidian note standard on agent writes: before write_file/patch touches a note
+  inside the vault, the shared obsidian-guard linter checks frontmatter, H1, footer, wikilink tags
+  and folder routing, and refuses the write with the exact violations when they fail. Rules and
+  prose live in the dotfiles repo (skills/obsidian-notes/), not here — this plugin is the gate.
+author: danyim
+provides_hooks:
+  - pre_tool_call

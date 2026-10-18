@@ -269,6 +269,42 @@ if [ -f claude/settings.json ]; then
   cp claude/settings.json ~/.claude/settings.json
 fi
 
+# Agent skills + the Obsidian note standard.
+# Symlinked, never copied: skills/obsidian-notes in this repo is the single source of truth that
+# every harness (Claude Code, Codex, Cursor, opencode, Hermes) reads, and the linter that gates
+# writes into the vault. Copies drift; links cannot.
+echo "Linking agent skills and the Obsidian note standard..."
+mkdir -p "$HOME/.local/bin"
+for script in obsidian-lint obsidian-guard; do
+  if [ -f "bin/$script" ]; then
+    backup_if_exists "$HOME/.local/bin/$script" "$BACKUP_DIR/$script"
+    cp "bin/$script" "$HOME/.local/bin/$script"
+    chmod +x "$HOME/.local/bin/$script"
+  fi
+done
+for skills_dir in "$HOME/.claude/skills" "$HOME/.codex/skills" "$HOME/.cursor/skills" \
+                  "$HOME/.config/opencode/skills" "$HOME/.hermes/skills"; do
+  mkdir -p "$skills_dir"
+  ln -sfn "$current_dir/skills/obsidian-notes" "$skills_dir/obsidian-notes"
+done
+if [ -d hermes/plugins/obsidian-standard ]; then
+  mkdir -p "$HOME/.hermes/plugins"
+  ln -sfn "$current_dir/hermes/plugins/obsidian-standard" "$HOME/.hermes/plugins/obsidian-standard"
+  echo "  (enable once per device: hermes plugins enable obsidian-standard --no-allow-tool-override)"
+fi
+
+# Always-loaded pointer, for harnesses that do not auto-load skills (and for the ones that do,
+# so the rule is in context before the first vault write).
+echo "Syncing the Obsidian standard into agent context files..."
+for ctx in "$HOME/.claude/CLAUDE.md" "$HOME/.codex/AGENTS.md"; do
+  mkdir -p "$(dirname "$ctx")"
+  touch "$ctx"
+  if ! grep -q "BEGIN obsidian-standard" "$ctx"; then
+    printf '\n' >> "$ctx"
+    cat agent-context/obsidian-standard.md >> "$ctx"
+  fi
+done
+
 # vim
 echo "Importing vim settings..."
 if [ -f .vimrc ]; then

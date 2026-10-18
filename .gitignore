@@ -1,3 +1,6 @@
 *~
 .DS_Store
 .syncignore.local
+
+__pycache__/
+*.pyc
