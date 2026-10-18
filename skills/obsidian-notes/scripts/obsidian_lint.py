@@ -73,6 +73,14 @@ def basename_index(vault: Path) -> set[str]:
     return names
 
 
+def file_index(vault: Path) -> set[str]:
+    found = set()
+    for root, dirs, files in os.walk(vault):
+        dirs[:] = [d for d in dirs if not d.startswith(".") and d != "node_modules"]
+        found.update(files)
+    return found
+
+
 def make_link_resolver(vault: Path, names: set[str]):
     def resolves(target: str) -> bool:
         target = target.strip()
@@ -331,6 +339,7 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
         seen = set()
         prose = re.sub(r"```.*?```", "", text, flags=re.S)
         prose = re.sub(r"`[^`\n]*`", "", prose)
+        prose = re.sub(r"!\[\[[^\]]+\]\]", "", prose)  # embeds are checked separately
         for t in WIKILINK_RE.findall(prose):
             t = t.strip()
             if t in seen or not t:
@@ -348,6 +357,34 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
                 max_words = rules.get("prose", {}).get("max_paragraph_words")
                 if max_words:
                     warnings.extend(long_paragraphs(body, max_words))
+
+    # --- image embeds ----------------------------------------------------
+    img_cfg = rules.get("images", {})
+    exts = tuple("." + e.lower() for e in img_cfg.get("extensions", []))
+    if exts:
+        max_w = img_cfg.get("max_width", 600)
+        have_files = file_index(vault) if vault is not None else set()
+        embed_text = re.sub(r"```.*?```", "", body, flags=re.S)
+        embed_text = re.sub(r"`[^`\n]*`", "", embed_text)  # inline-code examples
+        for m in re.finditer(r"!\[\[([^\]]+)\]\]", embed_text):
+            raw = m.group(1)
+            target, _, size = raw.partition("|")
+            target = target.strip()
+            if not target.lower().endswith(exts):
+                continue
+            sev = warnings if lenient else errors
+            if img_cfg.get("require_size", True) and not size.strip():
+                sev.append(
+                    f"image embed ![[{target}]] has no width; write ![[{target}|"
+                    f"{img_cfg.get('default_width', 400)}]]"
+                )
+            elif size.strip():
+                width = size.strip().split("x")[0]
+                if width.isdigit() and max_w and int(width) > max_w:
+                    warnings.append(f"image embed width {width} is wider than {max_w}; it will crowd the note")
+            name = target.split("/")[-1]
+            if vault is not None and name not in have_files:
+                warnings.append(f"image not found in the vault: {name}")
 
     # --- embellishment markers ------------------------------------------
     marker = rules.get("embellish", {}).get("marker")

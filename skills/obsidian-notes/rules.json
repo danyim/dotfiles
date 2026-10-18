@@ -149,5 +149,21 @@
     "marker": "&",
     "note": "When embellishing an existing note, only the bullets the model adds carry the marker, written '- & text' and indented under the bullet they enrich. Existing lines are never touched.",
     "require_space_after_marker": true
+  },
+  "images": {
+    "folder": "",
+    "default_width": 400,
+    "max_width": 600,
+    "require_size": true,
+    "extensions": [
+      "png",
+      "jpg",
+      "jpeg",
+      "gif",
+      "webp",
+      "svg",
+      "heic"
+    ],
+    "note": "Photos go into the vault with a short, meaningful name and embed at a set width. 63 vault images live at the root today, so the default folder is the root; empty folder means root."
   }
 }

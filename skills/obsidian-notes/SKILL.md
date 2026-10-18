@@ -72,6 +72,8 @@ Not for: reading notes (just read them), or discussing note contents in chat.
 
 11. **Embellishing an existing note is additive and marked.** When the task is to embellish, enhance, enrich, or expand a note, the bullets you add carry the `& ` marker described below. Existing lines stay as they are, and a marker already in the note is never removed or rewritten.
 
+12. **Photos live in the vault, named short, embedded at a width.** Save the file into the vault with a short meaningful name, embed it as `![[name.jpg|400]]`, and never let an image exceed 600px wide. No external image URLs, no `Pasted image ...` names, no full-width embeds.
+
 ## Voice (from the global standing orders)
 
 - **No em dashes.** Use commas, colons, parentheses, or separate sentences.
@@ -95,7 +97,25 @@ Not for: reading notes (just read them), or discussing note contents in chat.
 - **Never touch an existing marker.** When you revisit a note that already carries `& ` bullets, leave them where they are, even if you would have phrased them differently.
 - Everything else still holds: no frontmatter, headings and bullets, one line per bullet, footer left alone unless the edit is what adds it.
 
+**The marker also runs the other way: a `&` bullet can be the note's owner prompting the model.** Something like `- & add what a ticket costs` is a request to you, not note content. Read it as a request when it reads like one, act on it, and leave that line exactly as written. Put the answer underneath as ordinary nested bullets, because requested content becomes the note's own; the marker marks unrequested embellishment. If a `&` line is genuinely ambiguous, treat it as a prompt and ask before changing anything.
+
 Use plain additive editing, with no markers, when the request is "append this section" or "add a note about X": that content is the note's own going forward. The marker is for the embellish pass.
+
+## Photos and attachments
+
+When asked to insert a photo:
+
+```
+- Zengjiayan station platform
+    - ![[zengjiayan-monorail.jpg|400]]
+    - & Best view of the Jialing from an ordinary Line 2 platform
+```
+
+- **Name it for what it shows**: `zengjiayan-monorail.jpg`, not `Pasted image 20240316130305.png`, `IMG_4821.HEIC`, or a hash. Lowercase, hyphenated, two to four words, real extension kept.
+- **Save it into the vault** at the attachments location (the vault root today, where the existing 63 images live; `images.folder` in `rules.json` if that ever moves). An image URL in the body is not an attachment, so fetch the file first.
+- **Size it in the note**: `![[name.jpg|400]]` is the default and never more than 600 wide. A full-width image pushes the text off the screen, and the linter rejects a new note's embed with no width at all.
+- **Caption in a bullet** under the embed when the photo needs context, and put the source in `References:` when it came from somewhere else.
+- Re-encoding is fine when the original is huge: a 6 MB phone photo can become a 300 KB JPEG at 1600px wide with no visible change.
 
 ## Where notes go
 

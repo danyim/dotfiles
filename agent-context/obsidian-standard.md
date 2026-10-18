@@ -9,6 +9,8 @@ Any write into the Obsidian vault follows the `obsidian-notes` skill (`~/dev/dot
 - No frontmatter by default. Do not stamp `created:`/`updated:`; add a key only when a Dataview query or template reads it.
 - Headings (`##`) and bullets instead of prose. A paragraph only when a list would lose the reasoning, and under about 120 words.
 - Embellishing an existing note (`embellish`, `enhance`, `expand`) is additive: only the bullets you add carry the `& ` marker (`- & text`, indented under the bullet they enrich), and existing lines are never rewritten or stripped of their markers.
+- A `&` bullet written by the owner is a prompt to you (`- & add the ticket price`): act on it, leave the line untouched, and put the answer underneath as ordinary nested bullets.
+- Photos: save into the vault with a short meaningful name and embed at a set width, `![[name.jpg|400]]`, never wider than 600.
 - One paragraph or list item per line. Never hard-wrap prose: no mid-sentence newlines, no wrapped bullet continuations.
 - Run `obsidian-lint <path>` after writing. A pre-write guard blocks non-compliant new notes in Hermes and Claude Code, so fix what it reports rather than working around it.
 - Do not retrofit old notes: missing frontmatter, H1, footer, or existing hand wraps on a note that predates the standard are left alone.
