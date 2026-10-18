@@ -89,6 +89,50 @@ def make_link_resolver(vault: Path, names: set[str]):
     return resolves
 
 
+
+STRUCTURAL_RE = re.compile(r"^\s*(#{1,6}\s|#{1,6}$|-{3,}$|\*{3,}$|[-*+]\s|\d+[.)]\s|>|\||```|#[\w-]+$)")
+TERMINAL = ".!?:;`)]}\u201d\"'"
+
+
+def find_manual_wraps(body: str) -> list[str]:
+    """Lines that look like a hand-wrapped paragraph or list item."""
+    text = re.sub(r"```.*?```", "", body, flags=re.S)
+    footer = re.search(r"(?m)^---\s*$\n(?:\s*\n)*Status:", text)
+    if footer:  # the footer block is structured key/value, not prose
+        text = text[: footer.start()]
+    lines = text.split("\n")
+    hits: list[str] = []
+    run: list[str] = []
+
+    def flush() -> None:
+        for i in range(len(run) - 1):
+            a, b = run[i].rstrip(), run[i + 1].lstrip()
+            if a and b and a[-1] not in TERMINAL and b[:1].islower():
+                hits.append("paragraph wrapped by hand: " + a.strip()[:60])
+                return
+
+    prev = ""
+    for raw in lines:
+        line = raw.rstrip()
+        stripped = line.strip()
+        if not stripped:
+            flush(); run = []; prev = ""; continue
+        structural = bool(STRUCTURAL_RE.match(line))
+        indented = line.startswith("  ") and not structural
+        if structural:
+            flush(); run = []
+            prev = stripped
+            continue
+        if indented and prev and prev[-1] not in TERMINAL and stripped[:1].islower():
+            hits.append("list item wrapped by hand: " + prev[:60])
+            prev = stripped
+            continue
+        run.append(line)
+        prev = stripped
+    flush()
+    return hits
+
+
 def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], strict_links: bool,
                text: str | None = None, lenient: bool = False):
     errors: list[str] = []
@@ -241,6 +285,12 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
             if not resolve(t):
                 msg = f"wikilink [[{t}]] does not resolve to a note"
                 (errors if (link_mode == "error" or strict_links) else warnings).append(msg)
+
+    if prose_cfg_no_wrap := rules.get("prose", {}).get("no_manual_wrap", {}):
+        if prose_cfg_no_wrap.get("enabled", True):
+            marker_now = rules.get("prose", {}).get("skip_marker")
+            if not (marker_now and marker_now in text):
+                (warnings if lenient else errors).extend(find_manual_wraps(body))
 
     # --- prose voice (warnings only) ------------------------------------
     prose_rules = rules.get("prose", {})

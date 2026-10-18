@@ -39,14 +39,9 @@ updated: {now}
 <!-- generated: obsidian-standard -->
 # Obsidian Note Standard
 
-Generated from `~/dev/dotfiles/skills/obsidian-notes/` — edit the SKILL.md and rules.json there,
-then run `publish_standard.py --vault <vault>`. Anything you change in this note is overwritten on
-the next publish, and the agents never read this copy: they read the skill and its linter.
+Generated from `~/dev/dotfiles/skills/obsidian-notes/`: edit the SKILL.md and rules.json there, then run `publish_standard.py --vault <vault>`. Anything changed in this note is overwritten on the next publish, and the agents never read this copy. They read the skill and its linter.
 
-Agents reach the standard three ways, so it applies on every device and in every app: the skill
-directory is symlinked into each harness's skills folder by `dotfiles/load.sh`; Hermes and
-Claude Code run a pre-write guard that refuses non-compliant notes; and the always-loaded context
-file in each harness points at the skill.
+Agents reach the standard three ways, so it applies on every device and in every app: `dotfiles/skills.sh` symlinks the skill into each harness's skills folder, Hermes and Claude Code run a pre-write guard that refuses non-compliant notes, and the always-loaded context file in each harness points at the skill.
 
 {body}
 

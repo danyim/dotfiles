@@ -92,6 +92,10 @@
       "delve"
     ],
     "note": "Voice rules from the global standing orders. Warnings, never blocks: existing notes contain em dashes.",
-    "skip_marker": "<!-- generated: obsidian-standard -->"
+    "skip_marker": "<!-- generated: obsidian-standard -->",
+    "no_manual_wrap": {
+      "enabled": true,
+      "note": "A paragraph or list item is one physical line. Breaks are only for real structure."
+    }
   }
 }
