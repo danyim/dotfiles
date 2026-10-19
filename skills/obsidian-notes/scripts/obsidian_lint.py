@@ -394,23 +394,25 @@ def check_note(path: Path, vault: Path | None, rules: dict, names: set[str], str
                        "aligned with the sub-bullets, with no bullet marker")
                 (warnings if lenient else errors).append(msg)
 
-    # --- embellishment markers ------------------------------------------
-    marker = rules.get("embellish", {}).get("marker")
-    if marker:
+    # --- list callout markers (& content, ^ meta) ----------------------
+    for marker in rules.get("callouts", {}).get("markers", []):
+        char = marker.get("char")
+        if not char:
+            continue
         for ln in body.split("\n"):
             m = re.match(r"^(\s*)([-*+]|\d+[.)])(\s*)(.*)$", ln)
             if not m:
                 continue
             gap, content = m.group(3), m.group(4)
-            if not content.startswith(marker):
+            if not content.startswith(char):
                 continue
-            rest = content[len(marker):]
+            rest = content[len(char):]
             if not gap:
-                errors.append("bullet needs a space before the marker: write '- & <text>'")
+                errors.append(f"bullet needs a space before '{char}': write '- {char} <text>'")
             elif not rest.strip():
-                errors.append("empty embellishment bullet: write '- & <text>', not the marker alone")
+                errors.append(f"empty '{char}' callout: write '- {char} <text>', not the marker alone")
             elif not rest.startswith(" "):
-                errors.append("embellishment marker needs a space: write '- & <text>'")
+                errors.append(f"callout marker needs a space: write '- {char} <text>'")
 
     # --- prose voice (warnings only) ------------------------------------
     prose_rules = rules.get("prose", {})

@@ -18,7 +18,8 @@ skills/obsidian-notes/
 - Headings and bullets carry the structure; prose is the exception, under about 120 words per paragraph.
 - One paragraph per line, never hard-wrapped.
 - Status markers are `#index`, `#sapling`, `#evergreen`, `#tree`, `#needs-deduping`; tags are wikilinks.
-- Embellishing an existing note is additive: bullets you add start with `& ` (`- & text`), nested under the bullet they enrich, and existing lines stay untouched. A `&` bullet the owner wrote is a prompt to the model: act on it, leave it in place, answer underneath.
+- Model-written text carries a list callout: `& ` for content added to the note, `^ ` for meta feedback and status ("could not find images for this item"). Both are mapped in the List Callouts plugin, and the owner writes them too: a `&` bullet is a command for the next pass, a `^` bullet a note addressed to the model.
+- Embellishing an existing note is additive: bullets you add start with `& `, nested under the bullet they enrich, and existing lines stay untouched.
 - Photos go into the vault with a short meaningful name, embedded on a bare line indented with the sub-bullets, `    ![[Chongqing Hongyadong.jpg|600]]`, never as a bullet and never above 600. External image URLs and `Pasted image ...` names are out.
 
 ## Install on a device

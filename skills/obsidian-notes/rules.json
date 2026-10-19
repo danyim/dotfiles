@@ -145,11 +145,6 @@
     ],
     "note": "obsidian-lint --new builds this shape from the vault template: H1, section bullets, template footer, no frontmatter."
   },
-  "embellish": {
-    "marker": "&",
-    "note": "When embellishing an existing note, only the bullets the model adds carry the marker, written '- & text' and indented under the bullet they enrich. Existing lines are never touched.",
-    "require_space_after_marker": true
-  },
   "images": {
     "folder": "",
     "default_width": 400,
@@ -165,5 +160,19 @@
       "heic"
     ],
     "note": "Photos go into the vault with a short, meaningful name and embed at a set width. 63 vault images live at the root today, so the default folder is the root; empty folder means root."
+  },
+  "callouts": {
+    "markers": [
+      {
+        "char": "&",
+        "meaning": "LLM-generated content that adds to the note and to the bullet it sits under. The owner also types it as feedback or a command for the next pass, like TODOCLAUDE."
+      },
+      {
+        "char": "^",
+        "meaning": "LLM-generated status or feedback: meta information, not topic content, e.g. 'could not find images for this item'."
+      }
+    ],
+    "require_space": true,
+    "note": "List callouts rendered by the List Callouts plugin (both mapped there). Written '- <char> text'. The model never deletes either marker."
   }
 }
