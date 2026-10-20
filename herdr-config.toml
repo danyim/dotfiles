@@ -30,6 +30,10 @@ reload_config = ["prefix+shift+r", "prefix+r"]
 # herdr's own default (prefix+1..9) is kept alongside it.
 switch_tab = ["prefix+1..9", "cmd+1..9"]
 
+# tmux `last-window` equivalent: swap back to the previously focused view. herdr has no tab-specific action, so this
+# uses last_pane, its global back-and-forth.
+last_pane = "prefix+a"
+
 # herdr's own default is prefix+g; cmd+p also works here since kitty.conf
 # unmaps its default cmd+p>* kitten-hints chains so the bare keypress reaches
 # herdr instead of being swallowed as a chain prefix.
