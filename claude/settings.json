@@ -164,7 +164,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$HOME/dev/dotfiles/bin/obsidian-guard\" --claude-hook"
+            "command": "python3 \"$HOME/.local/bin/obsidian-guard\" --claude-hook"
           }
         ]
       }

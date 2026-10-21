@@ -1,4 +1,0 @@
-#!/bin/sh
-# Thin wrapper so every harness (and a human) can call the same linter.
-# Installed to ~/.local/bin/obsidian-lint by dotfiles load.sh.
-exec python3 "$HOME/dev/dotfiles/skills/obsidian-notes/scripts/obsidian_lint.py" "$@"

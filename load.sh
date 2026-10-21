@@ -11,11 +11,6 @@ if [ "$(id -u)" -eq 0 ]; then
   exit 1
 fi
 
-# Skills only: no prompts, no backups, nothing else touched.
-if [ "${1:-}" = "--skills-only" ]; then
-  exec "$current_dir/skills.sh" "${@:2}"
-fi
-
 UTCTIME=$(date -u +%s)
 BACKUP_DIR="$HOME/.dotfiles.backup/$UTCTIME"
 
@@ -278,13 +273,6 @@ if [ -f claude/settings.json ]; then
   backup_if_exists ~/.claude/settings.json "$BACKUP_DIR/settings.json"
   cp claude/settings.json ~/.claude/settings.json
 fi
-
-# Agent skills + the Obsidian note standard.
-# One implementation, in skills.sh: it symlinks the skill into every harness, installs the linter
-# and guard, links the Hermes gate plugin, and syncs the always-loaded pointer block. Run it alone
-# with ./skills.sh, or this whole file with ./load.sh --skills-only.
-echo "Installing agent skills..."
-"$current_dir/skills.sh"
 
 # vim
 echo "Importing vim settings..."
